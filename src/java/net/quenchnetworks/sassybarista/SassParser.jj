@@ -30,16 +30,59 @@ class SassParser {
 }
 PARSER_END(SassParser)
 
+/*TOKEN_MGR_DECLS : {
+    int commentNestingDepth ; 
+} */
+
+SKIP :
+{
+  "/*" : WithinComment
+}
+<WithinComment> SKIP :
+{
+  "*/" : DEFAULT
+}
+<WithinComment> MORE :
+{
+  <~[]>
+}
+
 SKIP : { " " }
 SKIP : { "\t" | "\n" | "\r" | "\r\n" }
+//SKIP : {  "/*" { commentNestingDepth = 1 ; } : COMMENT } 
+
+TOKEN : { < #ident : ("-")? <nmstart> (<nmchar>)* > }
+TOKEN : { < #name : (<nmchar>)+ > }
+TOKEN : { < #nmstart : ["a"-"z","A"-"Z"] | "_" | <nonascii> | <escape> > }
+TOKEN : { < #nonascii : ["\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
+TOKEN : { < #unicode : "\\" (["a"-"f","A"-"F","0"-"9"]){1,6} (<wc>)? > }
+TOKEN : { < #escape : <unicode> | "\\" ["\u0020"-"\u007E","\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
+TOKEN : { < #nmchar : ["a"-"z","A"-"Z","0"-"9"] | "-" | "_" | <nonascii> | <escape> > }
+TOKEN : { < #num : (["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+ > }
+TOKEN : { < #string : "\"" (<stringchar> | "'")* "\"" | "'" (<stringchar> | "\"")* "'" > }
+TOKEN : { < #stringchar : <urlchar> | "\u0020" | "\\" <nl> > }
+TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0027"-"\u007E"] | <nonascii> | <escape> > }
+TOKEN : { < #nl : "\n" | "\r" "\n" | "\r" | "\u000C" > }
+TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
+TOKEN : { < #w : (<wc>)* > }
+TOKEN : { < #delim : "." > }
+
 TOKEN : { < BEGIN_SCOPE : "{" > }
 TOKEN : { < END_SCOPE : "}" > }
 TOKEN : { < COLON : ":" > }
 TOKEN : { < SEMICOLON : ";" > }
 TOKEN : { < COMMA : "," > }
-TOKEN : { < IDENTIFIER : (["a"-"z","A"-"Z","0"-"9","-"])+ > }
-TOKEN : { < NUMBER : (["0"-"9"])+ > }
-TOKEN : { < SELECTOR : (<IDENTIFIER>)* ("#" | ".") <IDENTIFIER> > }
+
+TOKEN : { < IDENT : <ident> > }
+TOKEN : { < STRING : <string> > }
+TOKEN : { < HASH : "#" <name> > }
+TOKEN : { < NUMBER : <num> > }
+TOKEN : { < PERCENTAGE : <num> "%" > }
+TOKEN : { < DIMENSION : <num> <ident> > }
+MORE : { < DELIMETER : <delim> > }
+TOKEN : { < URI : "url(" <w> (<string> | (<urlchar>)* ) <w> ")" > }
+
+//TOKEN : { < SELECTOR : (<ident>)* ("#" | ".") <ident> > }
 
 List<Rule> Start() :
 {
@@ -54,29 +97,72 @@ List<Rule> Start() :
 	(
 		{ rule = new Rule(); }
 		(
-			{ selector = new Selector(); }
-			(
-				( t = <SELECTOR> | t=<IDENTIFIER> )
-				{ selector.addSelectorRule(t.image); }
-			)+
-			(<COMMA>)*
+			selector = Selector()
 			{ rule.addSelector(selector); }
 		)+
 		<BEGIN_SCOPE>
 			(
-				t = <IDENTIFIER>
-				{ property = new Property(t.image); }
-				<COLON>
-				(
-					(t = <IDENTIFIER>)+
-					{ property.addValue(t.image); }
-					(<COMMA>)*
-				)+
-				<SEMICOLON>
+				property = Property()
 				{ rule.addProperty(property); }
 			)*
 		<END_SCOPE>
 		{ rules.add(rule); }
 	)*
 	{ return rules; }
+}
+
+Selector Selector() :
+{
+	Token t ;
+	String result ;
+	Selector selector ;
+}
+{
+	{ selector = new Selector(); }
+	(
+		result = Any()
+		{ selector.addSelectorRule(result); }
+	)+
+	(<COMMA>)*
+	
+	{ return selector; }
+}
+
+Property Property() :
+{
+	Token t ;
+	String result ;
+	Property property ;
+}
+{
+	t = <IDENT>
+	{ property = new Property(t.image); }
+	<COLON>
+	(
+		result = Any()
+		{ property.addValue(result); }
+		(<COMMA>)*
+	)+
+	<SEMICOLON>
+	
+	{ return property; }
+}
+
+String Any() :
+{
+	Token t ;
+}
+{
+	(
+		t = <IDENT> |
+		t = <HASH> |
+		t = <NUMBER> |
+		t = <PERCENTAGE> |
+		t = <DIMENSION> |
+		t = <STRING> |
+		t = <COLON> | 
+		t = <URI>
+	)
+	
+	{ return t.image; }
 }

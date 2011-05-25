@@ -1,0 +1,36 @@
+TOKEN : { < ident : ("-")? <nmstart> (<nmchar>)* > }
+TOKEN : { < name : (<nmchar>)+ > }
+TOKEN : { < nmstart : ["a"-"z","A"-"Z"] | "_" | <nonascii> | <escape> > }
+TOKEN : { < nonascii : ["\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
+TOKEN : { < unicode : "\\" (["a"-"f","A"-"F","0"-"9"]){1,6} (<wc>)? > }
+TOKEN : { < escape : <unicode> | "\\" ["\u0020"-"\u007E","\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
+TOKEN : { < nmchar : ["a"-"z","A"-"Z","0"-"9"] | "-" | "_" | <nonascii> | <escape> > }
+TOKEN : { < num : (["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+ > }
+TOKEN : { < string : "\"" (<stringchar> | "'")* "\"" | "'" (<stringchar> | "\"")* "'" > }
+TOKEN : { < stringchar : <urlchar> | "\u0020" | "\\" <nl> > }
+TOKEN : { < urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0027"-"\u007E"] | <nonascii> | <escape> > }
+TOKEN : { < nl : "\n" | "\r" "\n" | "\r" | "\u000C" > }
+TOKEN : { < wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
+TOKEN : { < w : (<wc>)* > }
+
+TOKEN : { < IDENT : <ident> > }
+TOKEN : { < ATKEYWORD : "@" <ident> > }
+TOKEN : { < STRING : <string> > }
+TOKEN : { < HASH : "#" <name> > }
+TOKEN : { < NUMBER : <num> > }
+TOKEN : { < PERCENTAGE : <num> "%" > }
+TOKEN : { < DIMENSION : <num> <ident> > }
+TOKEN : { < URI : "url(" <w> (<string> | (<urlchar>)* ) <w> ")" > }
+TOKEN : { < UNICODERANGE : "U+" (["0"-"9","A"-"F","?"]){1,6} ("-" (["0"-"9","A"-"F"]){1,6})? > }
+TOKEN : { < CDO : "<!--" > }
+TOKEN : { < CDC : "-->" > }
+TOKEN : { < S : (<wc>)+ > }
+TOKEN : { < COMMENT : "/*" (~["*"])* ("*")+ (~["/"] (~["*"])* ("*")+)* "/" > }
+TOKEN : { < FUNCTION : <ident> "(" > }
+TOKEN : { < INCLUDES : "~=" > }
+TOKEN : { < DASHMATCH : "|=" > }
+TOKEN : { < PREFIXMATCH : "^=" > }
+TOKEN : { < SUFFIXMATCH : "$=" > }
+TOKEN : { < SUBSTRINGMATCH : "*=" > }
+//TOKEN : { < CHAR : any other character not matched by the above rules, except for " or ' > }
+TOKEN : { < BOM : "\uFEFF" > }
