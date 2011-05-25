@@ -10,11 +10,15 @@ public class Render
 	{
 		FileReader reader = new FileReader(args[0]);
 		SassParser parser = new SassParser(reader);
-		List<Rule> rules = parser.Start();
+		SassParser.ParseResult result = parser.Start();
 		
-		for (Rule rule : rules) {
-			printRule(rule, "");
+		for (Map.Entry<String, String> entry : result.variables.entrySet()) {
+			System.out.println(entry.getKey() + " " + entry.getValue());
 		}
+		
+		/*for (Rule rule : result.rules) {
+			printRule(rule, "");
+		}*/
 	}
 	
 	public static void printRule(Rule rule, String path)

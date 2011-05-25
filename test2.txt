@@ -1,3 +1,6 @@
+$blue: #3bbfce;
+$margin: 16px;
+
 #editorWrapper .upperPanel {
 	background-image: url('img/bg_top.png');
 	width: 100%;

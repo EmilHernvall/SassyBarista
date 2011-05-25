@@ -8,12 +8,18 @@ package net.quenchnetworks.sassybarista;
 import java.util.*;
 
 class SassParser {
+	public static class ParseResult
+	{
+		public Map<String, String> variables;
+		public List<Rule> rules;
+	}
+
 	public static void main( String[] args )
 	throws ParseException, TokenMgrError {
 		SassParser parser = new SassParser( System.in ) ;
-		List<Rule> rules = parser.Start();
+		ParseResult result = parser.Start();
 		
-		for (Rule rule : rules) {
+		for (Rule rule : result.rules) {
 			printRule(rule, 0);
 		}
 	}
@@ -89,32 +95,56 @@ TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
 TOKEN : { < #w : (<wc>)* > }
 TOKEN : { < #delim : "." > }
 
-TOKEN : { < COLON : ":" > }
-
 TOKEN : { < IDENT : <ident> > }
 TOKEN : { < STRING : <string> > }
 TOKEN : { < HASH : "#" <name> > }
 TOKEN : { < NUMBER : <num> > }
 TOKEN : { < PERCENTAGE : <num> "%" > }
 TOKEN : { < DIMENSION : <num> <ident> > }
-MORE : { < DELIMETER : <delim> > }
 TOKEN : { < URI : "url(" <w> (<string> | (<urlchar>)* ) <w> ")" > }
 
-//TOKEN : { < SELECTOR : (<ident>)* ("#" | ".") <ident> > }
+TOKEN : { < COLON : ":" > }
+TOKEN : { < VARIABLE : "$" <name> > }
 
-List<Rule> Start() :
+MORE : { < DELIMETER : <delim> > }
+
+ParseResult Start() :
 {
 	Token t ;
 	List<Rule> rules ;
 	Rule rule ;
+	Map<String, String> variables ;
+	String variableName ;
+	String variableValue ;
+	ParseResult result ;
 }
 {
-	{ rules = new ArrayList<Rule>(); }
+	{ 
+		rules = new ArrayList<Rule>(); 
+		variables = new HashMap<String, String>();
+	}
 	(
-		rule = Rule()
-		{ rules.add(rule); }
+		(
+			t = <VARIABLE>
+			{ variableName = t.image; }
+			":"
+			variableValue = Any()
+			";"
+			{ variables.put(variableName, variableValue); }
+		)
+		|
+		(
+			rule = Rule()
+			{ rules.add(rule); }
+		)
 	)*
-	{ return rules; }
+	{ 
+		result = new ParseResult();
+		result.variables = variables;
+		result.rules = rules;
+	
+		return result; 
+	}
 }
 
 Rule Rule() :
@@ -170,7 +200,7 @@ Selector Selector() :
 		result = Any()
 		{ selector.addSelectorRule(result); }
 	)+
-	(",")*
+	(",")?
 	
 	{ return selector; }
 }
