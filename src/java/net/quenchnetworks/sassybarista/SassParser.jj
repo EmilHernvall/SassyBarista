@@ -1,0 +1,82 @@
+options {
+	STATIC = false ;
+}
+
+PARSER_BEGIN(SassParser)
+package net.quenchnetworks.sassybarista;
+
+import java.util.*;
+
+class SassParser {
+	public static void main( String[] args )
+	throws ParseException, TokenMgrError {
+		SassParser parser = new SassParser( System.in ) ;
+		List<Rule> rules = parser.Start();
+		
+		for (Rule rule : rules) {
+			for (Selector selector : rule.getSelectors()) {
+				System.out.println(selector.toString());
+			}
+			
+			for (Property property : rule.getProperties()) {
+				System.out.print("\t" + property.getKey() + ": ");
+				for (String value : property.getValues()) {
+					System.out.print(value + " ");
+				}
+				System.out.println();				
+			}
+		}
+	}
+}
+PARSER_END(SassParser)
+
+SKIP : { " " }
+SKIP : { "\t" | "\n" | "\r" | "\r\n" }
+TOKEN : { < BEGIN_SCOPE : "{" > }
+TOKEN : { < END_SCOPE : "}" > }
+TOKEN : { < COLON : ":" > }
+TOKEN : { < SEMICOLON : ";" > }
+TOKEN : { < COMMA : "," > }
+TOKEN : { < IDENTIFIER : (["a"-"z","A"-"Z","0"-"9","-"])+ > }
+TOKEN : { < NUMBER : (["0"-"9"])+ > }
+TOKEN : { < SELECTOR : (<IDENTIFIER>)* ("#" | ".") <IDENTIFIER> > }
+
+List<Rule> Start() :
+{
+	Token t ;
+	List<Rule> rules ;
+	Rule rule ;
+	Selector selector ;
+	Property property ;
+}
+{
+	{ rules = new ArrayList<Rule>(); }
+	(
+		{ rule = new Rule(); }
+		(
+			{ selector = new Selector(); }
+			(
+				( t = <SELECTOR> | t=<IDENTIFIER> )
+				{ selector.addSelectorRule(t.image); }
+			)+
+			(<COMMA>)*
+			{ rule.addSelector(selector); }
+		)+
+		<BEGIN_SCOPE>
+			(
+				t = <IDENTIFIER>
+				{ property = new Property(t.image); }
+				<COLON>
+				(
+					(t = <IDENTIFIER>)+
+					{ property.addValue(t.image); }
+					(<COMMA>)*
+				)+
+				<SEMICOLON>
+				{ rule.addProperty(property); }
+			)*
+		<END_SCOPE>
+		{ rules.add(rule); }
+	)*
+	{ return rules; }
+}

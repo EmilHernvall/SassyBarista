@@ -1,0 +1,107 @@
+<project name="SassyBarista" default="compile" basedir=".">
+	
+	<property name="src" value="src/java" />
+	<property name="testsrc" value="src/test" />
+	<property name="build" value="bin" />
+	<property name="lib" value="lib" />
+	<property name="reports" value="reports" />
+	<property name="build.compiler" value="modern" />
+	
+	<path id="cobertura.classpath">
+		<fileset dir="${lib}">
+			<include name="cobertura.jar" />
+			<include name="cobertura/**/*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="init">
+		<tstamp />
+		<mkdir dir="${build}" />
+		<mkdir dir="${build}/src" />
+		<mkdir dir="${reports}" />
+		<mkdir dir="${reports}/raw" />
+		<mkdir dir="${reports}/html" />
+	</target>
+	
+	<target name="codegeneration" depends="init">
+		<copy todir="${build}/src">
+			<fileset dir="${src}" />
+		</copy>
+		<javacc
+			target="${src}/net/quenchnetworks/sassybarista/SassParser.jj"
+			outputdirectory="${build}/src/net/quenchnetworks/sassybarista"
+			javacchome="D:\devtools\javacc-5.0"
+			static="true"
+		/>
+	</target>
+	
+	<target name="compile" depends="codegeneration">
+		
+		<javac 
+			srcdir="${build}/src" 
+			destdir="${build}"
+			debug="on"
+			debuglevel="lines,vars,source">
+			
+			<compilerarg value="-Xlint:unchecked"/>
+			
+			<classpath>
+				<pathelement path="${build}"/>
+				<fileset dir="${lib}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+			
+		</javac>
+			
+	</target>
+	
+	<target name="run" depends="compile">
+		
+		<java classname="net.quenchnetworks.sassybarista.Adder" fork="yes">
+
+			<classpath>
+				<pathelement path="${build}"/>
+				<fileset dir="${lib}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+			
+		</java>
+			
+	</target>
+	
+	<target name="clean" depends="init">
+		<delete dir="${build}"/>
+		<delete dir="${reports}"/>
+	</target>
+	
+	<target name="run-tests" depends="compile">
+	
+		<junit printsummary="yes" haltonfailure="no" showoutput="yes" >
+			<classpath>
+				<pathelement path="${instrumented}"/>
+				<pathelement path="${build}"/>
+				<fileset dir="${lib}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>                   
+
+			<batchtest fork="yes" todir="${reports}/raw/">
+				<formatter type="xml"/>
+				<fileset dir="${src}">
+					<include name="**/*Test*.java"/>
+				</fileset>
+			</batchtest>
+		</junit> 
+	</target>
+	
+	<target name="test" depends="run-tests">
+		<junitreport todir="${reports}">
+			<fileset dir="${reports}/raw/">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="${reports}/html/"/>
+		</junitreport>
+	</target>
+</project>
