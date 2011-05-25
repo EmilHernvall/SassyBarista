@@ -4,11 +4,16 @@ import java.util.*;
 
 public class Selector
 {
-	private List<String> rules;
+	private LinkedList<String> rules;
 
 	public Selector()
 	{
-		this.rules = new ArrayList<String>();
+		this.rules = new LinkedList<String>();
+	}
+	
+	public void prependSelectorRule(String selectorRule)
+	{
+		rules.addFirst(selectorRule);
 	}
 	
 	public void addSelectorRule(String selectorRule)
@@ -19,6 +24,11 @@ public class Selector
 	public List<String> getSelectorRules()
 	{
 		return rules;
+	}
+	
+	public Iterator<String> getReverseIterator()
+	{
+		return rules.descendingIterator();
 	}
 	
 	@Override

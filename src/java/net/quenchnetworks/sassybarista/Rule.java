@@ -6,11 +6,13 @@ public class Rule
 {
 	private List<Selector> selectors;
 	private List<Property> properties;
+	private List<Rule> subrules;
 
 	public Rule()
 	{
 		this.selectors = new ArrayList<Selector>();
 		this.properties = new ArrayList<Property>();
+		this.subrules = new ArrayList<Rule>();
 	}
 	
 	public void addSelector(Selector selector)
@@ -23,6 +25,11 @@ public class Rule
 		properties.add(property);
 	}
 	
+	public void addSubRule(Rule rule)
+	{
+		subrules.add(rule);
+	}
+	
 	public List<Selector> getSelectors()
 	{
 		return selectors;
@@ -31,5 +38,10 @@ public class Rule
 	public List<Property> getProperties()
 	{
 		return properties;
+	}
+	
+	public List<Rule> getSubRules()
+	{
+		return subrules;
 	}
 }

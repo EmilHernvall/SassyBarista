@@ -14,17 +14,39 @@ class SassParser {
 		List<Rule> rules = parser.Start();
 		
 		for (Rule rule : rules) {
-			for (Selector selector : rule.getSelectors()) {
-				System.out.println(selector.toString());
+			printRule(rule, 0);
+		}
+	}
+	
+	public static String padding(int n)
+	{
+		StringBuilder buffer = new StringBuilder();
+		for (int i = 0; i < n; i++) {
+			buffer.append("\t");
+		}
+		
+		return buffer.toString();
+	}
+	
+	public static void printRule(Rule rule, int depth)
+	{
+		String padding = padding(depth);
+	
+		for (Selector selector : rule.getSelectors()) {
+			System.out.println(padding + selector.toString());
+		}
+		
+		for (Property property : rule.getProperties()) {
+			System.out.print(padding + "\t" + property.getKey() + ": ");
+			for (String value : property.getValues()) {
+				System.out.print(value + " ");
 			}
-			
-			for (Property property : rule.getProperties()) {
-				System.out.print("\t" + property.getKey() + ": ");
-				for (String value : property.getValues()) {
-					System.out.print(value + " ");
-				}
-				System.out.println();				
-			}
+			System.out.println();				
+		}
+		
+		System.out.println();
+		for (Rule subrule : rule.getSubRules()) {
+			printRule(subrule, depth+1);
 		}
 	}
 }
@@ -67,11 +89,7 @@ TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
 TOKEN : { < #w : (<wc>)* > }
 TOKEN : { < #delim : "." > }
 
-TOKEN : { < BEGIN_SCOPE : "{" > }
-TOKEN : { < END_SCOPE : "}" > }
 TOKEN : { < COLON : ":" > }
-TOKEN : { < SEMICOLON : ";" > }
-TOKEN : { < COMMA : "," > }
 
 TOKEN : { < IDENT : <ident> > }
 TOKEN : { < STRING : <string> > }
@@ -89,26 +107,55 @@ List<Rule> Start() :
 	Token t ;
 	List<Rule> rules ;
 	Rule rule ;
-	Selector selector ;
-	Property property ;
 }
 {
 	{ rules = new ArrayList<Rule>(); }
 	(
-		{ rule = new Rule(); }
-		(
-			selector = Selector()
-			{ rule.addSelector(selector); }
-		)+
-		<BEGIN_SCOPE>
-			(
-				property = Property()
-				{ rule.addProperty(property); }
-			)*
-		<END_SCOPE>
+		rule = Rule()
 		{ rules.add(rule); }
 	)*
 	{ return rules; }
+}
+
+Rule Rule() :
+{
+	Token t ;
+	Rule rule;
+	Rule nestedRule;
+	Selector selector ;
+	Property property ;
+	String result ;
+}
+{
+	{ rule = new Rule(); }
+	(
+		selector = Selector()
+		{ rule.addSelector(selector); }
+	)+
+	"{"
+	(
+		LOOKAHEAD( <IDENT> ":" )
+		(
+			t = <IDENT>
+			":"
+			{ property = new Property(t.image); }
+			(
+				result = Any()
+				{ property.addValue(result); }
+				(",")*
+			)+
+			";"
+			{ rule.addProperty(property); }
+		)
+		|
+		(
+			nestedRule = Rule()
+			{ rule.addSubRule(nestedRule); }
+		)
+	)*
+	"}"
+	
+	{ return rule; }
 }
 
 Selector Selector() :
@@ -123,29 +170,9 @@ Selector Selector() :
 		result = Any()
 		{ selector.addSelectorRule(result); }
 	)+
-	(<COMMA>)*
+	(",")*
 	
 	{ return selector; }
-}
-
-Property Property() :
-{
-	Token t ;
-	String result ;
-	Property property ;
-}
-{
-	t = <IDENT>
-	{ property = new Property(t.image); }
-	<COLON>
-	(
-		result = Any()
-		{ property.addValue(result); }
-		(<COMMA>)*
-	)+
-	<SEMICOLON>
-	
-	{ return property; }
 }
 
 String Any() :

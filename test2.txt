@@ -1,3 +1,22 @@
+#editorWrapper .upperPanel {
+	background-image: url('img/bg_top.png');
+	width: 100%;
+	
+	.topPanel,
+	.bottomPanel {
+		height: 56px;
+		
+		.logo {
+			margin: 15px 10px 0 10px;
+			float: left;
+		}	
+		.text {
+			font-weight: bold;
+			color: #696;
+		}
+	}
+}
+
 body, table td, select {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
@@ -44,4 +63,8 @@ a:hover {
 #editorWrapper .optionsContainerPanel {
 	background-image: url('img/bg_gradient.png');
 	background-repeat: repeat-x;
+	
+	h1 {
+		color: #f00;
+	}
 }
