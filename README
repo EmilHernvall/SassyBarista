@@ -1,0 +1,3 @@
+This is a java implementation of a CSS preprocessor. The goal it that it will eventually be fully
+SASS compatible. It's based on a JavaCC grammar and is currently in the very early stages, and
+although some basic features works I wouldn't recommend it for any serious use.
