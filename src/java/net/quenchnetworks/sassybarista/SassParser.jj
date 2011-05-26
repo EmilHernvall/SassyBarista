@@ -239,21 +239,18 @@ Selector Selector() :
 	
 	(
 		// Element
-		//LOOKAHEAD(<IDENT>)
 		(
 			t = <IDENT>
 			{ s.setElement(t.image); }
 		)
 		|
 		// ID
-		//LOOKAHEAD(<HASH>)
 		(
 			t = <HASH>
 			{ s.setId(t.image.substring(1)); }
 		)
 		|
 		// Class
-		//LOOKAHEAD("." <IDENT>)
 		(
 			"."
 			t = <IDENT>

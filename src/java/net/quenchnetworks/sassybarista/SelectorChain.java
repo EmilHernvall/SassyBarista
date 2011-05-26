@@ -35,9 +35,13 @@ public class SelectorChain
 	public String toString()
 	{
 		StringBuilder buffer = new StringBuilder();
+		int i = 0;
 		for (Selector selector : selectors) {
 			buffer.append(selector);
-			buffer.append(" ");
+			if (i < selectors.size() - 1) {
+				buffer.append(" ");
+			}
+			i++;
 		}
 		
 		return buffer.toString();

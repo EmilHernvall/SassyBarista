@@ -29,7 +29,7 @@ public class Render
 			i++;
 			System.out.print(path + selectorChain.toString());
 			if (i == selectorChains.size()) {
-				System.out.println("{");
+				System.out.println(" {");
 			} else {
 				System.out.println(",");
 			}
@@ -37,8 +37,14 @@ public class Render
 		
 		for (Property property : rule.getProperties()) {
 			System.out.print("\t" + property.getKey() + ": ");
-			for (String value : property.getValues()) {
-				System.out.print(value + " ");
+			List<String> values = property.getValues();
+			i = 0;
+			for (String value : values) {
+				System.out.print(value);
+				if (i < values.size() - 1) {
+					System.out.print(" ");
+				}
+				i++;
 			}
 			System.out.println(";");				
 		}

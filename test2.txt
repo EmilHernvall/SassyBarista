@@ -56,7 +56,7 @@ a:hover {
 	text-decoration: underline;
 }
 
-div#editorWrapper.fooclass:hover[type^="foo"] {
+div#editorWrapper.fooclass:hover[type^="foo"] + .foo {
 	color: #000;
 }
 
