@@ -4,20 +4,20 @@ import java.util.*;
 
 public class Rule
 {
-	private List<Selector> selectors;
+	private List<SelectorChain> selectorChains;
 	private List<Property> properties;
 	private List<Rule> subrules;
 
 	public Rule()
 	{
-		this.selectors = new ArrayList<Selector>();
+		this.selectorChains = new ArrayList<SelectorChain>();
 		this.properties = new ArrayList<Property>();
 		this.subrules = new ArrayList<Rule>();
 	}
 	
-	public void addSelector(Selector selector)
+	public void addSelectorChain(SelectorChain selectorChain)
 	{
-		selectors.add(selector);
+		selectorChains.add(selectorChain);
 	}
 	
 	public void addProperty(Property property)
@@ -30,9 +30,9 @@ public class Rule
 		subrules.add(rule);
 	}
 	
-	public List<Selector> getSelectors()
+	public List<SelectorChain> getSelectorChains()
 	{
-		return selectors;
+		return selectorChains;
 	}
 	
 	public List<Property> getProperties()

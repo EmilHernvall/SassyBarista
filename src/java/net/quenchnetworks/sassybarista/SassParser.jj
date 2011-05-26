@@ -38,8 +38,8 @@ class SassParser {
 	{
 		String padding = padding(depth);
 	
-		for (Selector selector : rule.getSelectors()) {
-			System.out.println(padding + selector.toString());
+		for (SelectorChain selectorChain : rule.getSelectorChains()) {
+			System.out.println(padding + selectorChain.toString());
 		}
 		
 		for (Property property : rule.getProperties()) {
@@ -75,8 +75,8 @@ SKIP :
   <~[]>
 }
 
-SKIP : { " " }
-SKIP : { "\t" | "\n" | "\r" | "\r\n" }
+//SKIP : { " " }
+//SKIP : { "\t" | "\n" | "\r" | "\r\n" }
 //SKIP : {  "/*" { commentNestingDepth = 1 ; } : COMMENT } 
 
 TOKEN : { < #ident : ("-")? <nmstart> (<nmchar>)* > }
@@ -93,7 +93,6 @@ TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0027"-"\u007E"] |
 TOKEN : { < #nl : "\n" | "\r" "\n" | "\r" | "\u000C" > }
 TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
 TOKEN : { < #w : (<wc>)* > }
-TOKEN : { < #delim : "." > }
 
 TOKEN : { < IDENT : <ident> > }
 TOKEN : { < STRING : <string> > }
@@ -102,11 +101,11 @@ TOKEN : { < NUMBER : <num> > }
 TOKEN : { < PERCENTAGE : <num> "%" > }
 TOKEN : { < DIMENSION : <num> <ident> > }
 TOKEN : { < URI : "url(" <w> (<string> | (<urlchar>)* ) <w> ")" > }
+TOKEN : { < S : (<wc>)+ > }
 
-TOKEN : { < COLON : ":" > }
 TOKEN : { < VARIABLE : "$" <name> > }
 
-MORE : { < DELIMETER : <delim> > }
+//MORE : { < DELIMETER : <delim> > }
 
 ParseResult Start() :
 {
@@ -128,8 +127,10 @@ ParseResult Start() :
 			t = <VARIABLE>
 			{ variableName = t.image; }
 			":"
+			(<S>)*
 			variableValue = Any()
 			";"
+			(<S>)*
 			{ variables.put(variableName, variableValue); }
 		)
 		|
@@ -137,7 +138,7 @@ ParseResult Start() :
 			rule = Rule()
 			{ rules.add(rule); }
 		)
-	)*
+	)+
 	{ 
 		result = new ParseResult();
 		result.variables = variables;
@@ -152,29 +153,34 @@ Rule Rule() :
 	Token t ;
 	Rule rule;
 	Rule nestedRule;
-	Selector selector ;
+	SelectorChain selectorChain ;
 	Property property ;
 	String result ;
 }
 {
 	{ rule = new Rule(); }
 	(
-		selector = Selector()
-		{ rule.addSelector(selector); }
+		selectorChain = SelectorChain()
+		{ rule.addSelectorChain(selectorChain); }
 	)+
 	"{"
+	(<S>)*
 	(
 		LOOKAHEAD( <IDENT> ":" )
 		(
 			t = <IDENT>
 			":"
+			(<S>)*
 			{ property = new Property(t.image); }
 			(
 				result = Any()
 				{ property.addValue(result); }
-				(",")*
+				(<S>)*
+				(",")?
+				(<S>)*
 			)+
 			";"
+			(<S>)*
 			{ rule.addProperty(property); }
 		)
 		|
@@ -184,25 +190,126 @@ Rule Rule() :
 		)
 	)*
 	"}"
+	(<S>)*
 	
 	{ return rule; }
+}
+
+SelectorChain SelectorChain() :
+{
+	Token t ;
+	Selector s ;
+	SelectorChain selectorChain ;
+}
+{
+	{ selectorChain = new SelectorChain(); }
+	(
+		s = Selector()
+		{ selectorChain.addSelector(s); }
+	)+
+	(",")?
+	(<S>)*
+	
+	{ return selectorChain; }
 }
 
 Selector Selector() :
 {
 	Token t ;
-	String result ;
-	Selector selector ;
+	Selector s ;
+	Selector.AttributeSelector attr ;
 }
 {
-	{ selector = new Selector(); }
-	(
-		result = Any()
-		{ selector.addSelectorRule(result); }
-	)+
-	(",")?
+	{ s = new Selector(); }
 	
-	{ return selector; }
+	// Combinator
+	(
+		(
+			">"
+			{ s.setCombinator(Selector.Combinator.CHILD_OF); }
+			|
+			"+"
+			{ s.setCombinator(Selector.Combinator.DIRECTLY_PRECEDED_BY); }
+			|
+			"~"
+			{ s.setCombinator(Selector.Combinator.PRECEDED_BY); }
+		)
+		(<S>)+
+	)?
+	
+	(
+		// Element
+		//LOOKAHEAD(<IDENT>)
+		(
+			t = <IDENT>
+			{ s.setElement(t.image); }
+		)
+		|
+		// ID
+		//LOOKAHEAD(<HASH>)
+		(
+			t = <HASH>
+			{ s.setId(t.image.substring(1)); }
+		)
+		|
+		// Class
+		//LOOKAHEAD("." <IDENT>)
+		(
+			"."
+			t = <IDENT>
+			{ s.setClassName(t.image); }
+		)
+	)+
+	
+	// Pseudo class
+	(
+		":"
+		t = <IDENT>
+		{ s.setPseudoClass(t.image); }
+		(
+			"("
+			t = <IDENT>
+			{ s.setPseudoClassParameter(t.image); }
+			")"
+		)*
+	)?
+	
+	// Attribute selector
+	(
+		{ attr = new Selector.AttributeSelector(); }
+		"["
+		t = <IDENT>
+		{ attr.setAttribute(t.image); }
+		(
+			(
+				"="
+				{ attr.setType(Selector.AttributeSelectorType.EQUAL_TO); }
+				|
+				"~="
+				{ attr.setType(Selector.AttributeSelectorType.EQUAL_TO_ONE_OF); }
+				|
+				"^="
+				{ attr.setType(Selector.AttributeSelectorType.BEGINS_WITH); }
+				|
+				"$="
+				{ attr.setType(Selector.AttributeSelectorType.ENDS_WITH); }
+				|
+				"*="
+				{ attr.setType(Selector.AttributeSelectorType.CONTAINS); }
+				|
+				"|="
+				{ attr.setType(Selector.AttributeSelectorType.HYPHEN_BEGINS_WITH); }
+			)
+			t = <STRING>
+			{ attr.setValue(t.image.substring(1,t.image.length()-1)); }
+		)*
+		"]"
+		{ s.setAttributeSelector(attr); }
+	)?
+	
+	(<S>)*
+	
+	{ return s; }
 }
 
 String Any() :
@@ -217,7 +324,9 @@ String Any() :
 		t = <PERCENTAGE> |
 		t = <DIMENSION> |
 		t = <STRING> |
-		t = <COLON> | 
+		// pseudo classes
+		":" 
+		t = <IDENT> | 
 		t = <URI>
 	)
 	

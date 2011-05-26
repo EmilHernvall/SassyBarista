@@ -1,7 +1,4 @@
-$blue: #3bbfce;
-$margin: 16px;
-
-#editorWrapper .upperPanel {
+#editorWrapper > .upperPanel {
 	background-image: url('img/bg_top.png');
 	width: 100%;
 	
@@ -19,6 +16,9 @@ $margin: 16px;
 		}
 	}
 }
+
+$blue: #3bbfce;
+$margin: 16px;
 
 body, table td, select {
 	font-family: Arial, Helvetica, sans-serif;
@@ -56,7 +56,7 @@ a:hover {
 	text-decoration: underline;
 }
 
-#editorWrapper {
+div#editorWrapper.fooclass:hover[type^="foo"] {
 	color: #000;
 }
 

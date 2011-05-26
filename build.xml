@@ -30,8 +30,8 @@
 		<javacc
 			target="${src}/net/quenchnetworks/sassybarista/SassParser.jj"
 			outputdirectory="${build}/src/net/quenchnetworks/sassybarista"
-			javacchome="D:\devtools\javacc-5.0"
-			static="true"
+			javacchome="C:\devtools\javacc-5.0"
+			static="false"
 		/>
 	</target>
 	

@@ -16,19 +16,19 @@ public class Render
 			System.out.println(entry.getKey() + " " + entry.getValue());
 		}
 		
-		/*for (Rule rule : result.rules) {
+		for (Rule rule : result.rules) {
 			printRule(rule, "");
-		}*/
+		}
 	}
 	
 	public static void printRule(Rule rule, String path)
 	{
 		int i = 0;
-		List<Selector> selectors = rule.getSelectors();
-		for (Selector selector : selectors) {
+		List<SelectorChain> selectorChains = rule.getSelectorChains();
+		for (SelectorChain selectorChain : selectorChains) {
 			i++;
-			System.out.print(path + selector.toString());
-			if (i == selectors.size()) {
+			System.out.print(path + selectorChain.toString());
+			if (i == selectorChains.size()) {
 				System.out.println("{");
 			} else {
 				System.out.println(",");
@@ -46,9 +46,9 @@ public class Render
 		System.out.println("}");
 		System.out.println();
 		
-		for (Selector selector : selectors) {
+		for (SelectorChain selectorChain : selectorChains) {
 			for (Rule subrule : rule.getSubRules()) {
-				printRule(subrule, path + selector + " ");
+				printRule(subrule, path + selectorChain + " ");
 			}
 		}
 	}
