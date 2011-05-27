@@ -19,6 +19,12 @@ public class FunctionPropertyValue implements IPropertyValue
 	}
 	
 	@Override
+	public String serialize(Map<String, IPropertyValue> variables)
+	{
+		return toString();
+	}
+	
+	@Override
 	public String toString()
 	{
 		StringBuilder buffer = new StringBuilder();

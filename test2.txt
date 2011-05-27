@@ -1,4 +1,4 @@
-$blue: darker(#3bbfce 25%);
+$blue: #3bbfce;
 $margin: 16px;
 $logo: url('foo/bar.jpg');
 

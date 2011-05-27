@@ -1,5 +1,7 @@
 package net.quenchnetworks.sassybarista.value;
 
+import java.util.*;
+
 public class ColorPropertyValue implements IPropertyValue
 {
 	private String value;
@@ -7,6 +9,12 @@ public class ColorPropertyValue implements IPropertyValue
 	public ColorPropertyValue(String value)
 	{
 		this.value = value;
+	}
+	
+	@Override
+	public String serialize(Map<String, IPropertyValue> variables)
+	{
+		return toString();
 	}
 	
 	@Override

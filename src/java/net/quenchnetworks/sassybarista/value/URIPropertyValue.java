@@ -1,5 +1,7 @@
 package net.quenchnetworks.sassybarista.value;
 
+import java.util.*;
+
 public class URIPropertyValue implements IPropertyValue
 {
 	private String value;
@@ -7,6 +9,12 @@ public class URIPropertyValue implements IPropertyValue
 	public URIPropertyValue(String value)
 	{
 		this.value = value;
+	}
+	
+	@Override
+	public String serialize(Map<String, IPropertyValue> variables)
+	{
+		return toString();
 	}
 	
 	@Override
