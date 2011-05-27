@@ -1,4 +1,21 @@
-#editorWrapper > .upperPanel {
+$blue: darker(#3bbfce 25%);
+$margin: 16px;
+$logo: url('foo/bar.jpg');
+
+@mixin testmixin {
+	font-size: 77px;
+	
+	h1.foo, 
+	h1.bar, {
+		font-size: 144px;
+		span {
+			display: none;
+		}
+	}
+}
+
+#editorWrapper > .upperPanel,
+#editorWrapper > .nonsensePanel {
 	background-image: url('img/bg_top.png');
 	width: 100%;
 	
@@ -6,7 +23,8 @@
 	.bottomPanel {
 		height: 56px;
 		
-		.logo {
+		.logo,
+		.logo2 {
 			margin: 15px 10px 0 10px;
 			float: left;
 		}	
@@ -17,9 +35,6 @@
 	}
 }
 
-$blue: #3bbfce;
-$margin: 16px;
-
 body, table td, select {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
@@ -27,6 +42,7 @@ body, table td, select {
 }
 
 .text {
+	@include testmixin;
 	padding-left: 10px;
 }
 

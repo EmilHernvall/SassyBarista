@@ -15,6 +15,7 @@ class SassParser {
 	public static class ParseResult
 	{
 		public Map<String, IPropertyValue> variables;
+		public Map<String, Mixin> mixins;
 		public List<Rule> rules;
 	}
 
@@ -99,7 +100,7 @@ TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
 TOKEN : { < #w : (<wc>)* > }
 
 TOKEN : { < IDENT : <ident> > }
-TOKEN : { < ATKEYWORD : "@" <ident> > }
+//TOKEN : { < ATKEYWORD : "@" <ident> > }
 TOKEN : { < STRING : <string> > }
 TOKEN : { < HASH : "#" <name> > }
 TOKEN : { < NUMBER : <num> > }
@@ -123,7 +124,9 @@ ParseResult Start() :
 	Token t ;
 	List<Rule> rules ;
 	Rule rule ;
+	Mixin mixin ;
 	Map<String, IPropertyValue> variables ;
+	Map<String, Mixin> mixins ;
 	String variableName ;
 	IPropertyValue variableValue ;
 	ParseResult result ;
@@ -132,6 +135,7 @@ ParseResult Start() :
 	{ 
 		rules = new ArrayList<Rule>(); 
 		variables = new HashMap<String, IPropertyValue>();
+		mixins = new HashMap<String, Mixin>();
 	}
 	(
 		(
@@ -146,6 +150,13 @@ ParseResult Start() :
 		)
 		|
 		(
+			"@mixin"
+			(<S>)+
+			mixin = Mixin()
+			{ mixins.put(mixin.getName(), mixin); }
+		)
+		|
+		(
 			rule = Rule()
 			{ rules.add(rule); }
 		)
@@ -154,6 +165,7 @@ ParseResult Start() :
 		result = new ParseResult();
 		result.variables = variables;
 		result.rules = rules;
+		result.mixins = mixins;
 	
 		return result; 
 	}
@@ -163,10 +175,7 @@ Rule Rule() :
 {
 	Token t ;
 	Rule rule;
-	Rule nestedRule;
 	SelectorChain selectorChain ;
-	Property property ;
-	IPropertyValue value ;
 }
 {
 	{ rule = new Rule(); }
@@ -174,6 +183,34 @@ Rule Rule() :
 		selectorChain = SelectorChain()
 		{ rule.addSelectorChain(selectorChain); }
 	)+
+	Block(rule)
+	
+	{ return rule; }
+}
+
+Mixin Mixin() :
+{
+	Token t ;
+	Mixin mixin;
+}
+{
+	{ mixin = new Mixin(); }
+	t = <IDENT>
+	{ mixin.setName(t.image); }
+	(<S>)*
+	Block(mixin)
+	
+	{ return mixin; }
+}
+
+void Block(Block block) :
+{
+	Token t ;
+	Rule nestedRule;
+	Property property ;
+	IPropertyValue value ;
+}
+{
 	"{"
 	(<S>)*
 	(
@@ -191,18 +228,25 @@ Rule Rule() :
 			)+
 			";"
 			(<S>)*
-			{ rule.addProperty(property); }
+			{ block.addProperty(property); }
+		)
+		|
+		(
+			"@include"
+			(<S>)+
+			t = <IDENT>
+			{ block.addInclude(t.image); }
+			";"
+			(<S>)*
 		)
 		|
 		(
 			nestedRule = Rule()
-			{ rule.addSubRule(nestedRule); }
+			{ block.addSubRule(nestedRule); }
 		)
 	)*
 	"}"
 	(<S>)*
-	
-	{ return rule; }
 }
 
 SelectorChain SelectorChain() :
@@ -351,11 +395,12 @@ IPropertyValue PropertyValue() :
 			{ p = new VariablePropertyValue(t.image); }
 		|
 			t = <FUNCTION> 
-			{ fp = new FunctionPropertyValue(t.image); } 
+			{ fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); } 
 			(<S>)* 
 			(
 				tmp = PropertyValue() 
 				{ fp.addValue(tmp); }
+				(<S>)*
 			)* 
 			")"
 			{ p = fp; }

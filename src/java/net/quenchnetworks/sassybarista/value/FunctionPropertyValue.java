@@ -32,6 +32,7 @@ public class FunctionPropertyValue implements IPropertyValue
 			if (i < values.size() - 1) {
 				buffer.append(" ");
 			}
+			i++;
 		}
 		
 		buffer.append(")");

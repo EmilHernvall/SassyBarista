@@ -2,17 +2,19 @@ package net.quenchnetworks.sassybarista;
 
 import java.util.*;
 
-public class Rule
+public class Rule extends Block
 {
 	private List<SelectorChain> selectorChains;
-	private List<Property> properties;
-	private List<Rule> subrules;
 
 	public Rule()
 	{
+		super();
 		this.selectorChains = new ArrayList<SelectorChain>();
-		this.properties = new ArrayList<Property>();
-		this.subrules = new ArrayList<Rule>();
+	}
+	
+	public void setSelectorChains(List<SelectorChain> selectorChains)
+	{
+		this.selectorChains = selectorChains;
 	}
 	
 	public void addSelectorChain(SelectorChain selectorChain)
@@ -20,28 +22,8 @@ public class Rule
 		selectorChains.add(selectorChain);
 	}
 	
-	public void addProperty(Property property)
-	{
-		properties.add(property);
-	}
-	
-	public void addSubRule(Rule rule)
-	{
-		subrules.add(rule);
-	}
-	
 	public List<SelectorChain> getSelectorChains()
 	{
 		return selectorChains;
-	}
-	
-	public List<Property> getProperties()
-	{
-		return properties;
-	}
-	
-	public List<Rule> getSubRules()
-	{
-		return subrules;
 	}
 }
