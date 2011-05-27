@@ -22,12 +22,12 @@ public class Selector
 	public enum AttributeSelectorType
 	{
 		WITH_ATTRIBUTE(""),
-		EQUAL_TO("="),
-		EQUAL_TO_ONE_OF("~="),
-		BEGINS_WITH("^="),
-		ENDS_WITH("$="),
-		CONTAINS("*="),
-		HYPHEN_BEGINS_WITH("|=");
+		EQUAL("="),
+		INCLUDES("~="),
+		PREFIXMATCH("^="),
+		SUFFIXMATCH("$="),
+		SUBSTRINGMATCH("*="),
+		DASHMATCH("|=");
 
 		private String symbol;		
 		private AttributeSelectorType(String symbol) { this.symbol = symbol; }

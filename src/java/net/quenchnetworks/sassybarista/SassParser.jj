@@ -95,6 +95,7 @@ TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
 TOKEN : { < #w : (<wc>)* > }
 
 TOKEN : { < IDENT : <ident> > }
+TOKEN : { < ATKEYWORD : "@" <ident> > }
 TOKEN : { < STRING : <string> > }
 TOKEN : { < HASH : "#" <name> > }
 TOKEN : { < NUMBER : <num> > }
@@ -102,6 +103,12 @@ TOKEN : { < PERCENTAGE : <num> "%" > }
 TOKEN : { < DIMENSION : <num> <ident> > }
 TOKEN : { < URI : "url(" <w> (<string> | (<urlchar>)* ) <w> ")" > }
 TOKEN : { < S : (<wc>)+ > }
+TOKEN : { < FUNCTION : <ident> "(" > }
+TOKEN : { < INCLUDES : "~=" > }
+TOKEN : { < DASHMATCH : "|=" > }
+TOKEN : { < PREFIXMATCH : "^=" > }
+TOKEN : { < SUFFIXMATCH : "$=" > }
+TOKEN : { < SUBSTRINGMATCH : "*=" > }
 
 TOKEN : { < VARIABLE : "$" <name> > }
 
@@ -175,7 +182,6 @@ Rule Rule() :
 			(
 				result = Any()
 				{ property.addValue(result); }
-				(<S>)*
 				(",")?
 				(<S>)*
 			)+
@@ -204,6 +210,7 @@ SelectorChain SelectorChain() :
 {
 	{ selectorChain = new SelectorChain(); }
 	(
+		LOOKAHEAD(1)
 		s = Selector()
 		{ selectorChain.addSelector(s); }
 	)+
@@ -238,23 +245,20 @@ Selector Selector() :
 	)?
 	
 	(
-		// Element
+		LOOKAHEAD(2)
 		(
-			t = <IDENT>
-			{ s.setElement(t.image); }
-		)
-		|
-		// ID
-		(
+			// ID
 			t = <HASH>
 			{ s.setId(t.image.substring(1)); }
-		)
 		|
-		// Class
-		(
+			// Class
 			"."
 			t = <IDENT>
 			{ s.setClassName(t.image); }
+		|
+			// Element
+			t = <IDENT>
+			{ s.setElement(t.image); }
 		)
 	)+
 	
@@ -280,22 +284,22 @@ Selector Selector() :
 		(
 			(
 				"="
-				{ attr.setType(Selector.AttributeSelectorType.EQUAL_TO); }
+				{ attr.setType(Selector.AttributeSelectorType.EQUAL); }
 				|
-				"~="
-				{ attr.setType(Selector.AttributeSelectorType.EQUAL_TO_ONE_OF); }
+				<INCLUDES>
+				{ attr.setType(Selector.AttributeSelectorType.INCLUDES); }
 				|
-				"^="
-				{ attr.setType(Selector.AttributeSelectorType.BEGINS_WITH); }
+				<PREFIXMATCH>
+				{ attr.setType(Selector.AttributeSelectorType.PREFIXMATCH); }
 				|
-				"$="
-				{ attr.setType(Selector.AttributeSelectorType.ENDS_WITH); }
+				<SUFFIXMATCH>
+				{ attr.setType(Selector.AttributeSelectorType.SUFFIXMATCH); }
 				|
-				"*="
-				{ attr.setType(Selector.AttributeSelectorType.CONTAINS); }
+				<SUBSTRINGMATCH>
+				{ attr.setType(Selector.AttributeSelectorType.SUBSTRINGMATCH); }
 				|
-				"|="
-				{ attr.setType(Selector.AttributeSelectorType.HYPHEN_BEGINS_WITH); }
+				<DASHMATCH>
+				{ attr.setType(Selector.AttributeSelectorType.DASHMATCH); }
 			)
 			t = <STRING>
 			{ attr.setValue(t.image.substring(1,t.image.length()-1)); }
@@ -304,7 +308,7 @@ Selector Selector() :
 		{ s.setAttributeSelector(attr); }
 	)?
 	
-	(<S>)*
+	(LOOKAHEAD(1) <S>)*
 	
 	{ return s; }
 }
@@ -312,20 +316,28 @@ Selector Selector() :
 String Any() :
 {
 	Token t ;
+	String res ;
+	String tmp ;
 }
 {
 	(
-		t = <IDENT> |
-		t = <HASH> |
-		t = <NUMBER> |
-		t = <PERCENTAGE> |
-		t = <DIMENSION> |
-		t = <STRING> |
-		// pseudo classes
-		":" 
-		t = <IDENT> | 
-		t = <URI>
+		t = <IDENT> { res = t.image; } |
+		t = <NUMBER> { res = t.image; } |
+		t = <PERCENTAGE> { res = t.image; } |
+		t = <DIMENSION> { res = t.image; } |
+		t = <STRING> { res = t.image; } |
+		t = <URI> { res = t.image; } |
+		t = <HASH> { res = t.image; } |
+		t = <FUNCTION> 
+		{ res = t.image; } 
+		(<S>)* 
+		(
+			tmp = Any() 
+			{ res += tmp; }
+		)* 
+		")"
+		{ res += ")"; }
 	)
 	
-	{ return t.image; }
+	{ return res; }
 }

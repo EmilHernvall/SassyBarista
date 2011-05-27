@@ -54,6 +54,7 @@ a {
 }
 a:hover {
 	text-decoration: underline;
+	width: whatever(100px);
 }
 
 div#editorWrapper.fooclass:hover[type^="foo"] + .foo {
