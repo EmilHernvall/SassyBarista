@@ -1,3 +1,36 @@
 This is a java implementation of a CSS preprocessor. The goal it that it will eventually be fully
-SASS compatible. It's based on a JavaCC grammar and is currently in the very early stages, and
-although some basic features works I wouldn't recommend it for any serious use.
+compatible with the SCSS syntax of SASS (http://sass-lang.com). It's based on a JavaCC grammar and 
+is currently in the very early stages, and although some basic features works I wouldn't recommend 
+it for any serious use.
+
+Currently supported:
+
+ * Correctly parses most of the CSS specification, with a few exceptions. These will be fixed soon.
+ * Nesting
+ * Variables
+ * Mixins (no arguments yet)
+ 
+Should be supported very soon:
+
+ * Support for * selector
+ * Imports
+ * Mixin arguments
+ * Systematic testing approach
+ * Functions
+
+Planned: 
+ * Selector inheritance
+ * Nested properties
+ * Parent references
+ * SassScript
+ 
+To build it you'll need to download JavaCC and specify the path to it in build.xml. You can run it
+using:
+
+java -cp bin net.quenchnetworks.sassybarista.CssSerializer .\test.txt
+ 
+Some relevant links:
+http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+http://javacc.java.net/
+http://www.w3.org/TR/css3-selectors/
+http://www.w3.org/TR/css3-syntax/
