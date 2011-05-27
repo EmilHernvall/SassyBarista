@@ -195,9 +195,33 @@ Mixin Mixin() :
 }
 {
 	{ mixin = new Mixin(); }
-	t = <IDENT>
-	{ mixin.setName(t.image); }
-	(<S>)*
+	
+	(
+		(
+			t = <IDENT>
+			{ mixin.setName(t.image); }
+			(<S>)*
+		)
+		|
+		(
+			t = <FUNCTION>
+			{ mixin.setName(t.image.substring(0, t.image.length()-1)); }
+			(<S>)*
+				t = <VARIABLE>
+				{ mixin.addParameter(t.image); }
+				(<S>)*
+				(
+					","
+					(<S>)*
+					t = <VARIABLE>
+					{ mixin.addParameter(t.image); }
+					(<S>)*
+				)*
+			")"
+			(<S>)*
+		)
+	)
+
 	Block(mixin)
 	
 	{ return mixin; }
@@ -208,6 +232,7 @@ void Block(Block block) :
 	Token t ;
 	Rule nestedRule;
 	Property property ;
+	IncludeDirective i ;
 	IPropertyValue value ;
 }
 {
@@ -234,10 +259,32 @@ void Block(Block block) :
 		(
 			"@include"
 			(<S>)+
-			t = <IDENT>
-			{ block.addInclude(t.image); }
+			(
+				(
+					t = <IDENT>
+					{ i = new IncludeDirective(t.image); }
+				)
+				|
+				(
+					t = <FUNCTION>
+					{ i = new IncludeDirective(t.image.substring(0, t.image.length()-1)); }
+					value = PropertyValue()
+					{ i.addParameter(value); }
+					(<S>)*
+					(
+						","
+						(<S>)*
+						value = PropertyValue()
+						{ i.addParameter(value); }
+						(<S>)*
+					)*
+					")"
+				)
+			)
 			";"
 			(<S>)*
+			
+			{ block.addInclude(i); }
 		)
 		|
 		(

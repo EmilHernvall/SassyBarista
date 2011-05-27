@@ -6,13 +6,13 @@ public class Block
 {
 	private List<Property> properties;
 	private List<Rule> subrules;
-	private List<String> includes;
+	private List<IncludeDirective> includes;
 
 	public Block()
 	{
 		this.properties = new ArrayList<Property>();
 		this.subrules = new ArrayList<Rule>();
-		this.includes = new ArrayList<String>();
+		this.includes = new ArrayList<IncludeDirective>();
 	}
 	
 	public void addProperty(Property property)
@@ -35,7 +35,7 @@ public class Block
 		subrules.addAll(newRules);
 	}
 	
-	public void addInclude(String include)
+	public void addInclude(IncludeDirective include)
 	{
 		includes.add(include);
 	}
@@ -50,7 +50,7 @@ public class Block
 		return subrules;
 	}
 	
-	public List<String> getIncludes()
+	public List<IncludeDirective> getIncludes()
 	{
 		return includes;
 	}

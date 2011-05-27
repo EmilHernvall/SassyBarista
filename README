@@ -8,13 +8,12 @@ Currently supported:
  * Correctly parses most of the CSS specification, with a few exceptions. These will be fixed soon.
  * Nesting
  * Variables
- * Mixins (no arguments yet)
+ * Mixins (parameters are supported, although not yet named arguments)
  
 Should be supported very soon:
 
  * Support for * selector
  * Imports
- * Mixin arguments
  * Systematic testing approach
  * Functions
 

@@ -108,6 +108,36 @@ public class TestRendering
 				
 				assertEquals("Mixin test failed.", mixinRendered, render(mixinScss));
 			}
+			
+			{
+				String parameterMixinScss = 
+					"@mixin box($width, $color, $radius) {\n" +
+						"\tborder: $width $color solid;\n" +
+						"\t-webkit-border-radius: $radius;\n" +
+						"\t-moz-border-radius: $radius;\n" +
+						"\t-ms-border-radius: $radius;\n" +
+						"\tborder-radius: $radius;\n" +
+					"}\n" +
+
+					"div#box {\n" +
+						"\tpadding: 20px;\n" +
+						"\twidth: 600px;\n" +
+						"\t@include box(1px, #000, 30px);\n" +
+					"}\n";
+					
+				String parameterMixinRendered = 
+					"div#box {\n" +
+						"\tpadding: 20px;\n" +
+						"\twidth: 600px;\n" +
+						"\tborder: 1px #000 solid;\n" +
+						"\t-webkit-border-radius: 30px;\n" +
+						"\t-moz-border-radius: 30px;\n" +
+						"\t-ms-border-radius: 30px;\n" +
+						"\tborder-radius: 30px;\n" +
+					"}";
+					
+					assertEquals("Parameter mixin test failed.", parameterMixinRendered, render(parameterMixinScss));
+			}
 		}
 		catch (ParseException e) {
 			fail("Caught ParseException.");

@@ -33,11 +33,13 @@ public class CssSerializer
 	private void renderRule(Rule rule, boolean indent)
 	throws SerializationException
 	{
-		// Fetch all includes and just copy all the properties and subrules
+		// Fetch all includes and just copy all the subrules
 		// of each mixin to this one.
-		for (String include : rule.getIncludes()) {
-			Mixin mixin = mixins.get(include);
-			rule.addProperties(mixin.getProperties());
+		for (IncludeDirective include : rule.getIncludes()) {
+			Mixin mixin = mixins.get(include.getMixinName());
+			if (mixin == null) {
+				throw new SerializationException("Mixin " + include.getMixinName() + " was not found.");
+			}
 			rule.addSubRules(mixin.getSubRules());
 		}
 	
@@ -58,7 +60,13 @@ public class CssSerializer
 		}
 		
 		// Render all properties
-		renderProperties(rule.getProperties(), indent);
+		renderProperties(rule.getProperties(), variables, indent);
+		for (IncludeDirective include : rule.getIncludes()) {
+			Mixin mixin = mixins.get(include.getMixinName());
+			renderProperties(mixin.getProperties(), 
+				mixin.getParameterMap(include), 
+				indent);
+		}
 
 		if (indent) { 
 			writer.print("\t");
@@ -89,7 +97,7 @@ public class CssSerializer
 		}
 	}
 	
-	private void renderProperties(List<Property> properties, boolean indent) 
+	private void renderProperties(List<Property> properties, Map<String, IPropertyValue> scope, boolean indent) 
 	throws SerializationException
 	{
 		for (Property property : properties) {
@@ -100,7 +108,7 @@ public class CssSerializer
 			List<IPropertyValue> values = property.getValues();
 			int i = 0;
 			for (IPropertyValue value : values) {
-				writer.print(value.serialize(variables));
+				writer.print(value.serialize(scope));
 				if (i < values.size() - 1) {
 					writer.print(" ");
 				}
