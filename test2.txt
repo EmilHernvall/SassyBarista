@@ -58,7 +58,7 @@ a:hover {
 }
 
 div#editorWrapper.fooclass:hover[type^="foo"] + .foo {
-	color: #000;
+	color: $blue;
 }
 
 #editorWrapper .contentPanel,

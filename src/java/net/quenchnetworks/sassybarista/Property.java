@@ -2,18 +2,20 @@ package net.quenchnetworks.sassybarista;
 
 import java.util.*;
 
+import net.quenchnetworks.sassybarista.value.*;
+
 public class Property
 {
 	private String key;
-	private List<String> values;
+	private List<IPropertyValue> values;
 
 	public Property(String key)
 	{
 		this.key = key;
-		this.values = new ArrayList<String>();
+		this.values = new ArrayList<IPropertyValue>();
 	}
 	
-	public void addValue(String value)
+	public void addValue(IPropertyValue value)
 	{
 		values.add(value);
 	}
@@ -23,7 +25,7 @@ public class Property
 		return key;
 	}
 	
-	public List<String> getValues()
+	public List<IPropertyValue> getValues()
 	{
 		return values;
 	}

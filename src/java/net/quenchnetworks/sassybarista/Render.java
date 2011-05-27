@@ -3,6 +3,8 @@ package net.quenchnetworks.sassybarista;
 import java.io.*;
 import java.util.*;
 
+import net.quenchnetworks.sassybarista.value.*;
+
 public class Render
 {
 	public static void main(String[] args)
@@ -12,7 +14,7 @@ public class Render
 		SassParser parser = new SassParser(reader);
 		SassParser.ParseResult result = parser.Start();
 		
-		for (Map.Entry<String, String> entry : result.variables.entrySet()) {
+		for (Map.Entry<String, IPropertyValue> entry : result.variables.entrySet()) {
 			System.out.println(entry.getKey() + " " + entry.getValue());
 		}
 		
@@ -37,9 +39,9 @@ public class Render
 		
 		for (Property property : rule.getProperties()) {
 			System.out.print("\t" + property.getKey() + ": ");
-			List<String> values = property.getValues();
+			List<IPropertyValue> values = property.getValues();
 			i = 0;
-			for (String value : values) {
+			for (IPropertyValue value : values) {
 				System.out.print(value);
 				if (i < values.size() - 1) {
 					System.out.print(" ");

@@ -1,5 +1,7 @@
 options {
 	STATIC = false ;
+	UNICODE_INPUT = true ;
+	
 }
 
 PARSER_BEGIN(SassParser)
@@ -7,10 +9,12 @@ package net.quenchnetworks.sassybarista;
 
 import java.util.*;
 
+import net.quenchnetworks.sassybarista.value.*;
+
 class SassParser {
 	public static class ParseResult
 	{
-		public Map<String, String> variables;
+		public Map<String, IPropertyValue> variables;
 		public List<Rule> rules;
 	}
 
@@ -44,7 +48,7 @@ class SassParser {
 		
 		for (Property property : rule.getProperties()) {
 			System.out.print(padding + "\t" + property.getKey() + ": ");
-			for (String value : property.getValues()) {
+			for (IPropertyValue value : property.getValues()) {
 				System.out.print(value + " ");
 			}
 			System.out.println();				
@@ -119,15 +123,15 @@ ParseResult Start() :
 	Token t ;
 	List<Rule> rules ;
 	Rule rule ;
-	Map<String, String> variables ;
+	Map<String, IPropertyValue> variables ;
 	String variableName ;
-	String variableValue ;
+	IPropertyValue variableValue ;
 	ParseResult result ;
 }
 {
 	{ 
 		rules = new ArrayList<Rule>(); 
-		variables = new HashMap<String, String>();
+		variables = new HashMap<String, IPropertyValue>();
 	}
 	(
 		(
@@ -135,7 +139,7 @@ ParseResult Start() :
 			{ variableName = t.image; }
 			":"
 			(<S>)*
-			variableValue = Any()
+			variableValue = PropertyValue()
 			";"
 			(<S>)*
 			{ variables.put(variableName, variableValue); }
@@ -162,7 +166,7 @@ Rule Rule() :
 	Rule nestedRule;
 	SelectorChain selectorChain ;
 	Property property ;
-	String result ;
+	IPropertyValue value ;
 }
 {
 	{ rule = new Rule(); }
@@ -180,8 +184,8 @@ Rule Rule() :
 			(<S>)*
 			{ property = new Property(t.image); }
 			(
-				result = Any()
-				{ property.addValue(result); }
+				value = PropertyValue()
+				{ property.addValue(value); }
 				(",")?
 				(<S>)*
 			)+
@@ -230,7 +234,7 @@ Selector Selector() :
 	{ s = new Selector(); }
 	
 	// Combinator
-	(
+	[
 		(
 			">"
 			{ s.setCombinator(Selector.Combinator.CHILD_OF); }
@@ -242,7 +246,7 @@ Selector Selector() :
 			{ s.setCombinator(Selector.Combinator.PRECEDED_BY); }
 		)
 		(<S>)+
-	)?
+	]
 	
 	(
 		LOOKAHEAD(2)
@@ -263,7 +267,7 @@ Selector Selector() :
 	)+
 	
 	// Pseudo class
-	(
+	[
 		":"
 		t = <IDENT>
 		{ s.setPseudoClass(t.image); }
@@ -273,10 +277,10 @@ Selector Selector() :
 			{ s.setPseudoClassParameter(t.image); }
 			")"
 		)*
-	)?
+	]
 	
 	// Attribute selector
-	(
+	[
 		{ attr = new Selector.AttributeSelector(); }
 		"["
 		t = <IDENT>
@@ -306,38 +310,56 @@ Selector Selector() :
 		)*
 		"]"
 		{ s.setAttributeSelector(attr); }
-	)?
+	]
 	
 	(LOOKAHEAD(1) <S>)*
 	
 	{ return s; }
 }
 
-String Any() :
+IPropertyValue PropertyValue() :
 {
 	Token t ;
-	String res ;
-	String tmp ;
+	IPropertyValue p ;
+	IPropertyValue tmp ;
+	FunctionPropertyValue fp ;
 }
 {
 	(
-		t = <IDENT> { res = t.image; } |
-		t = <NUMBER> { res = t.image; } |
-		t = <PERCENTAGE> { res = t.image; } |
-		t = <DIMENSION> { res = t.image; } |
-		t = <STRING> { res = t.image; } |
-		t = <URI> { res = t.image; } |
-		t = <HASH> { res = t.image; } |
-		t = <FUNCTION> 
-		{ res = t.image; } 
-		(<S>)* 
-		(
-			tmp = Any() 
-			{ res += tmp; }
-		)* 
-		")"
-		{ res += ")"; }
+			t = <IDENT> 
+			{ p = new DefaultPropertyValue(t.image); } 
+		|
+			t = <NUMBER> 
+			{ p = new NumberPropertyValue(t.image); } 
+		|
+			t = <PERCENTAGE> 
+			{ p = new PercentagePropertyValue(t.image); } 
+		|
+			t = <DIMENSION> 
+			{ p = new DimensionPropertyValue(t.image); } 
+		|
+			t = <STRING> 
+			{ p = new StringPropertyValue(t.image); } 
+		|
+			t = <URI> 
+			{ p = new URIPropertyValue(t.image); } 
+		|
+			t = <HASH> 
+			{ p = new ColorPropertyValue(t.image); } 
+		|
+			t = <VARIABLE>
+			{ p = new VariablePropertyValue(t.image); }
+		|
+			t = <FUNCTION> 
+			{ fp = new FunctionPropertyValue(t.image); } 
+			(<S>)* 
+			(
+				tmp = PropertyValue() 
+				{ fp.addValue(tmp); }
+			)* 
+			")"
+			{ p = fp; }
 	)
 	
-	{ return res; }
+	{ return p; }
 }
