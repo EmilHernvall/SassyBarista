@@ -1,4 +1,4 @@
-This is a java implementation of a CSS preprocessor. The goal it that it will eventually be fully
+This is a java implementation of a CSS preprocessor. The goal is that it will eventually be fully
 compatible with the SCSS syntax of SASS (http://sass-lang.com). It's based on a JavaCC grammar and 
 is currently in the very early stages, and although some basic features works I wouldn't recommend 
 it for any serious use.
@@ -19,6 +19,7 @@ Should be supported very soon:
  * Functions
 
 Planned: 
+
  * Selector inheritance
  * Nested properties
  * Parent references

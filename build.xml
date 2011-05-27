@@ -1,7 +1,7 @@
 <project name="SassyBarista" default="compile" basedir=".">
 	
 	<property name="javacc" value="C:\devtools\javacc-5.0" />
-	<property name="src" value="src/java" />
+	<property name="src" value="src" />
 	<property name="testsrc" value="src/test" />
 	<property name="build" value="bin" />
 	<property name="lib" value="lib" />
@@ -26,10 +26,10 @@
 	
 	<target name="codegeneration" depends="init">
 		<copy todir="${build}/src">
-			<fileset dir="${src}" />
+			<fileset dir="${src}/java" />
 		</copy>
 		<javacc
-			target="${src}/net/quenchnetworks/sassybarista/SassParser.jj"
+			target="${src}/java/net/quenchnetworks/sassybarista/SassParser.jj"
 			outputdirectory="${build}/src/net/quenchnetworks/sassybarista"
 			javacchome="${javacc}"
 			static="false"
@@ -77,7 +77,26 @@
 		<delete dir="${reports}"/>
 	</target>
 	
-	<target name="run-tests" depends="compile">
+	<target name="compile-tests" depends="compile">
+		<javac 
+			srcdir="${src}/test" 
+			destdir="${build}"
+			debug="on"
+			debuglevel="lines,vars,source">
+			
+			<compilerarg value="-Xlint:unchecked"/>
+			
+			<classpath>
+				<pathelement path="${build}"/>
+				<fileset dir="${lib}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+			
+		</javac>
+	</target>
+	
+	<target name="run-tests" depends="compile-tests">
 	
 		<junit printsummary="yes" haltonfailure="no" showoutput="yes" >
 			<classpath>
@@ -90,7 +109,7 @@
 
 			<batchtest fork="yes" todir="${reports}/raw/">
 				<formatter type="xml"/>
-				<fileset dir="${src}">
+				<fileset dir="${src}/test">
 					<include name="**/*Test*.java"/>
 				</fileset>
 			</batchtest>

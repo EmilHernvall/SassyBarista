@@ -60,7 +60,11 @@ public class Selector
 		@Override
 		public String toString()
 		{
-			return String.format("%s%s\"%s\"", attribute, type, value);
+			if (type != AttributeSelectorType.WITH_ATTRIBUTE) {
+				return String.format("%s%s\"%s\"", attribute, type, value);
+			} else {
+				return attribute;
+			}
 		}
 	}
 
