@@ -1,7 +1,6 @@
 options {
 	STATIC = false ;
 	UNICODE_INPUT = true ;
-	
 }
 
 PARSER_BEGIN(SassParser)

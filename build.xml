@@ -57,21 +57,6 @@
 			
 	</target>
 	
-	<target name="run" depends="compile">
-		
-		<java classname="net.quenchnetworks.sassybarista.Adder" fork="yes">
-
-			<classpath>
-				<pathelement path="${build}"/>
-				<fileset dir="${lib}">
-					<include name="**/*.jar"/>
-				</fileset>
-			</classpath>
-			
-		</java>
-			
-	</target>
-	
 	<target name="clean" depends="init">
 		<delete dir="${build}"/>
 		<delete dir="${reports}"/>
@@ -123,5 +108,13 @@
 			</fileset>
 			<report format="frames" todir="${reports}/html/"/>
 		</junitreport>
+	</target>
+	
+	<target name="jar" depends="compile">
+
+		<jar destfile="sassybarista.jar">
+			<fileset dir="${src}"/>
+			<fileset dir="${build}"/>
+		</jar>
 	</target>
 </project>

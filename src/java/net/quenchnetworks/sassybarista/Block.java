@@ -54,4 +54,33 @@ public class Block
 	{
 		return includes;
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		int code = 17;
+		for (Property property : properties) {
+			code = 31 * code + property.hashCode();
+		}
+		for (Rule rule : subrules) {
+			code = 31 * code + rule.hashCode();
+		}
+		for (IncludeDirective inc : includes) {
+			code = 31 * code + inc.hashCode();
+		}
+		
+		return code;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (!(obj instanceof Block)) {
+			return false;
+		}
+		
+		Block block = (Block)obj;
+		
+		return true;
+	}
 }
