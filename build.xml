@@ -1,6 +1,6 @@
 <project name="SassyBarista" default="compile" basedir=".">
 	
-	<property name="javacc" value="C:\devtools\javacc-5.0" />
+	<property name="javacc" value="D:\devtools\javacc-5.0" />
 	<property name="src" value="src" />
 	<property name="testsrc" value="src/test" />
 	<property name="build" value="bin" />
@@ -29,8 +29,8 @@
 			<fileset dir="${src}/java" />
 		</copy>
 		<javacc
-			target="${src}/java/net/quenchnetworks/sassybarista/SassParser.jj"
-			outputdirectory="${build}/src/net/quenchnetworks/sassybarista"
+			target="${src}/java/net/quenchnetworks/sassybarista/sass/SassParser.jj"
+			outputdirectory="${build}/src/net/quenchnetworks/sassybarista/sass"
 			javacchome="${javacc}"
 			static="false"
 		/>

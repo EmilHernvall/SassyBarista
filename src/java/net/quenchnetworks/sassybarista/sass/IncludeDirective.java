@@ -1,8 +1,8 @@
-package net.quenchnetworks.sassybarista;
+package net.quenchnetworks.sassybarista.sass;
 
 import java.util.*;
 
-import net.quenchnetworks.sassybarista.value.*;
+import net.quenchnetworks.sassybarista.sass.value.*;
 
 public class IncludeDirective
 {

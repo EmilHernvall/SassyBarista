@@ -1,4 +1,4 @@
-package net.quenchnetworks.sassybarista.value;
+package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
 
@@ -17,6 +17,11 @@ public class FunctionPropertyValue implements IPropertyValue
 	{
 		values.add(value);
 	}
+    
+    public List<IPropertyValue> getValues()
+    {
+        return values;
+    }
 	
 	@Override
 	public String serialize(Map<String, IPropertyValue> variables)

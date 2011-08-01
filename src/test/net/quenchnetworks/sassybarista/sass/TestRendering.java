@@ -1,4 +1,4 @@
-package net.quenchnetworks.sassybarista;
+package net.quenchnetworks.sassybarista.sass;
 
 import java.io.*;
 
@@ -10,10 +10,13 @@ public class TestRendering
 	public String render(String in)
 	throws ParseException, SerializationException, UnsupportedEncodingException
 	{
+		SassParser parser = new SassParser(new StringReader(in));
+		SassSheet sheet = parser.parse();
+    
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		CssSerializer serializer = new CssSerializer(new PrintStream(os));
+		SassSheetSerializer serializer = new SassSheetSerializer(new PrintStream(os));
 		
-		serializer.render(new StringReader(in));
+		serializer.render(sheet);
 		
 		String result = os.toString("UTF-8");
 		result = result.trim();
@@ -26,51 +29,58 @@ public class TestRendering
 	public void nesting()
 	{
 		try {
-			
-			{
-				String basicNestingScss = 
-					"div {\n" +
-						"\tfont-family: Verdana;\n" +
-						"\tspan {\n" +
-							"\t\tfont-weight: bold;\n" +
-						"\t}\n" +
-					"}";
-					
-				String basicNestingRendered =
-					"div {\n" +
-						"\tfont-family: Verdana;\n" +
-					"}\n\n" +
-					"div span {\n" +
-						"\tfont-weight: bold;\n" +
-					"}";
-					
-				assertEquals("Basic nesting test failed.", basicNestingRendered, render(basicNestingScss));
-			}
-			
-			{
-				String permutationNestingScss = 
-					"div.a,\n" +
-					"div.b {\n" +
-						"\tfont-family: Verdana;\n" +
-						"\tspan {\n" +
-							"\t\tfont-weight: bold;\n" +
-						"\t}\n" +
-					"}";
-					
-				String permutationNestingRendered =
-					"div.a,\n" +
-					"div.b {\n" +
-						"\tfont-family: Verdana;\n" +
-					"}\n\n" +
-					"div.a span,\n" +
-					"div.b span {\n" +
-						"\tfont-weight: bold;\n" +
-					"}";
-					
-				assertEquals("Permutation nesting test failed.", permutationNestingRendered, render(permutationNestingScss));
-			}
+            String basicNestingScss = 
+                "div {\n" +
+                    "\tfont-family: Verdana;\n" +
+                    "\tspan {\n" +
+                        "\t\tfont-weight: bold;\n" +
+                    "\t}\n" +
+                "}";
+                
+            String basicNestingRendered =
+                "div {\n" +
+                    "\tfont-family: Verdana;\n" +
+                "}\n\n" +
+                "div span {\n" +
+                    "\tfont-weight: bold;\n" +
+                "}";
+                
+            assertEquals("Basic nesting test failed.", basicNestingRendered, render(basicNestingScss));
 		}
 		catch (ParseException e) {
+			fail("Caught ParseException.");
+		}
+		catch (SerializationException e) {
+			fail("Caught SerializationException.");
+		}
+		catch (UnsupportedEncodingException e) {
+			fail("Caught UnsupportedEncodingException.");
+		}
+			
+		try {
+            String permutationNestingScss = 
+                "div.a,\n" +
+                "div.b {\n" +
+                    "\tfont-family: Verdana;\n" +
+                    "\tspan {\n" +
+                        "\t\tfont-weight: bold;\n" +
+                    "\t}\n" +
+                "}";
+                
+            String permutationNestingRendered =
+                "div.a,\n" +
+                "div.b {\n" +
+                    "\tfont-family: Verdana;\n" +
+                "}\n\n" +
+                "div.a span,\n" +
+                "div.b span {\n" +
+                    "\tfont-weight: bold;\n" +
+                "}";
+                
+            assertEquals("Permutation nesting test failed.", permutationNestingRendered, render(permutationNestingScss));
+		}
+		catch (ParseException e) {
+            e.printStackTrace();
 			fail("Caught ParseException.");
 		}
 		catch (SerializationException e) {

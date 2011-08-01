@@ -1,31 +1,28 @@
-package net.quenchnetworks.sassybarista;
+package net.quenchnetworks.sassybarista.sass;
 
 import java.io.*;
 import java.util.*;
 
-import net.quenchnetworks.sassybarista.value.*;
+import net.quenchnetworks.sassybarista.sass.value.*;
 
-public class CssSerializer
+public class SassSheetSerializer
 {
 	private PrintStream writer;
 	private Map<String, IPropertyValue> variables = null;
 	private Map<String, Mixin> mixins = null;
 
-	public CssSerializer(PrintStream writer)
+	public SassSheetSerializer(PrintStream writer)
 	{
 		this.writer = writer;
 	}
 	
-	public void render(Reader reader)
+	public void render(SassSheet sheet)
 	throws ParseException, SerializationException
 	{
-		SassParser parser = new SassParser(reader);
-		SassParser.ParseResult result = parser.Start();
+		this.variables = sheet.getVariables();
+		this.mixins = sheet.getMixins();
 		
-		this.variables = result.variables;
-		this.mixins = result.mixins;
-		
-		for (Rule rule : result.rules) {
+		for (Rule rule : sheet.getRules()) {
 			renderRule(rule, false);
 		}
 	}
@@ -116,13 +113,5 @@ public class CssSerializer
 			}
 			writer.println(";");				
 		}
-	}
-	
-	public static void main(String[] args)
-	throws Exception
-	{
-		CssSerializer serializer = new CssSerializer(System.out);
-		
-		serializer.render(new FileReader(args[0]));
 	}
 }

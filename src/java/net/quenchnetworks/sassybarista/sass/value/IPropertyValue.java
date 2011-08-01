@@ -1,8 +1,8 @@
-package net.quenchnetworks.sassybarista.value;
+package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
 
-import net.quenchnetworks.sassybarista.*;
+import net.quenchnetworks.sassybarista.sass.*;
 
 public interface IPropertyValue
 {

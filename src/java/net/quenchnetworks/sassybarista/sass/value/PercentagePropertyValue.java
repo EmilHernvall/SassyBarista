@@ -1,12 +1,12 @@
-package net.quenchnetworks.sassybarista.value;
+package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
 
-public class StringPropertyValue implements IPropertyValue
+public class PercentagePropertyValue implements IPropertyValue
 {
 	private String value;
 
-	public StringPropertyValue(String value)
+	public PercentagePropertyValue(String value)
 	{
 		this.value = value;
 	}

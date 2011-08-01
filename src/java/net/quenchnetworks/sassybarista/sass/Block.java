@@ -1,4 +1,4 @@
-package net.quenchnetworks.sassybarista;
+package net.quenchnetworks.sassybarista.sass;
 
 import java.util.*;
 
@@ -7,12 +7,14 @@ public class Block
 	private List<Property> properties;
 	private List<Rule> subrules;
 	private List<IncludeDirective> includes;
+    private List<String> imports;
 
 	public Block()
 	{
 		this.properties = new ArrayList<Property>();
 		this.subrules = new ArrayList<Rule>();
 		this.includes = new ArrayList<IncludeDirective>();
+        this.imports = new ArrayList<String>();
 	}
 	
 	public void addProperty(Property property)
@@ -55,6 +57,16 @@ public class Block
 		return includes;
 	}
 	
+    public void addImport(String v)
+    {
+        imports.add(v);
+    }
+    
+    public List<String> getImports()
+    {
+        return imports;
+    }
+    
 	@Override
 	public int hashCode()
 	{

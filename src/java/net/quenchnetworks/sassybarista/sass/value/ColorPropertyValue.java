@@ -1,12 +1,12 @@
-package net.quenchnetworks.sassybarista.value;
+package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
 
-public class DefaultPropertyValue implements IPropertyValue
+public class ColorPropertyValue implements IPropertyValue
 {
 	private String value;
 
-	public DefaultPropertyValue(String value)
+	public ColorPropertyValue(String value)
 	{
 		this.value = value;
 	}

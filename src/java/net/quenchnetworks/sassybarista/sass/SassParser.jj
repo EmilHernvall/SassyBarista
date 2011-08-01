@@ -4,26 +4,26 @@ options {
 }
 
 PARSER_BEGIN(SassParser)
-package net.quenchnetworks.sassybarista;
+package net.quenchnetworks.sassybarista.sass;
 
 import java.util.*;
 
-import net.quenchnetworks.sassybarista.value.*;
+import net.quenchnetworks.sassybarista.sass.value.*;
 
-class SassParser {
-	public static class ParseResult
-	{
-		public Map<String, IPropertyValue> variables;
-		public Map<String, Mixin> mixins;
-		public List<Rule> rules;
-	}
-
+public class SassParser {
 	public static void main( String[] args )
 	throws ParseException, TokenMgrError {
 		SassParser parser = new SassParser( System.in ) ;
-		ParseResult result = parser.Start();
+		SassSheet result = parser.parse();
+        
+        for (Map.Entry<String, IPropertyValue> entry : result.getVariables().entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+            if (entry.getValue() instanceof FunctionPropertyValue) {
+                System.out.println(((FunctionPropertyValue)entry.getValue()).getValues().size());
+            }
+        }
 		
-		for (Rule rule : result.rules) {
+		for (Rule rule : result.getRules()) {
 			printRule(rule, 0);
 		}
 	}
@@ -53,6 +53,10 @@ class SassParser {
 			}
 			System.out.println();				
 		}
+        
+        for (String v : rule.getImports()) {
+            System.out.println(padding + "\t@import\t" + v);
+        }
 		
 		System.out.println();
 		for (Rule subrule : rule.getSubRules()) {
@@ -90,7 +94,7 @@ TOKEN : { < #nonascii : ["\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
 TOKEN : { < #unicode : "\\" (["a"-"f","A"-"F","0"-"9"]){1,6} (<wc>)? > }
 TOKEN : { < #escape : <unicode> | "\\" ["\u0020"-"\u007E","\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
 TOKEN : { < #nmchar : ["a"-"z","A"-"Z","0"-"9"] | "-" | "_" | <nonascii> | <escape> > }
-TOKEN : { < #num : (["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+ > }
+TOKEN : { < #num : ("-")? (["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+ > }
 TOKEN : { < #string : "\"" (<stringchar> | "'")* "\"" | "'" (<stringchar> | "\"")* "'" > }
 TOKEN : { < #stringchar : <urlchar> | "\u0020" | "\\" <nl> > }
 TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0027"-"\u007E"] | <nonascii> | <escape> > }
@@ -118,7 +122,7 @@ TOKEN : { < VARIABLE : "$" <name> > }
 
 //MORE : { < DELIMETER : <delim> > }
 
-ParseResult Start() :
+SassSheet parse() :
 {
 	Token t ;
 	List<Rule> rules ;
@@ -128,7 +132,6 @@ ParseResult Start() :
 	Map<String, Mixin> mixins ;
 	String variableName ;
 	IPropertyValue variableValue ;
-	ParseResult result ;
 }
 {
 	{ 
@@ -161,12 +164,7 @@ ParseResult Start() :
 		)
 	)+
 	{ 
-		result = new ParseResult();
-		result.variables = variables;
-		result.rules = rules;
-		result.mixins = mixins;
-	
-		return result; 
+		return new SassSheet(variables, mixins, rules); 
 	}
 }
 
@@ -177,6 +175,7 @@ Rule Rule() :
 	SelectorChain selectorChain ;
 }
 {
+    (<S>)*
 	{ rule = new Rule(); }
 	(
 		selectorChain = SelectorChain()
@@ -233,23 +232,62 @@ void Block(Block block) :
 	Property property ;
 	IncludeDirective i ;
 	IPropertyValue value ;
+    StringBuilder buffer ;
 }
 {
 	"{"
 	(<S>)*
 	(
+        LOOKAHEAD(Rule())
+		(
+			nestedRule = Rule()
+			{ block.addSubRule(nestedRule); }
+		)
+        |
 		LOOKAHEAD( <IDENT> ":" )
 		(
 			t = <IDENT>
+			{ property = new Property(t.image); }
 			":"
 			(<S>)*
-			{ property = new Property(t.image); }
-			(
-				value = PropertyValue()
-				{ property.addValue(value); }
-				(",")?
-				(<S>)*
-			)+
+            (
+                LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* "," )
+                (
+                    { buffer = new StringBuilder(); }
+                    (
+                        LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* "," )
+                        (
+                            t = <IDENT>
+                            |
+                            t = <STRING>
+                        )
+                        (<S>)*
+                        ","
+                        (<S>)*
+                        { 
+                            buffer.append(t.image);
+                            buffer.append(", ");
+                        }
+                    )+
+                    (
+                        t = <IDENT>
+                        |
+                        t = <STRING>
+                    )
+                    (<S>)*
+                    
+                    { 
+                        buffer.append(t.image);
+                        property.addValue(new DefaultPropertyValue(buffer.toString())); 
+                    }
+                )
+                |
+                (
+                    value = PropertyValue()
+                    { property.addValue(value); }
+                    (<S>)*
+                )
+            )+
 			";"
 			(<S>)*
 			{ block.addProperty(property); }
@@ -285,11 +323,17 @@ void Block(Block block) :
 			
 			{ block.addInclude(i); }
 		)
-		|
-		(
-			nestedRule = Rule()
-			{ block.addSubRule(nestedRule); }
-		)
+        |
+        (
+            "@import"
+            (<S>)+
+            t = <STRING>
+            (<S>)*
+            ";"
+            (<S>)*
+            
+            { block.addImport(t.image.substring(1, t.image.length()-1)); }
+        )
 	)*
 	"}"
 	(<S>)*

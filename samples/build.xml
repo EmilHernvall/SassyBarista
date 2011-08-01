@@ -4,7 +4,7 @@ as part of the build process.
 -->
 <project name="buildtest" default="render" basedir=".">
 	
-	<taskdef name="sass" classname="net.quenchnetworks.sassybarista.SassTask" classpath="lib/sassybarista.jar" />
+	<taskdef name="sass" classname="net.quenchnetworks.sassybarista.ant.SassTask" classpath="../sassybarista.jar" />
 	
 	<property name="src" value="src" />
 	<property name="build" value="out" />
@@ -14,13 +14,21 @@ as part of the build process.
 		<tstamp />
 		<mkdir dir="${build}" />
 	</target>
-	
+
 	<target name="render" depends="init">
-		<sass outputdir="${build}">
+		<sass outputfile="${build}/final.css" concat="yes">
 			<fileset dir="${src}">
 				<include name="**/*.scss"/>
 			</fileset>
 		</sass>
 	</target>
+	
+	<!--<target name="render" depends="init">
+		<sass outputdir="${build}">
+			<fileset dir="${src}">
+				<include name="**/*.scss"/>
+			</fileset>
+		</sass>
+	</target>-->
 	
 </project>
