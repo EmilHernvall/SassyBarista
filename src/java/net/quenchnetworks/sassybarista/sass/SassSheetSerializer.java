@@ -7,6 +7,21 @@ import net.quenchnetworks.sassybarista.sass.value.*;
 
 public class SassSheetSerializer
 {
+    private static class Extension
+    {
+        Rule rule;
+        List<Selector> selectors;
+        List<Rule> matches;
+        int matchedBy;
+        
+        public Extension(Rule rule, List<Selector> selectors)
+        {
+            this.rule = rule;
+            this.selectors = selectors;
+            this.matches = new ArrayList<Rule>();
+        }
+    }
+
 	private PrintStream writer;
 	private Map<String, IPropertyValue> variables = null;
 	private Map<String, Mixin> mixins = null;
@@ -21,11 +36,145 @@ public class SassSheetSerializer
 	{
 		this.variables = sheet.getVariables();
 		this.mixins = sheet.getMixins();
-		
+
+        processExtends(sheet);
+        
+        // serialize
 		for (Rule rule : sheet.getRules()) {
 			renderRule(rule, false);
 		}
 	}
+    
+    private void processExtends(SassSheet sheet)
+    {
+        // recurse and find all extensions
+        List<Extension> extensions = new ArrayList<Extension>();
+		for (Rule rule : sheet.getRules()) {
+			extensions.addAll(findExtends(rule));
+		}
+
+        // build lookup table
+        Map<Rule, Extension> lookup = new HashMap<Rule, Extension>();
+        for (Extension extension : extensions) {
+            lookup.put(extension.rule, extension);
+        }
+        
+        // find and add matching rules to extension objects
+        for (Extension extension : extensions) {
+        
+            // only analyze top level rules
+            for (Rule rule : sheet.getRules()) {
+                boolean match = false;
+                
+                // search for a matching selector
+                for (SelectorChain chain : rule.getSelectorChains()) {
+                    List<Selector> selectors = chain.getSelectors();
+                    
+                    // only simple rules can be extended
+                    if (selectors.size() != 1) {
+                        continue;
+                    }
+                    
+                    Selector selector = selectors.get(0);
+                    for (Selector cmp : extension.selectors) {
+                        if (selector.equals(cmp)) {
+                            match = true;
+                        }
+                    }
+                    
+                    if (match) {
+                        break;
+                    }
+                }
+                
+                if (match) {
+                    // add match to extension object so that we
+                    // can come back later and append our selectors
+                    extension.matches.add(rule);
+                    
+                    // if this rule extends other rules we need
+                    // to make all extensions referring to that rule
+                    // first. we use a counter to make sure that this
+                    // is done.
+                    Extension ref = lookup.get(rule);
+                    if (ref != null) {
+                        ref.matchedBy++;
+                    }
+                }
+            }
+        }
+        
+        // print state
+        /*
+        for (Extension extension : extensions) {
+            Rule rule = extension.rule;
+            for (SelectorChain chain : rule.getSelectorChains()) {
+                System.out.println(chain);
+            }
+            System.out.println("\textends ");
+            for (Selector selector : extension.selectors) {
+                System.out.println("\t" + selector);
+            }
+            System.out.println("\tand matches");
+            for (Rule match : extension.matches) {
+                for (SelectorChain chain : match.getSelectorChains()) {
+                    System.out.println("\t" + chain);
+                }
+            }
+            System.out.println("\tmatched by: " + extension.matchedBy);
+            System.out.println();
+            System.out.println();
+        }
+        */
+        
+        // iterate until all selectors has been added
+        while (extensions.size() > 0) {
+        
+            // use an iterator so we can remove objects
+            // while looping
+            Iterator<Extension> it = extensions.iterator();
+            while (it.hasNext()) {
+                Extension ext = it.next();
+                
+                // only process extensions that have been fully
+                // extended themselves
+                if (ext.matchedBy > 0) {
+                    continue;
+                }
+                
+                Rule rule = ext.rule;
+                
+                // add selectors to all matching rules
+                for (Rule match : ext.matches) {
+                    Extension matchExt = lookup.get(match);
+                    if (matchExt != null) {
+                        matchExt.matchedBy--;
+                    }
+                
+                    for (SelectorChain chain : rule.getSelectorChains()) {
+                        match.addSelectorChain(chain);
+                    }
+                }
+                
+                it.remove();
+            }
+        }
+    }
+    
+    private List<Extension> findExtends(Rule rule)
+    {
+        List<Extension> matches = new ArrayList<Extension>();
+        
+        for (Rule subRule : rule.getSubRules()) {
+            matches.addAll(findExtends(subRule));
+        }
+        
+        if (rule.getExtends().size() > 0) {
+            matches.add(new Extension(rule, rule.getExtends()));
+        }
+        
+        return matches;
+    }
 	
 	private void renderRule(Rule rule, boolean indent)
 	throws SerializationException

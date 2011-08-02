@@ -25,6 +25,27 @@ public class SelectorChain
 	{
 		return selectors;
 	}
+    
+    @Override
+    public int hashCode()
+    {
+        int code = 17;
+        for (Selector selector : selectors) {
+            code = 31 * code + selector.hashCode();
+        }
+        
+        return code;
+    }
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof SelectorChain)) {
+            return false;
+        }
+        
+        return hashCode() == obj.hashCode();
+    }
 	
 	@Override
 	public String toString()

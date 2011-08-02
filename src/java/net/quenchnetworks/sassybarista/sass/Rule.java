@@ -5,11 +5,13 @@ import java.util.*;
 public class Rule extends Block
 {
 	private List<SelectorChain> selectorChains;
+    private List<Selector> extensions;
 
 	public Rule()
 	{
 		super();
 		this.selectorChains = new ArrayList<SelectorChain>();
+        this.extensions = new ArrayList<Selector>();
 	}
 	
 	public void setSelectorChains(List<SelectorChain> selectorChains)
@@ -26,4 +28,14 @@ public class Rule extends Block
 	{
 		return selectorChains;
 	}
+    
+    public void addExtend(Selector v)
+    {
+        extensions.add(v);
+    }
+    
+    public List<Selector> getExtends()
+    {
+        return extensions;
+    }
 }

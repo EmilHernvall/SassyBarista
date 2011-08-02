@@ -57,6 +57,10 @@ public class SassParser {
         for (String v : rule.getImports()) {
             System.out.println(padding + "\t@import\t" + v);
         }
+        
+        for (Selector v : rule.getExtends()) {
+            System.out.println(padding + "\t@extend\t" + v);
+        }
 		
 		System.out.println();
 		for (Rule subrule : rule.getSubRules()) {
@@ -147,7 +151,7 @@ SassSheet parse() :
 			(<S>)*
 			variableValue = PropertyValue()
 			";"
-			(<S>)*
+			(LOOKAHEAD(2) <S>)*
 			{ variables.put(variableName, variableValue); }
 		)
 		|
@@ -181,7 +185,7 @@ Rule Rule() :
 		selectorChain = SelectorChain()
 		{ rule.addSelectorChain(selectorChain); }
 	)+
-	Block(rule)
+	RuleBlock(rule)
 	
 	{ return rule; }
 }
@@ -220,23 +224,23 @@ Mixin Mixin() :
 		)
 	)
 
-	Block(mixin)
+	MixinBlock(mixin)
 	
 	{ return mixin; }
 }
 
-void Block(Block block) :
+void RuleBlock(Rule block) :
 {
 	Token t ;
 	Rule nestedRule;
 	Property property ;
 	IncludeDirective i ;
 	IPropertyValue value ;
-    StringBuilder buffer ;
+    Selector sel ;
 }
 {
 	"{"
-	(<S>)*
+	(LOOKAHEAD(2) <S>)*
 	(
         LOOKAHEAD(Rule())
 		(
@@ -246,51 +250,8 @@ void Block(Block block) :
         |
 		LOOKAHEAD( <IDENT> ":" )
 		(
-			t = <IDENT>
-			{ property = new Property(t.image); }
-			":"
-			(<S>)*
-            (
-                LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* "," )
-                (
-                    { buffer = new StringBuilder(); }
-                    (
-                        LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* "," )
-                        (
-                            t = <IDENT>
-                            |
-                            t = <STRING>
-                        )
-                        (<S>)*
-                        ","
-                        (<S>)*
-                        { 
-                            buffer.append(t.image);
-                            buffer.append(", ");
-                        }
-                    )+
-                    (
-                        t = <IDENT>
-                        |
-                        t = <STRING>
-                    )
-                    (<S>)*
-                    
-                    { 
-                        buffer.append(t.image);
-                        property.addValue(new DefaultPropertyValue(buffer.toString())); 
-                    }
-                )
-                |
-                (
-                    value = PropertyValue()
-                    { property.addValue(value); }
-                    (<S>)*
-                )
-            )+
-			";"
-			(<S>)*
-			{ block.addProperty(property); }
+            property = Property(block)
+            { block.addProperty(property); }
 		)
 		|
 		(
@@ -319,7 +280,7 @@ void Block(Block block) :
 				)
 			)
 			";"
-			(<S>)*
+			(LOOKAHEAD(2) <S>)*
 			
 			{ block.addInclude(i); }
 		)
@@ -330,13 +291,50 @@ void Block(Block block) :
             t = <STRING>
             (<S>)*
             ";"
-            (<S>)*
+            (LOOKAHEAD(2) <S>)*
             
             { block.addImport(t.image.substring(1, t.image.length()-1)); }
         )
+        |
+        (
+            "@extend"
+            (<S>)+
+            sel = Selector()
+            (<S>)*
+            ";"
+            (LOOKAHEAD(2) <S>)*
+            
+            { block.addExtend(sel); }
+        )
 	)*
 	"}"
-	(<S>)*
+	(LOOKAHEAD(2) <S>)*
+}
+
+void MixinBlock(Mixin block) :
+{
+	Token t ;
+	Rule nestedRule;
+	Property property ;
+}
+{
+	"{"
+	(LOOKAHEAD(2) <S>)*
+	(
+        LOOKAHEAD(Rule())
+		(
+			nestedRule = Rule()
+			{ block.addSubRule(nestedRule); }
+		)
+        |
+		LOOKAHEAD( <IDENT> ":" )
+		(
+            property = Property(block)
+            { block.addProperty(property); }
+		)
+	)*
+	"}"
+	(LOOKAHEAD(2) <S>)*
 }
 
 SelectorChain SelectorChain() :
@@ -449,6 +447,62 @@ Selector Selector() :
 	(LOOKAHEAD(1) <S>)*
 	
 	{ return s; }
+}
+
+Property Property(Block block) :
+{
+    Token t ;
+    Property property ;
+    StringBuilder buffer ;
+    IPropertyValue value ;
+}
+{
+    t = <IDENT>
+    { property = new Property(t.image); }
+    ":"
+    (<S>)*
+    (
+        LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* "," )
+        (
+            { buffer = new StringBuilder(); }
+            (
+                LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* "," )
+                (
+                    t = <IDENT>
+                    |
+                    t = <STRING>
+                )
+                (<S>)*
+                ","
+                (<S>)*
+                { 
+                    buffer.append(t.image);
+                    buffer.append(", ");
+                }
+            )+
+            (
+                t = <IDENT>
+                |
+                t = <STRING>
+            )
+            (<S>)*
+            
+            { 
+                buffer.append(t.image);
+                property.addValue(new DefaultPropertyValue(buffer.toString())); 
+            }
+        )
+        |
+        (
+            value = PropertyValue()
+            { property.addValue(value); }
+            (<S>)*
+        )
+    )+
+    ";"
+    (LOOKAHEAD(2) <S>)*
+    
+    { return property; }
 }
 
 IPropertyValue PropertyValue() :

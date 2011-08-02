@@ -57,6 +57,27 @@ public class Selector
 		public void setValue(String v) { this.value = v; }
 		public String getValue() { return value; }
 		
+        @Override
+        public int hashCode()
+        {
+            int code = 17;
+            code = 31 * code + (attribute != null ? attribute.hashCode() : 0);
+            code = 31 * code + (value != null ? value.hashCode() : 0);
+            code = 31 * code + (type != null ? type.hashCode() : 0);
+            
+            return code;
+        }
+        
+        @Override
+        public boolean equals(Object b)
+        {
+            if (!(b instanceof AttributeSelector)) {
+                return false;
+            }
+        
+            return hashCode() == b.hashCode();
+        }
+        
 		@Override
 		public String toString()
 		{
@@ -100,7 +121,32 @@ public class Selector
 	
 	public void setAttributeSelector(AttributeSelector v) { this.attributeSelector = v; }
 	public AttributeSelector getAttributeSelector() { return attributeSelector; }
+    
+    @Override
+    public int hashCode()
+    {
+        int code = 17;
+        code = 31 * code + combinator.hashCode();
+        code = 31 * code + (element != null ? element.hashCode() : 0);
+        code = 31 * code + (id != null ? id.hashCode() : 0);
+        code = 31 * code + (className != null ? className.hashCode() : 0);
+        code = 31 * code + (pseudoClass != null ? pseudoClass.hashCode() : 0);
+        code = 31 * code + (pseudoClassParam != null ? pseudoClassParam.hashCode() : 0);
+        code = 31 * code + (attributeSelector != null ? attributeSelector.hashCode() : 0);
+        
+        return code;
+    }
 	
+    @Override
+    public boolean equals(Object b)
+    {
+        if (!(b instanceof Selector)) {
+            return false;
+        }
+        
+        return hashCode() == b.hashCode();
+    }
+    
 	@Override
 	public String toString()
 	{
