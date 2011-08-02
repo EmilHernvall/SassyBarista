@@ -12,7 +12,7 @@ public class SassSheetSerializer
         Rule rule;
         List<Selector> selectors;
         List<Rule> matches;
-        int matchedBy;
+        int matchedBy = 0;
         
         public Extension(Rule rule, List<Selector> selectors)
         {
@@ -37,11 +37,40 @@ public class SassSheetSerializer
         this.variables = sheet.getVariables();
         this.mixins = sheet.getMixins();
 
+        for (Rule rule : sheet.getRules()) {
+            nestSelectors(rule);
+        }
+        
         processExtends(sheet);
         
         // serialize
         for (Rule rule : sheet.getRules()) {
             renderRule(rule, false);
+        }
+    }
+    
+    private void nestSelectors(Rule rule)
+    {
+        List<SelectorChain> selectorChains = rule.getSelectorChains();
+        for (Rule subrule : rule.getSubRules()) {
+            // Permute all combinations of this level and the next levels selector
+            List<SelectorChain> newChains = new ArrayList<SelectorChain>();
+            for (SelectorChain selectorChain : selectorChains) {
+                for (SelectorChain subSelectorChain : subrule.getSelectorChains()) {
+                    SelectorChain newChain = new SelectorChain();
+                    newChain.addSelectors(selectorChain.getSelectors());
+                    newChain.addSelectors(subSelectorChain.getSelectors());
+                    newChains.add(newChain);
+                }
+            }
+            
+            // Replace all the current selectors of the sub rule with the new
+            // permutations. This will be done again for each level, which will
+            // generate all the needed permutations regardless of the number of
+            // lvels
+            subrule.setSelectorChains(newChains);
+            
+            nestSelectors(subrule);
         }
     }
     
@@ -77,8 +106,9 @@ public class SassSheetSerializer
                     
                     Selector selector = selectors.get(0);
                     for (Selector cmp : extension.selectors) {
-                        if (selector.equals(cmp)) {
+                        if (cmp.equals(selector)) {
                             match = true;
+                            break;
                         }
                     }
                     
@@ -105,8 +135,7 @@ public class SassSheetSerializer
         }
         
         // print state
-        /*
-        for (Extension extension : extensions) {
+        /*for (Extension extension : extensions) {
             Rule rule = extension.rule;
             for (SelectorChain chain : rule.getSelectorChains()) {
                 System.out.println(chain);
@@ -124,8 +153,7 @@ public class SassSheetSerializer
             System.out.println("\tmatched by: " + extension.matchedBy);
             System.out.println();
             System.out.println();
-        }
-        */
+        }*/
         
         // iterate until all selectors has been added
         while (extensions.size() > 0) {
@@ -150,7 +178,7 @@ public class SassSheetSerializer
                     if (matchExt != null) {
                         matchExt.matchedBy--;
                     }
-                
+                    
                     for (SelectorChain chain : rule.getSelectorChains()) {
                         match.addSelectorChain(chain);
                     }
@@ -222,23 +250,6 @@ public class SassSheetSerializer
         
         // Render subrules
         for (Rule subrule : rule.getSubRules()) {
-            // Permute all combinations of this level and the next levels selector
-            List<SelectorChain> newChains = new ArrayList<SelectorChain>();
-            for (SelectorChain selectorChain : selectorChains) {
-                for (SelectorChain subSelectorChain : subrule.getSelectorChains()) {
-                    SelectorChain newChain = new SelectorChain();
-                    newChain.addSelectors(selectorChain.getSelectors());
-                    newChain.addSelectors(subSelectorChain.getSelectors());
-                    newChains.add(newChain);
-                }
-            }
-            
-            // Replace all the current selectors of the sub rule with the new
-            // permutations. This will be done again for each level, which will
-            // generate all the needed permutations regardless of the number of
-            // lvels
-            subrule.setSelectorChains(newChains);
-            
             renderRule(subrule, indent);
         }
     }

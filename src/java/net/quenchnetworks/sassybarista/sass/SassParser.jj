@@ -385,12 +385,17 @@ Selector Selector() :
         (
             // ID
             t = <HASH>
-            { s.setId(t.image.substring(1)); }
+            { 
+                if (s.getClassNames().size() > 0) {
+                    throw new ParseException("Encountered id selector after class selector.");
+                }
+                s.setId(t.image.substring(1)); 
+            }
         |
             // Class
             "."
             t = <IDENT>
-            { s.setClassName(t.image); }
+            { s.addClassName(t.image); }
         |
             // Element
             t = <IDENT>

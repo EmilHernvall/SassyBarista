@@ -92,13 +92,14 @@ public class Selector
     private Combinator combinator = Combinator.DESCENDANT_OF;
     private String element = null;
     private String id = null;
-    private String className = null;
+    private List<String> classNames = null;
     private String pseudoClass = null;
     private String pseudoClassParam = null;
     private AttributeSelector attributeSelector = null;
 
     public Selector()
     {
+        this.classNames = new ArrayList<String>();
     }
     
     public void setCombinator(Combinator v) { this.combinator = v; }
@@ -110,8 +111,8 @@ public class Selector
     public void setId(String v) { this.id = v; }
     public String getId() { return id; }
     
-    public void setClassName(String v) { this.className = v; }
-    public String getClassName() { return className; }
+    public void addClassName(String v) { this.classNames.add(v); }
+    public List<String> getClassNames() { return classNames; }
     
     public void setPseudoClass(String v) { this.pseudoClass = v; }
     public String getPseudoClass() { return pseudoClass; }
@@ -122,6 +123,38 @@ public class Selector
     public void setAttributeSelector(AttributeSelector v) { this.attributeSelector = v; }
     public AttributeSelector getAttributeSelector() { return attributeSelector; }
     
+    public boolean matches(Selector b)
+    {
+        if (element != null && !element.equals(b.getElement())) {
+            return false;
+        }
+        
+        if (id != null && !id.equals(b.getId())) {
+            return false;
+        }
+        
+        List<String> cmpClassNames = b.getClassNames();
+        for (String className : classNames) {
+            if (!cmpClassNames.contains(className)) {
+                return false;
+            }
+        }
+        
+        if (pseudoClass != null && !pseudoClass.equals(b.getPseudoClass())) {
+            return false;
+        }
+        
+        if (pseudoClassParam != null && !pseudoClassParam.equals(b.getPseudoClassParameter())) {
+            return false;
+        }
+        
+        if (attributeSelector != null && !attributeSelector.equals(b.getAttributeSelector())) {
+            return false;
+        }
+        
+        return true;
+    }
+    
     @Override
     public int hashCode()
     {
@@ -129,7 +162,9 @@ public class Selector
         code = 31 * code + combinator.hashCode();
         code = 31 * code + (element != null ? element.hashCode() : 0);
         code = 31 * code + (id != null ? id.hashCode() : 0);
-        code = 31 * code + (className != null ? className.hashCode() : 0);
+        for (String className : classNames) {
+            code = 31 * code + className.hashCode();
+        }
         code = 31 * code + (pseudoClass != null ? pseudoClass.hashCode() : 0);
         code = 31 * code + (pseudoClassParam != null ? pseudoClassParam.hashCode() : 0);
         code = 31 * code + (attributeSelector != null ? attributeSelector.hashCode() : 0);
@@ -162,7 +197,7 @@ public class Selector
             buffer.append("#");
             buffer.append(id);
         }
-        if (className != null) {
+        for (String className : classNames) {
             buffer.append(".");
             buffer.append(className);
         }

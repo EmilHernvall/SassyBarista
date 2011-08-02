@@ -14,7 +14,6 @@ Currently supported:
 Should be supported very soon:
 
  * Support for * selector
- * Multiple class specifications (.foo.bar)
  * Imports
  * Systematic testing approach
  * Functions
