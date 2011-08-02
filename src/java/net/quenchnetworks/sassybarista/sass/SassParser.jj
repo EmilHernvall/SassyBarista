@@ -1,6 +1,6 @@
 options {
-	STATIC = false ;
-	UNICODE_INPUT = true ;
+    STATIC = false ;
+    UNICODE_INPUT = true ;
 }
 
 PARSER_BEGIN(SassParser)
@@ -11,10 +11,10 @@ import java.util.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 
 public class SassParser {
-	public static void main( String[] args )
-	throws ParseException, TokenMgrError {
-		SassParser parser = new SassParser( System.in ) ;
-		SassSheet result = parser.parse();
+    public static void main( String[] args )
+    throws ParseException, TokenMgrError {
+        SassParser parser = new SassParser( System.in ) ;
+        SassSheet result = parser.parse();
         
         for (Map.Entry<String, IPropertyValue> entry : result.getVariables().entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
@@ -22,37 +22,37 @@ public class SassParser {
                 System.out.println(((FunctionPropertyValue)entry.getValue()).getValues().size());
             }
         }
-		
-		for (Rule rule : result.getRules()) {
-			printRule(rule, 0);
-		}
-	}
-	
-	public static String padding(int n)
-	{
-		StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < n; i++) {
-			buffer.append("\t");
-		}
-		
-		return buffer.toString();
-	}
-	
-	public static void printRule(Rule rule, int depth)
-	{
-		String padding = padding(depth);
-	
-		for (SelectorChain selectorChain : rule.getSelectorChains()) {
-			System.out.println(padding + selectorChain.toString());
-		}
-		
-		for (Property property : rule.getProperties()) {
-			System.out.print(padding + "\t" + property.getKey() + ": ");
-			for (IPropertyValue value : property.getValues()) {
-				System.out.print(value + " ");
-			}
-			System.out.println();				
-		}
+        
+        for (Rule rule : result.getRules()) {
+            printRule(rule, 0);
+        }
+    }
+    
+    public static String padding(int n)
+    {
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            buffer.append("\t");
+        }
+        
+        return buffer.toString();
+    }
+    
+    public static void printRule(Rule rule, int depth)
+    {
+        String padding = padding(depth);
+    
+        for (SelectorChain selectorChain : rule.getSelectorChains()) {
+            System.out.println(padding + selectorChain.toString());
+        }
+        
+        for (Property property : rule.getProperties()) {
+            System.out.print(padding + "\t" + property.getKey() + ": ");
+            for (IPropertyValue value : property.getValues()) {
+                System.out.print(value + " ");
+            }
+            System.out.println();                
+        }
         
         for (String v : rule.getImports()) {
             System.out.println(padding + "\t@import\t" + v);
@@ -61,12 +61,12 @@ public class SassParser {
         for (Selector v : rule.getExtends()) {
             System.out.println(padding + "\t@extend\t" + v);
         }
-		
-		System.out.println();
-		for (Rule subrule : rule.getSubRules()) {
-			printRule(subrule, depth+1);
-		}
-	}
+        
+        System.out.println();
+        for (Rule subrule : rule.getSubRules()) {
+            printRule(subrule, depth+1);
+        }
+    }
 }
 PARSER_END(SassParser)
 
@@ -128,162 +128,162 @@ TOKEN : { < VARIABLE : "$" <name> > }
 
 SassSheet parse() :
 {
-	Token t ;
-	List<Rule> rules ;
-	Rule rule ;
-	Mixin mixin ;
-	Map<String, IPropertyValue> variables ;
-	Map<String, Mixin> mixins ;
-	String variableName ;
-	IPropertyValue variableValue ;
+    Token t ;
+    List<Rule> rules ;
+    Rule rule ;
+    Mixin mixin ;
+    Map<String, IPropertyValue> variables ;
+    Map<String, Mixin> mixins ;
+    String variableName ;
+    IPropertyValue variableValue ;
 }
 {
-	{ 
-		rules = new ArrayList<Rule>(); 
-		variables = new HashMap<String, IPropertyValue>();
-		mixins = new HashMap<String, Mixin>();
-	}
-	(
-		(
-			t = <VARIABLE>
-			{ variableName = t.image; }
-			":"
-			(<S>)*
-			variableValue = PropertyValue()
-			";"
-			(LOOKAHEAD(2) <S>)*
-			{ variables.put(variableName, variableValue); }
-		)
-		|
-		(
-			"@mixin"
-			(<S>)+
-			mixin = Mixin()
-			{ mixins.put(mixin.getName(), mixin); }
-		)
-		|
-		(
-			rule = Rule()
-			{ rules.add(rule); }
-		)
-	)+
-	{ 
-		return new SassSheet(variables, mixins, rules); 
-	}
+    { 
+        rules = new ArrayList<Rule>(); 
+        variables = new HashMap<String, IPropertyValue>();
+        mixins = new HashMap<String, Mixin>();
+    }
+    (
+        (
+            t = <VARIABLE>
+            { variableName = t.image; }
+            ":"
+            (<S>)*
+            variableValue = PropertyValue()
+            ";"
+            (LOOKAHEAD(2) <S>)*
+            { variables.put(variableName, variableValue); }
+        )
+        |
+        (
+            "@mixin"
+            (<S>)+
+            mixin = Mixin()
+            { mixins.put(mixin.getName(), mixin); }
+        )
+        |
+        (
+            rule = Rule()
+            { rules.add(rule); }
+        )
+    )+
+    { 
+        return new SassSheet(variables, mixins, rules); 
+    }
 }
 
 Rule Rule() :
 {
-	Token t ;
-	Rule rule;
-	SelectorChain selectorChain ;
+    Token t ;
+    Rule rule;
+    SelectorChain selectorChain ;
 }
 {
     (<S>)*
-	{ rule = new Rule(); }
-	(
-		selectorChain = SelectorChain()
-		{ rule.addSelectorChain(selectorChain); }
-	)+
-	RuleBlock(rule)
-	
-	{ return rule; }
+    { rule = new Rule(); }
+    (
+        selectorChain = SelectorChain()
+        { rule.addSelectorChain(selectorChain); }
+    )+
+    RuleBlock(rule)
+    
+    { return rule; }
 }
 
 Mixin Mixin() :
 {
-	Token t ;
-	Mixin mixin;
+    Token t ;
+    Mixin mixin;
 }
 {
-	{ mixin = new Mixin(); }
-	
-	(
-		(
-			t = <IDENT>
-			{ mixin.setName(t.image); }
-			(<S>)*
-		)
-		|
-		(
-			t = <FUNCTION>
-			{ mixin.setName(t.image.substring(0, t.image.length()-1)); }
-			(<S>)*
-				t = <VARIABLE>
-				{ mixin.addParameter(t.image); }
-				(<S>)*
-				(
-					","
-					(<S>)*
-					t = <VARIABLE>
-					{ mixin.addParameter(t.image); }
-					(<S>)*
-				)*
-			")"
-			(<S>)*
-		)
-	)
+    { mixin = new Mixin(); }
+    
+    (
+        (
+            t = <IDENT>
+            { mixin.setName(t.image); }
+            (<S>)*
+        )
+        |
+        (
+            t = <FUNCTION>
+            { mixin.setName(t.image.substring(0, t.image.length()-1)); }
+            (<S>)*
+                t = <VARIABLE>
+                { mixin.addParameter(t.image); }
+                (<S>)*
+                (
+                    ","
+                    (<S>)*
+                    t = <VARIABLE>
+                    { mixin.addParameter(t.image); }
+                    (<S>)*
+                )*
+            ")"
+            (<S>)*
+        )
+    )
 
-	MixinBlock(mixin)
-	
-	{ return mixin; }
+    MixinBlock(mixin)
+    
+    { return mixin; }
 }
 
 void RuleBlock(Rule block) :
 {
-	Token t ;
-	Rule nestedRule;
-	Property property ;
-	IncludeDirective i ;
-	IPropertyValue value ;
+    Token t ;
+    Rule nestedRule;
+    Property property ;
+    IncludeDirective i ;
+    IPropertyValue value ;
     Selector sel ;
 }
 {
-	"{"
-	(LOOKAHEAD(2) <S>)*
-	(
+    "{"
+    (LOOKAHEAD(2) <S>)*
+    (
         LOOKAHEAD(Rule())
-		(
-			nestedRule = Rule()
-			{ block.addSubRule(nestedRule); }
-		)
+        (
+            nestedRule = Rule()
+            { block.addSubRule(nestedRule); }
+        )
         |
-		LOOKAHEAD( <IDENT> ":" )
-		(
+        LOOKAHEAD( <IDENT> ":" )
+        (
             property = Property(block)
             { block.addProperty(property); }
-		)
-		|
-		(
-			"@include"
-			(<S>)+
-			(
-				(
-					t = <IDENT>
-					{ i = new IncludeDirective(t.image); }
-				)
-				|
-				(
-					t = <FUNCTION>
-					{ i = new IncludeDirective(t.image.substring(0, t.image.length()-1)); }
-					value = PropertyValue()
-					{ i.addParameter(value); }
-					(<S>)*
-					(
-						","
-						(<S>)*
-						value = PropertyValue()
-						{ i.addParameter(value); }
-						(<S>)*
-					)*
-					")"
-				)
-			)
-			";"
-			(LOOKAHEAD(2) <S>)*
-			
-			{ block.addInclude(i); }
-		)
+        )
+        |
+        (
+            "@include"
+            (<S>)+
+            (
+                (
+                    t = <IDENT>
+                    { i = new IncludeDirective(t.image); }
+                )
+                |
+                (
+                    t = <FUNCTION>
+                    { i = new IncludeDirective(t.image.substring(0, t.image.length()-1)); }
+                    value = PropertyValue()
+                    { i.addParameter(value); }
+                    (<S>)*
+                    (
+                        ","
+                        (<S>)*
+                        value = PropertyValue()
+                        { i.addParameter(value); }
+                        (<S>)*
+                    )*
+                    ")"
+                )
+            )
+            ";"
+            (LOOKAHEAD(2) <S>)*
+            
+            { block.addInclude(i); }
+        )
         |
         (
             "@import"
@@ -306,147 +306,147 @@ void RuleBlock(Rule block) :
             
             { block.addExtend(sel); }
         )
-	)*
-	"}"
-	(LOOKAHEAD(2) <S>)*
+    )*
+    "}"
+    (LOOKAHEAD(2) <S>)*
 }
 
 void MixinBlock(Mixin block) :
 {
-	Token t ;
-	Rule nestedRule;
-	Property property ;
+    Token t ;
+    Rule nestedRule;
+    Property property ;
 }
 {
-	"{"
-	(LOOKAHEAD(2) <S>)*
-	(
+    "{"
+    (LOOKAHEAD(2) <S>)*
+    (
         LOOKAHEAD(Rule())
-		(
-			nestedRule = Rule()
-			{ block.addSubRule(nestedRule); }
-		)
+        (
+            nestedRule = Rule()
+            { block.addSubRule(nestedRule); }
+        )
         |
-		LOOKAHEAD( <IDENT> ":" )
-		(
+        LOOKAHEAD( <IDENT> ":" )
+        (
             property = Property(block)
             { block.addProperty(property); }
-		)
-	)*
-	"}"
-	(LOOKAHEAD(2) <S>)*
+        )
+    )*
+    "}"
+    (LOOKAHEAD(2) <S>)*
 }
 
 SelectorChain SelectorChain() :
 {
-	Token t ;
-	Selector s ;
-	SelectorChain selectorChain ;
+    Token t ;
+    Selector s ;
+    SelectorChain selectorChain ;
 }
 {
-	{ selectorChain = new SelectorChain(); }
-	(
-		LOOKAHEAD(1)
-		s = Selector()
-		{ selectorChain.addSelector(s); }
-	)+
-	(",")?
-	(<S>)*
-	
-	{ return selectorChain; }
+    { selectorChain = new SelectorChain(); }
+    (
+        LOOKAHEAD(1)
+        s = Selector()
+        { selectorChain.addSelector(s); }
+    )+
+    (",")?
+    (<S>)*
+    
+    { return selectorChain; }
 }
 
 Selector Selector() :
 {
-	Token t ;
-	Selector s ;
-	Selector.AttributeSelector attr ;
+    Token t ;
+    Selector s ;
+    Selector.AttributeSelector attr ;
 }
 {
-	{ s = new Selector(); }
-	
-	// Combinator
-	[
-		(
-			">"
-			{ s.setCombinator(Selector.Combinator.CHILD_OF); }
-			|
-			"+"
-			{ s.setCombinator(Selector.Combinator.DIRECTLY_PRECEDED_BY); }
-			|
-			"~"
-			{ s.setCombinator(Selector.Combinator.PRECEDED_BY); }
-		)
-		(<S>)+
-	]
-	
-	(
-		LOOKAHEAD(2)
-		(
-			// ID
-			t = <HASH>
-			{ s.setId(t.image.substring(1)); }
-		|
-			// Class
-			"."
-			t = <IDENT>
-			{ s.setClassName(t.image); }
-		|
-			// Element
-			t = <IDENT>
-			{ s.setElement(t.image); }
-		)
-	)+
-	
-	// Pseudo class
-	[
-		":"
-		t = <IDENT>
-		{ s.setPseudoClass(t.image); }
-		(
-			"("
-			t = <IDENT>
-			{ s.setPseudoClassParameter(t.image); }
-			")"
-		)*
-	]
-	
-	// Attribute selector
-	[
-		{ attr = new Selector.AttributeSelector(); }
-		"["
-		t = <IDENT>
-		{ attr.setAttribute(t.image); }
-		(
-			(
-				"="
-				{ attr.setType(Selector.AttributeSelectorType.EQUAL); }
-				|
-				<INCLUDES>
-				{ attr.setType(Selector.AttributeSelectorType.INCLUDES); }
-				|
-				<PREFIXMATCH>
-				{ attr.setType(Selector.AttributeSelectorType.PREFIXMATCH); }
-				|
-				<SUFFIXMATCH>
-				{ attr.setType(Selector.AttributeSelectorType.SUFFIXMATCH); }
-				|
-				<SUBSTRINGMATCH>
-				{ attr.setType(Selector.AttributeSelectorType.SUBSTRINGMATCH); }
-				|
-				<DASHMATCH>
-				{ attr.setType(Selector.AttributeSelectorType.DASHMATCH); }
-			)
-			t = <STRING>
-			{ attr.setValue(t.image.substring(1,t.image.length()-1)); }
-		)*
-		"]"
-		{ s.setAttributeSelector(attr); }
-	]
-	
-	(LOOKAHEAD(1) <S>)*
-	
-	{ return s; }
+    { s = new Selector(); }
+    
+    // Combinator
+    [
+        (
+            ">"
+            { s.setCombinator(Selector.Combinator.CHILD_OF); }
+            |
+            "+"
+            { s.setCombinator(Selector.Combinator.DIRECTLY_PRECEDED_BY); }
+            |
+            "~"
+            { s.setCombinator(Selector.Combinator.PRECEDED_BY); }
+        )
+        (<S>)+
+    ]
+    
+    (
+        LOOKAHEAD(2)
+        (
+            // ID
+            t = <HASH>
+            { s.setId(t.image.substring(1)); }
+        |
+            // Class
+            "."
+            t = <IDENT>
+            { s.setClassName(t.image); }
+        |
+            // Element
+            t = <IDENT>
+            { s.setElement(t.image); }
+        )
+    )+
+    
+    // Pseudo class
+    [
+        ":"
+        t = <IDENT>
+        { s.setPseudoClass(t.image); }
+        (
+            "("
+            t = <IDENT>
+            { s.setPseudoClassParameter(t.image); }
+            ")"
+        )*
+    ]
+    
+    // Attribute selector
+    [
+        { attr = new Selector.AttributeSelector(); }
+        "["
+        t = <IDENT>
+        { attr.setAttribute(t.image); }
+        (
+            (
+                "="
+                { attr.setType(Selector.AttributeSelectorType.EQUAL); }
+                |
+                <INCLUDES>
+                { attr.setType(Selector.AttributeSelectorType.INCLUDES); }
+                |
+                <PREFIXMATCH>
+                { attr.setType(Selector.AttributeSelectorType.PREFIXMATCH); }
+                |
+                <SUFFIXMATCH>
+                { attr.setType(Selector.AttributeSelectorType.SUFFIXMATCH); }
+                |
+                <SUBSTRINGMATCH>
+                { attr.setType(Selector.AttributeSelectorType.SUBSTRINGMATCH); }
+                |
+                <DASHMATCH>
+                { attr.setType(Selector.AttributeSelectorType.DASHMATCH); }
+            )
+            t = <STRING>
+            { attr.setValue(t.image.substring(1,t.image.length()-1)); }
+        )*
+        "]"
+        { s.setAttributeSelector(attr); }
+    ]
+    
+    (LOOKAHEAD(1) <S>)*
+    
+    { return s; }
 }
 
 Property Property(Block block) :
@@ -507,48 +507,48 @@ Property Property(Block block) :
 
 IPropertyValue PropertyValue() :
 {
-	Token t ;
-	IPropertyValue p ;
-	IPropertyValue tmp ;
-	FunctionPropertyValue fp ;
+    Token t ;
+    IPropertyValue p ;
+    IPropertyValue tmp ;
+    FunctionPropertyValue fp ;
 }
 {
-	(
-			t = <IDENT> 
-			{ p = new DefaultPropertyValue(t.image); } 
-		|
-			t = <NUMBER> 
-			{ p = new NumberPropertyValue(t.image); } 
-		|
-			t = <PERCENTAGE> 
-			{ p = new PercentagePropertyValue(t.image); } 
-		|
-			t = <DIMENSION> 
-			{ p = new DimensionPropertyValue(t.image); } 
-		|
-			t = <STRING> 
-			{ p = new StringPropertyValue(t.image); } 
-		|
-			t = <URI> 
-			{ p = new URIPropertyValue(t.image); } 
-		|
-			t = <HASH> 
-			{ p = new ColorPropertyValue(t.image); } 
-		|
-			t = <VARIABLE>
-			{ p = new VariablePropertyValue(t.image); }
-		|
-			t = <FUNCTION> 
-			{ fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); } 
-			(<S>)* 
-			(
-				tmp = PropertyValue() 
-				{ fp.addValue(tmp); }
-				(<S>)*
-			)* 
-			")"
-			{ p = fp; }
-	)
-	
-	{ return p; }
+    (
+            t = <IDENT> 
+            { p = new DefaultPropertyValue(t.image); } 
+        |
+            t = <NUMBER> 
+            { p = new NumberPropertyValue(t.image); } 
+        |
+            t = <PERCENTAGE> 
+            { p = new PercentagePropertyValue(t.image); } 
+        |
+            t = <DIMENSION> 
+            { p = new DimensionPropertyValue(t.image); } 
+        |
+            t = <STRING> 
+            { p = new StringPropertyValue(t.image); } 
+        |
+            t = <URI> 
+            { p = new URIPropertyValue(t.image); } 
+        |
+            t = <HASH> 
+            { p = new ColorPropertyValue(t.image); } 
+        |
+            t = <VARIABLE>
+            { p = new VariablePropertyValue(t.image); }
+        |
+            t = <FUNCTION> 
+            { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); } 
+            (<S>)* 
+            (
+                tmp = PropertyValue() 
+                { fp.addValue(tmp); }
+                (<S>)*
+            )* 
+            ")"
+            { p = fp; }
+    )
+    
+    { return p; }
 }
