@@ -1,10 +1,12 @@
-package net.quenchnetworks.sassybarista.sass;
+package net.quenchnetworks.sassybarista.sass.models;
 
+import java.io.Serializable;
 import java.util.*;
 
+import net.quenchnetworks.sassybarista.sass.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 
-public class Mixin extends Block
+public class Mixin extends Block implements Serializable
 {
     private String name;
     private List<String> parameters;
@@ -14,6 +16,11 @@ public class Mixin extends Block
         super();
         
         parameters = new ArrayList<String>();
+    }
+    
+    public List<String> getParameters()
+    {
+        return parameters;
     }
     
     public Map<String, IPropertyValue> getParameterMap(IncludeDirective include)

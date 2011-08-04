@@ -9,6 +9,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.DirectoryScanner;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.models.*;
 
 public class SassTask extends Task 
 {

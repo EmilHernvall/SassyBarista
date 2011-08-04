@@ -1,8 +1,9 @@
-package net.quenchnetworks.sassybarista.sass;
+package net.quenchnetworks.sassybarista.sass.models;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class SelectorChain
+public class SelectorChain implements Serializable
 {
     private List<Selector> selectors;
 

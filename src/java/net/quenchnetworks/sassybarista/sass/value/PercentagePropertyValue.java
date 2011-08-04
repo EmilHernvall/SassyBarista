@@ -1,10 +1,16 @@
 package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
+import java.io.Serializable;
 
-public class PercentagePropertyValue implements IPropertyValue
+public class PercentagePropertyValue implements IPropertyValue, Serializable
 {
     private String value;
+    
+    public PercentagePropertyValue()
+    {
+        this.value = null;
+    }
 
     public PercentagePropertyValue(String value)
     {

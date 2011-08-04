@@ -1,10 +1,12 @@
-package net.quenchnetworks.sassybarista.sass;
+package net.quenchnetworks.sassybarista.sass.models;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Selector
+public class Selector implements Serializable
 {
-    public enum Combinator {
+    public enum Combinator implements Serializable
+    {
         DESCENDANT_OF(""),
         CHILD_OF(">"),
         DIRECTLY_PRECEDED_BY("+"),
@@ -19,7 +21,7 @@ public class Selector
         public String toString() { return symbol; }
     };
     
-    public enum AttributeSelectorType
+    public enum AttributeSelectorType implements Serializable
     {
         WITH_ATTRIBUTE(""),
         EQUAL("="),
@@ -38,7 +40,7 @@ public class Selector
         public String toString() { return symbol; }
     };
     
-    public static class AttributeSelector
+    public static class AttributeSelector implements Serializable
     {
         private String attribute = null;
         private String value = null;

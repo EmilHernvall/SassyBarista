@@ -1,13 +1,20 @@
-package net.quenchnetworks.sassybarista.sass;
+package net.quenchnetworks.sassybarista.sass.models;
 
+import java.io.Serializable;
 import java.util.*;
 
 import net.quenchnetworks.sassybarista.sass.value.*;
 
-public class Property
+public class Property implements Serializable
 {
     private String key;
     private List<IPropertyValue> values;
+    
+    public Property()
+    {
+        this.key = null;
+        this.values = new ArrayList<IPropertyValue>();
+    }
 
     public Property(String key)
     {

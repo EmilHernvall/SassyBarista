@@ -1,11 +1,17 @@
 package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
+import java.io.Serializable;
 
-public class StringPropertyValue implements IPropertyValue
+public class StringPropertyValue implements IPropertyValue, Serializable
 {
     private String value;
 
+    public StringPropertyValue()
+    {
+        this.value = null;
+    }
+    
     public StringPropertyValue(String value)
     {
         this.value = value;

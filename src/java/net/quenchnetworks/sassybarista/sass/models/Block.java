@@ -1,20 +1,17 @@
-package net.quenchnetworks.sassybarista.sass;
+package net.quenchnetworks.sassybarista.sass.models;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Block
+public class Block implements Serializable
 {
     private List<Property> properties;
     private List<Rule> subrules;
-    private List<IncludeDirective> includes;
-    private List<String> imports;
 
     public Block()
     {
         this.properties = new ArrayList<Property>();
         this.subrules = new ArrayList<Rule>();
-        this.includes = new ArrayList<IncludeDirective>();
-        this.imports = new ArrayList<String>();
     }
     
     public void addProperty(Property property)
@@ -27,6 +24,11 @@ public class Block
         properties.addAll(newProperties);
     }
     
+    public List<Property> getProperties()
+    {
+        return properties;
+    }
+    
     public void addSubRule(Rule rule)
     {
         subrules.add(rule);
@@ -37,34 +39,9 @@ public class Block
         subrules.addAll(newRules);
     }
     
-    public void addInclude(IncludeDirective include)
-    {
-        includes.add(include);
-    }
-    
-    public List<Property> getProperties()
-    {
-        return properties;
-    }
-    
     public List<Rule> getSubRules()
     {
         return subrules;
-    }
-    
-    public List<IncludeDirective> getIncludes()
-    {
-        return includes;
-    }
-    
-    public void addImport(String v)
-    {
-        imports.add(v);
-    }
-    
-    public List<String> getImports()
-    {
-        return imports;
     }
     
     @Override
@@ -77,9 +54,6 @@ public class Block
         for (Rule rule : subrules) {
             code = 31 * code + rule.hashCode();
         }
-        for (IncludeDirective inc : includes) {
-            code = 31 * code + inc.hashCode();
-        }
         
         return code;
     }
@@ -91,8 +65,6 @@ public class Block
             return false;
         }
         
-        Block block = (Block)obj;
-        
-        return true;
+        return hashCode() == obj.hashCode();
     }
 }

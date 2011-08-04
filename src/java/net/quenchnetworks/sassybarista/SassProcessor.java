@@ -3,6 +3,7 @@ package net.quenchnetworks.sassybarista;
 import java.io.*;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.models.*;
 
 public class SassProcessor
 {
@@ -22,6 +23,9 @@ public class SassProcessor
         
         SassParser parser = new SassParser(new FileInputStream(file));
         SassSheet sheet = parser.parse();
+        
+        SassSheetEvaluator evaluator = new SassSheetEvaluator();
+        evaluator.evaluate(sheet);
         
         SassSheetSerializer serializer = new SassSheetSerializer(System.out);
         serializer.render(sheet);

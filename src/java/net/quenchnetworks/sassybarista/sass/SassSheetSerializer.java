@@ -3,25 +3,11 @@ package net.quenchnetworks.sassybarista.sass;
 import java.io.*;
 import java.util.*;
 
+import net.quenchnetworks.sassybarista.sass.models.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 
 public class SassSheetSerializer
 {
-    private static class Extension
-    {
-        Rule rule;
-        List<Selector> selectors;
-        List<Rule> matches;
-        int matchedBy = 0;
-        
-        public Extension(Rule rule, List<Selector> selectors)
-        {
-            this.rule = rule;
-            this.selectors = selectors;
-            this.matches = new ArrayList<Rule>();
-        }
-    }
-
     private PrintStream writer;
     private Map<String, IPropertyValue> variables = null;
     private Map<String, Mixin> mixins = null;
@@ -37,194 +23,68 @@ public class SassSheetSerializer
         this.variables = sheet.getVariables();
         this.mixins = sheet.getMixins();
 
-        for (Rule rule : sheet.getRules()) {
-            nestSelectors(rule);
-        }
-        
-        processExtends(sheet);
-        
         // serialize
+        for (Map.Entry<String, IPropertyValue> entry : variables.entrySet()) {
+            writer.print(entry.getKey());
+            writer.print(": ");
+            writer.print(entry.getValue());
+            writer.println(";");
+        }
+        
+        for (Mixin mixin : mixins.values()) {
+            renderMixin(mixin);
+        }
+        
         for (Rule rule : sheet.getRules()) {
-            renderRule(rule, false);
+            renderRule(rule, 0);
         }
     }
     
-    private void nestSelectors(Rule rule)
+    private String generateIndent(int indentLevel)
     {
-        List<SelectorChain> selectorChains = rule.getSelectorChains();
-        for (Rule subrule : rule.getSubRules()) {
-            // Permute all combinations of this level and the next levels selector
-            List<SelectorChain> newChains = new ArrayList<SelectorChain>();
-            for (SelectorChain selectorChain : selectorChains) {
-                for (SelectorChain subSelectorChain : subrule.getSelectorChains()) {
-                    SelectorChain newChain = new SelectorChain();
-                    newChain.addSelectors(selectorChain.getSelectors());
-                    newChain.addSelectors(subSelectorChain.getSelectors());
-                    newChains.add(newChain);
-                }
-            }
-            
-            // Replace all the current selectors of the sub rule with the new
-            // permutations. This will be done again for each level, which will
-            // generate all the needed permutations regardless of the number of
-            // lvels
-            subrule.setSelectorChains(newChains);
-            
-            nestSelectors(subrule);
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < indentLevel; i++) {
+            buf.append("\t");
         }
+        
+        return buf.toString();
     }
     
-    private void processExtends(SassSheet sheet)
-    {
-        // recurse and find all extensions
-        List<Extension> extensions = new ArrayList<Extension>();
-        for (Rule rule : sheet.getRules()) {
-            extensions.addAll(findExtends(rule));
-        }
-
-        // build lookup table
-        Map<Rule, Extension> lookup = new HashMap<Rule, Extension>();
-        for (Extension extension : extensions) {
-            lookup.put(extension.rule, extension);
-        }
-        
-        // find and add matching rules to extension objects
-        for (Extension extension : extensions) {
-        
-            // only analyze top level rules
-            for (Rule rule : sheet.getRules()) {
-                boolean match = false;
-                
-                // search for a matching selector
-                for (SelectorChain chain : rule.getSelectorChains()) {
-                    List<Selector> selectors = chain.getSelectors();
-                    
-                    // only simple rules can be extended
-                    if (selectors.size() != 1) {
-                        continue;
-                    }
-                    
-                    Selector selector = selectors.get(0);
-                    for (Selector cmp : extension.selectors) {
-                        if (cmp.equals(selector)) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    
-                    if (match) {
-                        break;
-                    }
-                }
-                
-                if (match) {
-                    // add match to extension object so that we
-                    // can come back later and append our selectors
-                    extension.matches.add(rule);
-                    
-                    // if this rule extends other rules we need
-                    // to make all extensions referring to that rule
-                    // first. we use a counter to make sure that this
-                    // is done.
-                    Extension ref = lookup.get(rule);
-                    if (ref != null) {
-                        ref.matchedBy++;
-                    }
-                }
-            }
-        }
-        
-        // print state
-        /*for (Extension extension : extensions) {
-            Rule rule = extension.rule;
-            for (SelectorChain chain : rule.getSelectorChains()) {
-                System.out.println(chain);
-            }
-            System.out.println("\textends ");
-            for (Selector selector : extension.selectors) {
-                System.out.println("\t" + selector);
-            }
-            System.out.println("\tand matches");
-            for (Rule match : extension.matches) {
-                for (SelectorChain chain : match.getSelectorChains()) {
-                    System.out.println("\t" + chain);
-                }
-            }
-            System.out.println("\tmatched by: " + extension.matchedBy);
-            System.out.println();
-            System.out.println();
-        }*/
-        
-        // iterate until all selectors has been added
-        while (extensions.size() > 0) {
-        
-            // use an iterator so we can remove objects
-            // while looping
-            Iterator<Extension> it = extensions.iterator();
-            while (it.hasNext()) {
-                Extension ext = it.next();
-                
-                // only process extensions that have been fully
-                // extended themselves
-                if (ext.matchedBy > 0) {
-                    continue;
-                }
-                
-                Rule rule = ext.rule;
-                
-                // add selectors to all matching rules
-                for (Rule match : ext.matches) {
-                    Extension matchExt = lookup.get(match);
-                    if (matchExt != null) {
-                        matchExt.matchedBy--;
-                    }
-                    
-                    for (SelectorChain chain : rule.getSelectorChains()) {
-                        match.addSelectorChain(chain);
-                    }
-                }
-                
-                it.remove();
-            }
-        }
-    }
-    
-    private List<Extension> findExtends(Rule rule)
-    {
-        List<Extension> matches = new ArrayList<Extension>();
-        
-        for (Rule subRule : rule.getSubRules()) {
-            matches.addAll(findExtends(subRule));
-        }
-        
-        if (rule.getExtends().size() > 0) {
-            matches.add(new Extension(rule, rule.getExtends()));
-        }
-        
-        return matches;
-    }
-    
-    private void renderRule(Rule rule, boolean indent)
+    private void renderMixin(Mixin mixin)
     throws SerializationException
     {
-        // Fetch all includes and just copy all the subrules
-        // of each mixin to this one.
-        for (IncludeDirective include : rule.getIncludes()) {
-            Mixin mixin = mixins.get(include.getMixinName());
-            if (mixin == null) {
-                throw new SerializationException("Mixin " + include.getMixinName() + " was not found.");
+        writer.print("@mixin ");
+        writer.print(mixin.getName());
+        
+        List<String> params = mixin.getParameters();
+        if (params.size() > 0) {
+            writer.print("(");
+            String delim = "";
+            for (String param : params) {
+                writer.print(delim);
+                writer.print(param);
+                delim = ",";
             }
-            rule.addSubRules(mixin.getSubRules());
+            writer.print(") ");
         }
+        writer.println("{");
+        
+        renderProperties(mixin.getProperties(), new HashMap<String, IPropertyValue>(), 0);
+        
+        writer.println("}");
+    }
+    
+    private void renderRule(Rule rule, int indentLevel)
+    throws SerializationException
+    {
+        String indent = generateIndent(indentLevel);
     
         // Render all selectors
         int i = 0;
         List<SelectorChain> selectorChains = rule.getSelectorChains();
         for (SelectorChain selectorChain : selectorChains) {
             i++;
-            if (indent) { 
-                writer.print("\t");
-            }
+            writer.print(indent);
             writer.print(selectorChain.toString());
             if (i == selectorChains.size()) {
                 writer.println(" {");
@@ -233,34 +93,55 @@ public class SassSheetSerializer
             }
         }
         
-        // Render all properties
-        renderProperties(rule.getProperties(), variables, indent);
-        for (IncludeDirective include : rule.getIncludes()) {
-            Mixin mixin = mixins.get(include.getMixinName());
-            renderProperties(mixin.getProperties(), 
-                mixin.getParameterMap(include), 
-                indent);
+        // Render extend directives
+        for (Selector extend : rule.getExtends()) {
+            writer.print(indent);
+            writer.print("\t@extend ");
+            writer.print(extend);
+            writer.println(";");
         }
-
-        if (indent) { 
-            writer.print("\t");
-        }
-        writer.println("}");
-        writer.println();
         
+        // Render include directives
+        for (IncludeDirective include : rule.getIncludes()) {
+            writer.print(indent);
+            writer.print("\t@include ");
+            writer.print(include.getMixinName());
+            
+            List<IPropertyValue> params = include.getParameters();
+            if (params.size() > 0) {
+                writer.print("(");
+                String delim = "";
+                for (IPropertyValue param : params) {
+                    writer.print(delim);
+                    writer.print(param);
+                    delim = ",";
+                }
+                writer.print(")");
+            }
+            
+            writer.println(";");
+        }
+        
+        // Render all properties
+        renderProperties(rule.getProperties(), variables, indentLevel);
+
         // Render subrules
         for (Rule subrule : rule.getSubRules()) {
-            renderRule(subrule, indent);
+            renderRule(subrule, indentLevel + 1);
         }
+        
+        writer.print(indent);
+        writer.println("}");
+        writer.println();
     }
     
-    private void renderProperties(List<Property> properties, Map<String, IPropertyValue> scope, boolean indent) 
+    private void renderProperties(List<Property> properties, Map<String, IPropertyValue> scope, int indentLevel) 
     throws SerializationException
     {
+        String indent = generateIndent(indentLevel);
+    
         for (Property property : properties) {
-            if (indent) { 
-                writer.print("\t");
-            }
+            writer.print(indent);
             writer.print("\t" + property.getKey() + ": ");
             List<IPropertyValue> values = property.getValues();
             int i = 0;
