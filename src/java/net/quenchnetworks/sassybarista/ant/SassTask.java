@@ -115,7 +115,7 @@ public class SassTask extends Task
     }
     
     private void processFile(File inFile, PrintStream stream)
-    throws IOException, SerializationException, ParseException
+    throws IOException, EvaluationException, ParseException
     {
         SassParser parser = new SassParser(new FileReader(inFile));
         SassSheet sheet = parser.parse();

@@ -4,8 +4,10 @@ import java.util.*;
 import java.io.Serializable;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.expression.*;
+import net.quenchnetworks.sassybarista.sass.value.op.*;
 
-public class FunctionPropertyValue implements IPropertyValue, Serializable
+public class FunctionPropertyValue extends AbstractPropertyValue implements Serializable
 {
     private String name;
     private List<IPropertyValue> values;
@@ -33,10 +35,35 @@ public class FunctionPropertyValue implements IPropertyValue, Serializable
     }
     
     @Override
-    public String serialize(Map<String, IPropertyValue> variables)
-    throws SerializationException
+    public IPropertyValue callAddOp(IPropertyValue node) 
+    throws EvaluationException
     {
-        return toString();
+        IAdditionOp op = node.getAdditionOp();
+        return op.addOp(this);
+    }
+
+    @Override
+    public IPropertyValue callSubOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        ISubtractionOp op = node.getSubtractionOp();
+        return op.subOp(this);
+    }
+
+    @Override
+    public IPropertyValue callMulOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        IMultiplicationOp op = node.getMultiplicationOp();
+        return op.mulOp(this);
+    }
+    
+    @Override
+    public IPropertyValue callDivOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        IDivisionOp op = node.getDivisionOp();
+        return op.divOp(this);
     }
     
     @Override

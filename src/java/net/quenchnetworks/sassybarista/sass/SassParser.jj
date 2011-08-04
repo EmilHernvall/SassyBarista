@@ -10,63 +10,16 @@ import java.util.*;
 
 import net.quenchnetworks.sassybarista.sass.value.*;
 import net.quenchnetworks.sassybarista.sass.models.*;
+import net.quenchnetworks.sassybarista.sass.expression.*;
 
 public class SassParser {
     public static void main( String[] args )
-    throws ParseException, TokenMgrError {
-        SassParser parser = new SassParser( System.in ) ;
+    throws EvaluationException, ParseException, TokenMgrError {
+        SassParser parser = new SassParser(System.in);
         SassSheet result = parser.parse();
         
-        for (Map.Entry<String, IPropertyValue> entry : result.getVariables().entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-            if (entry.getValue() instanceof FunctionPropertyValue) {
-                System.out.println(((FunctionPropertyValue)entry.getValue()).getValues().size());
-            }
-        }
-        
-        for (Rule rule : result.getRules()) {
-            printRule(rule, 0);
-        }
-    }
-    
-    public static String padding(int n)
-    {
-        StringBuilder buffer = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            buffer.append("\t");
-        }
-        
-        return buffer.toString();
-    }
-    
-    public static void printRule(Rule rule, int depth)
-    {
-        String padding = padding(depth);
-    
-        for (SelectorChain selectorChain : rule.getSelectorChains()) {
-            System.out.println(padding + selectorChain.toString());
-        }
-        
-        for (Property property : rule.getProperties()) {
-            System.out.print(padding + "\t" + property.getKey() + ": ");
-            for (IPropertyValue value : property.getValues()) {
-                System.out.print(value + " ");
-            }
-            System.out.println();                
-        }
-        
-        for (String v : rule.getImports()) {
-            System.out.println(padding + "\t@import\t" + v);
-        }
-        
-        for (Selector v : rule.getExtends()) {
-            System.out.println(padding + "\t@extend\t" + v);
-        }
-        
-        System.out.println();
-        for (Rule subrule : rule.getSubRules()) {
-            printRule(subrule, depth+1);
-        }
+        SassSheetSerializer serializer = new SassSheetSerializer(System.out);
+        serializer.render(result);
     }
 }
 PARSER_END(SassParser)
@@ -99,7 +52,7 @@ TOKEN : { < #nonascii : ["\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
 TOKEN : { < #unicode : "\\" (["a"-"f","A"-"F","0"-"9"]){1,6} (<wc>)? > }
 TOKEN : { < #escape : <unicode> | "\\" ["\u0020"-"\u007E","\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
 TOKEN : { < #nmchar : ["a"-"z","A"-"Z","0"-"9"] | "-" | "_" | <nonascii> | <escape> > }
-TOKEN : { < #num : ("-")? (["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+ > }
+TOKEN : { < #num : (["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+ > }
 TOKEN : { < #string : "\"" (<stringchar> | "'")* "\"" | "'" (<stringchar> | "\"")* "'" > }
 TOKEN : { < #stringchar : <urlchar> | "\u0020" | "\\" <nl> > }
 TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0027"-"\u007E"] | <nonascii> | <escape> > }
@@ -133,15 +86,15 @@ SassSheet parse() :
     List<Rule> rules ;
     Rule rule ;
     Mixin mixin ;
-    Map<String, IPropertyValue> variables ;
+    Map<String, INode> variables ;
     Map<String, Mixin> mixins ;
     String variableName ;
-    IPropertyValue variableValue ;
+    INode variableValue ;
 }
 {
     { 
         rules = new ArrayList<Rule>(); 
-        variables = new HashMap<String, IPropertyValue>();
+        variables = new HashMap<String, INode>();
         mixins = new HashMap<String, Mixin>();
     }
     (
@@ -150,7 +103,7 @@ SassSheet parse() :
             { variableName = t.image; }
             ":"
             (<S>)*
-            variableValue = PropertyValue()
+            variableValue = Expression()
             ";"
             (LOOKAHEAD(2) <S>)*
             { variables.put(variableName, variableValue); }
@@ -460,7 +413,7 @@ Property Property(Block block) :
     Token t ;
     Property property ;
     StringBuilder buffer ;
-    IPropertyValue value ;
+    INode value ;
 }
 {
     t = <IDENT>
@@ -500,7 +453,7 @@ Property Property(Block block) :
         )
         |
         (
-            value = PropertyValue()
+            value = Expression()
             { property.addValue(value); }
             (<S>)*
         )
@@ -509,6 +462,92 @@ Property Property(Block block) :
     (LOOKAHEAD(2) <S>)*
     
     { return property; }
+}
+
+INode Expression() :
+{
+    INode node, current ;
+    IBinaryNode nextNode ;
+}
+{
+    node = Term()
+    (<S>)*
+    (
+        (
+            { 
+                nextNode = new AdditionNode(); 
+                nextNode.setLeftNode(node);
+            }
+            "+"
+        |
+            { 
+                nextNode = new SubtractionNode(); 
+                nextNode.setLeftNode(node);
+            }
+            "-"
+        )
+        (<S>)*
+        current = Term()
+        { 
+            nextNode.setRightNode(current); 
+            node = nextNode;
+        }
+        (<S>)*
+    )*
+    
+    { return node; }
+}
+
+INode Term() :
+{
+    INode node, current ;
+    IBinaryNode nextNode ;
+}
+{
+    node = Primary()
+    (<S>)*
+    (
+        (
+            { 
+                nextNode = new MultiplicationNode(); 
+                nextNode.setLeftNode(node);
+            }
+            "*"
+        |
+            { 
+                nextNode = new DivisionNode(); 
+                nextNode.setLeftNode(node);
+            }
+            "/"
+        )
+        (<S>)*
+        current = Primary()
+        { 
+            nextNode.setRightNode(current); 
+            node = nextNode;
+        }
+        (<S>)*
+    )*
+    
+    { return node; }
+}
+
+INode Primary() :
+{
+    INode node;
+}
+{
+    (
+        node = PropertyValue()
+    |
+        "("
+        node = Expression()
+        ")"
+    )
+
+    { 
+        return node; 
+    }
 }
 
 IPropertyValue PropertyValue() :

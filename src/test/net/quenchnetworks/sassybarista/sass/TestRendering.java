@@ -5,13 +5,18 @@ import java.io.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import net.quenchnetworks.sassybarista.sass.models.*;
+
 public class TestRendering
 {
     public String render(String in)
-    throws ParseException, SerializationException, UnsupportedEncodingException
+    throws ParseException, EvaluationException, UnsupportedEncodingException
     {
         SassParser parser = new SassParser(new StringReader(in));
         SassSheet sheet = parser.parse();
+    
+        SassSheetEvaluator evaluator = new SassSheetEvaluator();
+        evaluator.evaluate(sheet);
     
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         SassSheetSerializer serializer = new SassSheetSerializer(new PrintStream(os));
@@ -50,8 +55,8 @@ public class TestRendering
         catch (ParseException e) {
             fail("Caught ParseException.");
         }
-        catch (SerializationException e) {
-            fail("Caught SerializationException.");
+        catch (EvaluationException e) {
+            fail("Caught EvaluationException.");
         }
         catch (UnsupportedEncodingException e) {
             fail("Caught UnsupportedEncodingException.");
@@ -83,8 +88,8 @@ public class TestRendering
             e.printStackTrace();
             fail("Caught ParseException.");
         }
-        catch (SerializationException e) {
-            fail("Caught SerializationException.");
+        catch (EvaluationException e) {
+            fail("Caught EvaluationException.");
         }
         catch (UnsupportedEncodingException e) {
             fail("Caught UnsupportedEncodingException.");
@@ -152,8 +157,8 @@ public class TestRendering
         catch (ParseException e) {
             fail("Caught ParseException.");
         }
-        catch (SerializationException e) {
-            fail("Caught SerializationException.");
+        catch (EvaluationException e) {
+            fail("Caught EvaluationException.");
         }
         catch (UnsupportedEncodingException e) {
             fail("Caught UnsupportedEncodingException.");
@@ -186,8 +191,8 @@ public class TestRendering
         catch (ParseException e) {
             fail("Caught ParseException.");
         }
-        catch (SerializationException e) {
-            fail("Caught SerializationException.");
+        catch (EvaluationException e) {
+            fail("Caught EvaluationException.");
         }
         catch (UnsupportedEncodingException e) {
             fail("Caught UnsupportedEncodingException.");
@@ -358,8 +363,8 @@ public class TestRendering
         catch (ParseException e) {
             fail("Caught ParseException.");
         }
-        catch (SerializationException e) {
-            fail("Caught SerializationException.");
+        catch (EvaluationException e) {
+            fail("Caught EvaluationException.");
         }
         catch (UnsupportedEncodingException e) {
             fail("Caught UnsupportedEncodingException.");

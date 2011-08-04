@@ -4,25 +4,31 @@ import java.io.Serializable;
 import java.util.*;
 
 import net.quenchnetworks.sassybarista.sass.value.*;
+import net.quenchnetworks.sassybarista.sass.expression.*;
 
 public class Property implements Serializable
 {
     private String key;
-    private List<IPropertyValue> values;
+    private List<INode> values;
     
     public Property()
     {
         this.key = null;
-        this.values = new ArrayList<IPropertyValue>();
+        this.values = new ArrayList<INode>();
     }
 
     public Property(String key)
     {
         this.key = key;
-        this.values = new ArrayList<IPropertyValue>();
+        this.values = new ArrayList<INode>();
     }
     
-    public void addValue(IPropertyValue value)
+    public void setValues(List<INode> values)
+    {
+        this.values = values;
+    }
+    
+    public void addValue(INode value)
     {
         values.add(value);
     }
@@ -32,7 +38,7 @@ public class Property implements Serializable
         return key;
     }
     
-    public List<IPropertyValue> getValues()
+    public List<INode> getValues()
     {
         return values;
     }

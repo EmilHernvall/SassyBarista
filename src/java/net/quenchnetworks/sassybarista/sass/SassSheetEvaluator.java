@@ -5,9 +5,146 @@ import java.util.*;
 
 import net.quenchnetworks.sassybarista.sass.models.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
+import net.quenchnetworks.sassybarista.sass.value.op.*;
+import net.quenchnetworks.sassybarista.sass.expression.*;
 
 public class SassSheetEvaluator
 {
+    private static class ExpressionEvaluator implements NodeVisitor
+    {
+        private Map<String, IPropertyValue> context;
+    
+        public ExpressionEvaluator()
+        {
+        }
+        
+        public IPropertyValue evaluate(INode node, Map<String, IPropertyValue> context)
+        throws EvaluationException
+        {
+            this.context = context;
+            return node.visit(this);
+        }
+        
+        @Override
+        public IPropertyValue visitAddition(AdditionNode node)
+        throws EvaluationException
+        {
+            INode left = node.getLeftNode();
+            INode right = node.getRightNode();
+            
+            IPropertyValue val1, val2;
+            
+            left = left.visit(this);
+            if (left instanceof IPropertyValue) {
+                val1 = (IPropertyValue)left;
+            } else {
+                throw new EvaluationException("Subtree could not be reduced : " + left.toString());
+            }
+            
+            right = right.visit(this);
+            if (right instanceof IPropertyValue) {
+                val2 = (IPropertyValue)right;
+            } else {
+                throw new EvaluationException("Subtree could not be reduced." + right.toString());
+            }
+            
+            IPropertyValue newValue = val1.callAddOp(val2);
+            
+            return newValue;
+        }
+        
+        @Override
+        public IPropertyValue visitSubtraction(SubtractionNode node)
+        throws EvaluationException
+        {
+            INode left = node.getLeftNode();
+            INode right = node.getRightNode();
+            
+            IPropertyValue val1, val2;
+            
+            left = left.visit(this);
+            if (left instanceof IPropertyValue) {
+                val1 = (IPropertyValue)left;
+            } else {
+                throw new EvaluationException("Subtree could not be reduced : " + left.toString());
+            }
+            
+            right = right.visit(this);
+            if (right instanceof IPropertyValue) {
+                val2 = (IPropertyValue)right;
+            } else {
+                throw new EvaluationException("Subtree could not be reduced : " + right.toString());
+            }
+            
+            IPropertyValue newValue = val1.callSubOp(val2);
+            
+            return newValue;
+        }
+        
+        @Override
+        public IPropertyValue visitMultiplication(MultiplicationNode node)
+        throws EvaluationException
+        {
+            INode left = node.getLeftNode();
+            INode right = node.getRightNode();
+            
+            IPropertyValue val1, val2;
+            
+            left = left.visit(this);
+            if (left instanceof IPropertyValue) {
+                val1 = (IPropertyValue)left;
+            } else {
+                throw new EvaluationException("Subtree could not be reduced : " + left.toString());
+            }
+            
+            right = right.visit(this);
+            if (right instanceof IPropertyValue) {
+                val2 = (IPropertyValue)right;
+            } else {
+                throw new EvaluationException("Subtree could not be reduced : " + right.toString());
+            }
+            
+            IPropertyValue newValue = val1.callMulOp(val2);
+            
+            return newValue;
+        }
+        
+        @Override
+        public IPropertyValue visitDivision(DivisionNode node)
+        throws EvaluationException
+        {
+            INode left = node.getLeftNode();
+            INode right = node.getRightNode();
+            
+            IPropertyValue val1, val2;
+            
+            left = left.visit(this);
+            if (left instanceof IPropertyValue) {
+                val1 = (IPropertyValue)left;
+            } else {
+                throw new EvaluationException("Subtree could not be reduced : " + left.toString());
+            }
+            
+            right = right.visit(this);
+            if (right instanceof IPropertyValue) {
+                val2 = (IPropertyValue)right;
+            } else {
+                throw new EvaluationException("Subtree could not be reduced : " + right.toString());
+            }
+            
+            IPropertyValue newValue = val1.callDivOp(val2);
+            
+            return newValue;
+        }
+        
+        @Override
+        public IPropertyValue visitValue(IPropertyValue node)
+        throws EvaluationException
+        {
+            return node.evaluate(context);
+        }
+    }
+
     private static class Extension
     {
         Rule rule;
@@ -23,6 +160,8 @@ public class SassSheetEvaluator
         }
     }
 
+    private ExpressionEvaluator evaluator;
+    
     private List<Rule> ruleList;
     private Map<String, IPropertyValue> variables = null;
     private Map<String, Mixin> mixins = null;
@@ -32,9 +171,16 @@ public class SassSheetEvaluator
     }
     
     public void evaluate(SassSheet sheet)
-    throws ParseException, SerializationException
+    throws ParseException, EvaluationException
     {
-        this.variables = sheet.getVariables();
+        evaluator = new ExpressionEvaluator();
+    
+        Map<String, INode> unprocessedVariables = sheet.getVariables();
+        variables = new HashMap<String, IPropertyValue>();
+        for (Map.Entry<String, INode> entry : unprocessedVariables.entrySet()) {
+            variables.put(entry.getKey(), evaluator.evaluate(entry.getValue(), variables));
+        }
+        
         this.mixins = sheet.getMixins();
 
         for (Rule rule : sheet.getRules()) {
@@ -48,7 +194,7 @@ public class SassSheetEvaluator
             processRule(rule);
         }
         
-        sheet.setVariables(new HashMap<String, IPropertyValue>());
+        sheet.setVariables(new HashMap<String, INode>());
         sheet.setMixins(new HashMap<String, Mixin>());
         sheet.setRules(ruleList);
     }
@@ -210,21 +356,34 @@ public class SassSheetEvaluator
     }
     
     private void processRule(Rule rule)
-    throws SerializationException
+    throws EvaluationException
     {
         // Fetch all includes and just copy all the subrules
         // and properties of each mixin to this rule.
         for (IncludeDirective include : rule.getIncludes()) {
             Mixin mixin = mixins.get(include.getMixinName());
             if (mixin == null) {
-                throw new SerializationException("Mixin " + include.getMixinName() + " was not found.");
+                throw new EvaluationException("Mixin " + include.getMixinName() + " was not found.");
             }
             rule.addSubRules(mixin.getSubRules());
 
-            /*renderProperties(mixin.getProperties(), 
-                mixin.getParameterMap(include), 
-                indentLevel);*/
+            for (Property property : mixin.getProperties()) {
+                List<INode> newValues = new ArrayList<INode>();
+                for (INode value : property.getValues()) {
+                    newValues.add(evaluator.evaluate(value, mixin.getParameterMap(include)));
+                }
+                property.setValues(newValues);
+            }
+                
             rule.addProperties(mixin.getProperties());
+        }
+        
+        for (Property property : rule.getProperties()) {
+            List<INode> newValues = new ArrayList<INode>();
+            for (INode value : property.getValues()) {
+                newValues.add(evaluator.evaluate(value, variables));
+            }
+            property.setValues(newValues);
         }
         
         rule.setIncludes(new ArrayList<IncludeDirective>());
@@ -235,5 +394,6 @@ public class SassSheetEvaluator
         for (Rule subrule : rule.getSubRules()) {
             processRule(subrule);
         }
+        rule.setSubRules(new ArrayList<Rule>());
     }
 }

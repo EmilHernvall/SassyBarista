@@ -29,6 +29,11 @@ public class Block implements Serializable
         return properties;
     }
     
+    public void setSubRules(List<Rule> v)
+    {
+        this.subrules = v;
+    }
+    
     public void addSubRule(Rule rule)
     {
         subrules.add(rule);

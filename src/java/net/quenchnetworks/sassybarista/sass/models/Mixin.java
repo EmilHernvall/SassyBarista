@@ -24,11 +24,11 @@ public class Mixin extends Block implements Serializable
     }
     
     public Map<String, IPropertyValue> getParameterMap(IncludeDirective include)
-    throws SerializationException
+    throws EvaluationException
     {
         List<IPropertyValue> values = include.getParameters();
         if (parameters.size() != values.size()) {
-            throw new SerializationException("Mixin " + name + " requires " + parameters.size() + 
+            throw new EvaluationException("Mixin " + name + " requires " + parameters.size() + 
                 " parameters, but was passed " + values.size() + " arguments.");
         }
         

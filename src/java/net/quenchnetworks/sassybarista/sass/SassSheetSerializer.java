@@ -5,12 +5,11 @@ import java.util.*;
 
 import net.quenchnetworks.sassybarista.sass.models.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
+import net.quenchnetworks.sassybarista.sass.expression.*;
 
 public class SassSheetSerializer
 {
     private PrintStream writer;
-    private Map<String, IPropertyValue> variables = null;
-    private Map<String, Mixin> mixins = null;
 
     public SassSheetSerializer(PrintStream writer)
     {
@@ -18,20 +17,17 @@ public class SassSheetSerializer
     }
     
     public void render(SassSheet sheet)
-    throws ParseException, SerializationException
+    throws ParseException
     {
-        this.variables = sheet.getVariables();
-        this.mixins = sheet.getMixins();
-
         // serialize
-        for (Map.Entry<String, IPropertyValue> entry : variables.entrySet()) {
+        for (Map.Entry<String, INode> entry : sheet.getVariables().entrySet()) {
             writer.print(entry.getKey());
             writer.print(": ");
             writer.print(entry.getValue());
             writer.println(";");
         }
         
-        for (Mixin mixin : mixins.values()) {
+        for (Mixin mixin : sheet.getMixins().values()) {
             renderMixin(mixin);
         }
         
@@ -51,7 +47,6 @@ public class SassSheetSerializer
     }
     
     private void renderMixin(Mixin mixin)
-    throws SerializationException
     {
         writer.print("@mixin ");
         writer.print(mixin.getName());
@@ -69,13 +64,12 @@ public class SassSheetSerializer
         }
         writer.println("{");
         
-        renderProperties(mixin.getProperties(), new HashMap<String, IPropertyValue>(), 0);
+        renderProperties(mixin.getProperties(), 0);
         
         writer.println("}");
     }
     
     private void renderRule(Rule rule, int indentLevel)
-    throws SerializationException
     {
         String indent = generateIndent(indentLevel);
     
@@ -123,7 +117,7 @@ public class SassSheetSerializer
         }
         
         // Render all properties
-        renderProperties(rule.getProperties(), variables, indentLevel);
+        renderProperties(rule.getProperties(), indentLevel);
 
         // Render subrules
         for (Rule subrule : rule.getSubRules()) {
@@ -135,18 +129,17 @@ public class SassSheetSerializer
         writer.println();
     }
     
-    private void renderProperties(List<Property> properties, Map<String, IPropertyValue> scope, int indentLevel) 
-    throws SerializationException
+    private void renderProperties(List<Property> properties, int indentLevel) 
     {
         String indent = generateIndent(indentLevel);
     
         for (Property property : properties) {
             writer.print(indent);
             writer.print("\t" + property.getKey() + ": ");
-            List<IPropertyValue> values = property.getValues();
+            List<INode> values = property.getValues();
             int i = 0;
-            for (IPropertyValue value : values) {
-                writer.print(value.serialize(scope));
+            for (INode value : values) {
+                writer.print(value.toString());
                 if (i < values.size() - 1) {
                     writer.print(" ");
                 }
