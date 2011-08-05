@@ -1,6 +1,7 @@
 package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
+import java.math.*;
 import java.io.Serializable;
 
 import net.quenchnetworks.sassybarista.sass.*;
@@ -37,6 +38,23 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
             String v2 = value2.getValue();
             
             return new StringPropertyValue(v2 + v1, value2.getQuoteType());
+        }
+        
+        @Override
+        public IPropertyValue addOp(NumberPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            if ("px".equals(v1)) {
+            } else if ("pt".equals(v1)) {
+            } else if ("em".equals(v1)) {
+            }  else {
+                throw new EvaluationException("Only units can be added to numbers");
+            }
+            
+            BigDecimal v2 = value2.getValue();
+            
+            return new DimensionPropertyValue(v2, v1);
         }
     }
 

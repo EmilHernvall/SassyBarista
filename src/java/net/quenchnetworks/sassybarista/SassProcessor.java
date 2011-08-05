@@ -33,7 +33,7 @@ public class SassProcessor
         evaluator.addFunction("formatProperty", new IFunction() {
             public IPropertyValue evaluate(List<IPropertyValue> params)
             throws EvaluationException {
-                return new DefaultPropertyValue("foo");
+                return params.get(0);
             }
         });
         

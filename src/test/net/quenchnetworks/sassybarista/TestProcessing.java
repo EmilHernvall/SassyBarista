@@ -1,0 +1,120 @@
+package net.quenchnetworks.sassybarista;
+
+import java.io.*;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.eval.*;
+import net.quenchnetworks.sassybarista.sass.models.*;
+
+public class TestProcessing
+{
+    public void processTest(String testCase)
+    {
+        try {
+            // load reference text
+            String cssFile = "testcases/" + testCase + ".css";
+           
+            BufferedReader reader = new BufferedReader(new FileReader(cssFile));
+            StringBuilder refTextBuffer = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                refTextBuffer.append(line);
+                refTextBuffer.append("\n");
+            }
+            
+            reader.close();
+            
+            String refText = refTextBuffer.toString();
+            refText = refText.trim();
+            refText = refText.replace("\r\n","\n");
+            refText = refText.replace("\t","");
+            refText = refText.replace("    ","");
+        
+            // load and parse scss
+            String scssFile = "testcases/" + testCase + ".scss";
+        
+            SassParser parser = new SassParser(new FileReader(scssFile));
+            SassSheet sheet = parser.parse();
+        
+            SassSheetEvaluator evaluator = new SassSheetEvaluator();
+            evaluator.evaluate(sheet);
+        
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            SassSheetSerializer serializer = new SassSheetSerializer(new PrintStream(os));
+            
+            serializer.render(sheet);
+            
+            String processedText = os.toString("UTF-8");
+            processedText = processedText.trim();
+            processedText = processedText.replace("\r\n","\n");
+            processedText = processedText.replace("\t","");
+            processedText = processedText.replace("    ","");
+            
+            if (!refText.equals(processedText)) {
+                System.out.println(testCase + " failed.");
+                System.out.println("reference text:");
+                System.out.print(refText);
+                System.out.println("\n");
+                
+                System.out.println("processed text:");
+                System.out.print(processedText);
+                System.out.println("\n");
+            
+                fail();
+            } else {
+                assertTrue(true);
+            }
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+            fail("Caught ParseException.");
+        }
+        catch (EvaluationException e) {
+            e.printStackTrace();
+            fail("Caught EvaluationException.");
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            fail("Caught UnsupportedEncodingException.");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            fail("Caught IOException.");
+        }
+    }
+    
+    @Test
+    public void nesting()
+    {
+        processTest("nesting_basic");
+        processTest("nesting_permutation");
+    }
+    
+    @Test
+    public void mixin()
+    {
+        processTest("mixin");
+        processTest("mixin_parameter");
+    }
+    
+    @Test
+    public void variables()
+    {
+        processTest("variable");
+    }
+
+    @Test
+    public void selectors()
+    {
+        processTest("selectors");
+    }
+    
+    @Test 
+    public void expressions()
+    {
+        processTest("expression_arithmetic");
+    }
+}

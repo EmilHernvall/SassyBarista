@@ -1,0 +1,9 @@
+div.a,
+div.b {
+    font-family: Verdana;
+}
+
+div.a span,
+div.b span {
+    font-weight: bold;
+}

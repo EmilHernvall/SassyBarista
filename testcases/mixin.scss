@@ -1,0 +1,10 @@
+@mixin warning {
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+div.somewarning {
+    color: red;
+    @include warning;
+}

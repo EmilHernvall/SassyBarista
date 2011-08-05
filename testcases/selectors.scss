@@ -1,0 +1,89 @@
+/* element selector */
+div {
+    font-family: Verdana;
+}
+
+/* id selector */
+#wrapper {
+    font-family: Verdana;
+}
+
+/* class selector */
+.normal {
+    font-family: Verdana;
+}
+
+/* multiple classes */
+.error.seriousError {
+    color: red;
+}
+
+/* element and id combination */
+div#wrapper {
+    font-family: Verdana;
+}
+
+/* element and class combination */
+div.normal {
+    font-family: Verdana;
+}
+
+/* element, id and class combination */
+div#wrapper.normal {
+    font-family: Verdana;
+}
+
+/* pseudo class */
+a:hover {
+    font-family: Verdana;
+}
+
+/* "with" attribute selector */
+a[href] {
+    font-family: Verdana;
+}
+
+/* "equal" attribute selector */
+input[type="text"] {
+    font-family: Verdana;
+}
+
+/* "includes" attribute selector */
+a[class~="text"] {
+    font-family: Verdana;
+}
+
+/* "prefix" attribute selector */
+a[class^="text"] {
+    font-family: Verdana;
+}
+
+/* "suffix" attribute selector */
+a[class$="text"] {
+    font-family: Verdana;
+}
+
+/* "substring" attribute selector */
+a[class*="text"] {
+    font-family: Verdana;
+}
+
+/* "dash" attribute selector */
+a[class|="text"] {
+    font-family: Verdana;
+}
+
+/* child combinator */
+div > a {
+    font-family: Verdana;
+}
+
+/* "directly preceded by" combinator */
+div + a {
+    font-family: Verdana;
+}
+
+/* "preceded by" combinator */
+div ~ a {
+    font-family: Verdana;
+}

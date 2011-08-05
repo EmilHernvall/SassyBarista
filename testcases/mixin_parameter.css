@@ -1,0 +1,9 @@
+div#box {
+    padding: 20px;
+    width: 600px;
+    border: 1px #000 solid;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    border-radius: 30px;
+}

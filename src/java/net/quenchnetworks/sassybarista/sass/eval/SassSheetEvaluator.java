@@ -238,16 +238,14 @@ public class SassSheetEvaluator
             if (mixin == null) {
                 throw new EvaluationException("Mixin " + include.getMixinName() + " was not found.");
             }
+            
+            // copy the mixin to prevent substitutions from affecting
+            // later use
+            mixin = mixin.copy();
+            
+            reduceMixin(mixin, mixin.getParameterMap(include));
+            
             rule.addSubRules(mixin.getSubRules());
-
-            for (Property property : mixin.getProperties()) {
-                List<INode> newValues = new ArrayList<INode>();
-                for (INode value : property.getValues()) {
-                    newValues.add(evaluator.evaluate(value, mixin.getParameterMap(include)));
-                }
-                property.setValues(newValues);
-            }
-                
             rule.addProperties(mixin.getProperties());
         }
         
@@ -268,5 +266,21 @@ public class SassSheetEvaluator
             processRule(subrule);
         }
         rule.setSubRules(new ArrayList<Rule>());
+    }
+    
+    private void reduceMixin(Block block, Map<String, IPropertyValue> params)
+    throws EvaluationException
+    {
+        for (Property property : block.getProperties()) {
+            List<INode> newValues = new ArrayList<INode>();
+            for (INode value : property.getValues()) {
+                newValues.add(evaluator.evaluate(value, params));
+            }
+            property.setValues(newValues);
+        }
+        
+        for (Rule subrule : block.getSubRules()) {
+            reduceMixin(subrule, params);
+        }
     }
 }

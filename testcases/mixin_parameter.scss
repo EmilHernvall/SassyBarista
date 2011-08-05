@@ -1,0 +1,13 @@
+@mixin box($width, $color, $radius) {
+    border: $width $color solid;
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+div#box {
+    padding: 20px;
+    width: 600px;
+    @include box(1px, #000, 30px);
+}

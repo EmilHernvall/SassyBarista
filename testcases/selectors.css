@@ -1,0 +1,71 @@
+div {
+    font-family: Verdana;
+}
+
+#wrapper {
+    font-family: Verdana;
+}
+
+.normal {
+    font-family: Verdana;
+}
+
+.error.seriousError {
+    color: red;
+}
+
+div#wrapper {
+    font-family: Verdana;
+}
+
+div.normal {
+    font-family: Verdana;
+}
+
+div#wrapper.normal {
+    font-family: Verdana;
+}
+
+a:hover {
+    font-family: Verdana;
+}
+
+a[href] {
+    font-family: Verdana;
+}
+
+input[type="text"] {
+    font-family: Verdana;
+}
+
+a[class~="text"] {
+    font-family: Verdana;
+}
+
+a[class^="text"] {
+    font-family: Verdana;
+}
+
+a[class$="text"] {
+    font-family: Verdana;
+}
+
+a[class*="text"] {
+    font-family: Verdana;
+}
+
+a[class|="text"] {
+    font-family: Verdana;
+}
+
+div > a {
+    font-family: Verdana;
+}
+
+div + a {
+    font-family: Verdana;
+}
+
+div ~ a {
+    font-family: Verdana;
+}
