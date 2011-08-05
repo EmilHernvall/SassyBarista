@@ -11,7 +11,7 @@ import net.quenchnetworks.sassybarista.sass.value.op.*;
 
 public class NumberPropertyValue extends AbstractPropertyValue implements Serializable
 {
-    private static class AdditionOp extends AdditionOpAdapter
+    private static class AdditionOp extends OpAdapter
     {
         private NumberPropertyValue value1;
 
@@ -21,7 +21,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue addOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -31,7 +31,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue addOp(DimensionPropertyValue value2)
+        public IPropertyValue op(DimensionPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -41,7 +41,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
     }
     
-    private static class SubtractionOp extends SubtractionOpAdapter
+    private static class SubtractionOp extends OpAdapter
     {
         private NumberPropertyValue value1;
 
@@ -51,7 +51,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue subOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -61,7 +61,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue subOp(DimensionPropertyValue value2)
+        public IPropertyValue op(DimensionPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -71,7 +71,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
     }
     
-    private static class MultiplicationOp extends MultiplicationOpAdapter
+    private static class MultiplicationOp extends OpAdapter
     {
         private NumberPropertyValue value1;
 
@@ -81,7 +81,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue mulOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -91,7 +91,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue mulOp(DimensionPropertyValue value2)
+        public IPropertyValue op(DimensionPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -101,7 +101,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
     }
     
-    private static class DivisionOp extends DivisionOpAdapter
+    private static class DivisionOp extends OpAdapter
     {
         private NumberPropertyValue value1;
 
@@ -111,7 +111,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue divOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -121,7 +121,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue divOp(DimensionPropertyValue value2)
+        public IPropertyValue op(DimensionPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -131,7 +131,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
     }
     
-    private static class EqOp extends EqOpAdapter
+    private static class EqOp extends OpAdapter
     {
         private NumberPropertyValue value1;
 
@@ -141,7 +141,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue eqOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -151,7 +151,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
     }
     
-    private static class NotEqOp extends NotEqOpAdapter
+    private static class NotEqOp extends OpAdapter
     {
         private NumberPropertyValue value1;
 
@@ -161,7 +161,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue notEqOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -171,7 +171,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
     }
     
-    private static class LtOp extends LtOpAdapter
+    private static class LtOp extends OpAdapter
     {
         private NumberPropertyValue value1;
 
@@ -181,7 +181,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue ltOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -191,7 +191,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
     }
     
-    private static class GtOp extends GtOpAdapter
+    private static class GtOp extends OpAdapter
     {
         private NumberPropertyValue value1;
 
@@ -201,7 +201,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue gtOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -234,49 +234,49 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
     }
     
     @Override
-    public IAdditionOp getAdditionOp()
+    public IOp getAdditionOp()
     {
         return new AdditionOp(this);
     }
     
     @Override
-    public ISubtractionOp getSubtractionOp()
+    public IOp getSubtractionOp()
     {
         return new SubtractionOp(this);
     }
     
     @Override
-    public IMultiplicationOp getMultiplicationOp()
+    public IOp getMultiplicationOp()
     {
         return new MultiplicationOp(this);
     }
     
     @Override
-    public IDivisionOp getDivisionOp()
+    public IOp getDivisionOp()
     {
         return new DivisionOp(this);
     }
     
     @Override
-    public IEqOp getEqOp()
+    public IOp getEqOp()
     {
         return new EqOp(this);
     }
     
     @Override
-    public INotEqOp getNotEqOp()
+    public IOp getNotEqOp()
     {
         return new NotEqOp(this);
     }
     
     @Override
-    public ILtOp getLtOp()
+    public IOp getLtOp()
     {
         return new LtOp(this);
     }
     
     @Override
-    public IGtOp getGtOp()
+    public IOp getGtOp()
     {
         return new GtOp(this);
     }
@@ -285,73 +285,71 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
     public IPropertyValue callAddOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IAdditionOp op = node.getAdditionOp();
-        return op.addOp(this);
+        IOp op = node.getAdditionOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callSubOp(IPropertyValue node) 
     throws EvaluationException
     {
-        ISubtractionOp op = node.getSubtractionOp();
-        return op.subOp(this);
+        IOp op = node.getSubtractionOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callMulOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IMultiplicationOp op = node.getMultiplicationOp();
-        return op.mulOp(this);
+        IOp op = node.getMultiplicationOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callDivOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IDivisionOp op = node.getDivisionOp();
-        return op.divOp(this);
-    }
-    
-    @Override
-    public IPropertyValue negateOp() 
-    throws EvaluationException
-    {
-        value = value.negate();
-        
-        return this;
+        IOp op = node.getDivisionOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callEqOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IEqOp op = node.getEqOp();
-        return op.eqOp(this);
+        IOp op = node.getEqOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callNotEqOp(IPropertyValue node) 
     throws EvaluationException
     {
-        INotEqOp op = node.getNotEqOp();
-        return op.notEqOp(this);
+        IOp op = node.getNotEqOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callLtOp(IPropertyValue node) 
     throws EvaluationException
     {
-        ILtOp op = node.getLtOp();
-        return op.ltOp(this);
+        IOp op = node.getLtOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callGtOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IGtOp op = node.getGtOp();
-        return op.gtOp(this);
+        IOp op = node.getGtOp();
+        return op.op(this);
+    }
+    
+    @Override
+    public IPropertyValue negateOp() 
+    throws EvaluationException
+    {
+        return new NumberPropertyValue(value.negate());
     }
     
     @Override

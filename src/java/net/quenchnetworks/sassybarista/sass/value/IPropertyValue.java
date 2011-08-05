@@ -13,30 +13,30 @@ public interface IPropertyValue extends INode
         Map<String, IFunction> functions) throws EvaluationException;
 
     public IPropertyValue callAddOp(IPropertyValue node) throws EvaluationException;
-    public IAdditionOp getAdditionOp();
+    public IOp getAdditionOp();
     
     public IPropertyValue callSubOp(IPropertyValue node) throws EvaluationException;
-    public ISubtractionOp getSubtractionOp();
+    public IOp getSubtractionOp();
     
     public IPropertyValue callMulOp(IPropertyValue node) throws EvaluationException;
-    public IMultiplicationOp getMultiplicationOp();
+    public IOp getMultiplicationOp();
     
     public IPropertyValue callDivOp(IPropertyValue node) throws EvaluationException;
-    public IDivisionOp getDivisionOp();
+    public IOp getDivisionOp();
     
     public IPropertyValue negateOp() throws EvaluationException;
     
     public IPropertyValue callEqOp(IPropertyValue node) throws EvaluationException;
-    public IEqOp getEqOp();
+    public IOp getEqOp();
     
     public IPropertyValue callNotEqOp(IPropertyValue node) throws EvaluationException;
-    public INotEqOp getNotEqOp();
+    public IOp getNotEqOp();
     
     public IPropertyValue callLtOp(IPropertyValue node) throws EvaluationException;
-    public ILtOp getLtOp();
+    public IOp getLtOp();
     
     public IPropertyValue callGtOp(IPropertyValue node) throws EvaluationException;
-    public IGtOp getGtOp();
+    public IOp getGtOp();
     
     public IPropertyValue copy();
 }

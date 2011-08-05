@@ -11,7 +11,7 @@ import net.quenchnetworks.sassybarista.sass.value.op.*;
 
 public class DimensionPropertyValue extends AbstractPropertyValue implements Serializable
 {
-    private static class AdditionOp extends AdditionOpAdapter
+    private static class AdditionOp extends OpAdapter
     {
         private DimensionPropertyValue value1;
 
@@ -21,7 +21,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
         
         @Override
-        public IPropertyValue addOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -31,7 +31,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
         
         @Override
-        public IPropertyValue addOp(DimensionPropertyValue value2)
+        public IPropertyValue op(DimensionPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -45,7 +45,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
     }
     
-    private static class SubtractionOp extends SubtractionOpAdapter
+    private static class SubtractionOp extends OpAdapter
     {
         private DimensionPropertyValue value1;
 
@@ -55,7 +55,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
         
         @Override
-        public IPropertyValue subOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -65,7 +65,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
         
         @Override
-        public IPropertyValue subOp(DimensionPropertyValue value2)
+        public IPropertyValue op(DimensionPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -79,7 +79,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
     }
     
-    private static class MultiplicationOp extends MultiplicationOpAdapter
+    private static class MultiplicationOp extends OpAdapter
     {
         private DimensionPropertyValue value1;
 
@@ -89,7 +89,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
         
         @Override
-        public IPropertyValue mulOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -99,7 +99,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
         
         @Override
-        public IPropertyValue mulOp(DimensionPropertyValue value2)
+        public IPropertyValue op(DimensionPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -113,7 +113,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
     }
     
-    private static class DivisionOp extends DivisionOpAdapter
+    private static class DivisionOp extends OpAdapter
     {
         private DimensionPropertyValue value1;
 
@@ -123,7 +123,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
         
         @Override
-        public IPropertyValue divOp(NumberPropertyValue value2)
+        public IPropertyValue op(NumberPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -133,7 +133,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
         
         @Override
-        public IPropertyValue divOp(DimensionPropertyValue value2)
+        public IPropertyValue op(DimensionPropertyValue value2)
         throws EvaluationException
         {
             BigDecimal v1 = value1.getValue();
@@ -191,25 +191,25 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
     }
     
     @Override
-    public IAdditionOp getAdditionOp()
+    public IOp getAdditionOp()
     {
         return new AdditionOp(this);
     }
     
     @Override
-    public ISubtractionOp getSubtractionOp()
+    public IOp getSubtractionOp()
     {
         return new SubtractionOp(this);
     }
     
     @Override
-    public IMultiplicationOp getMultiplicationOp()
+    public IOp getMultiplicationOp()
     {
         return new MultiplicationOp(this);
     }
     
     @Override
-    public IDivisionOp getDivisionOp()
+    public IOp getDivisionOp()
     {
         return new DivisionOp(this);
     }
@@ -218,73 +218,71 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
     public IPropertyValue callAddOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IAdditionOp op = node.getAdditionOp();
-        return op.addOp(this);
+        IOp op = node.getAdditionOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callSubOp(IPropertyValue node) 
     throws EvaluationException
     {
-        ISubtractionOp op = node.getSubtractionOp();
-        return op.subOp(this);
+        IOp op = node.getSubtractionOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callMulOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IMultiplicationOp op = node.getMultiplicationOp();
-        return op.mulOp(this);
+        IOp op = node.getMultiplicationOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callDivOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IDivisionOp op = node.getDivisionOp();
-        return op.divOp(this);
-    }
-    
-    @Override
-    public IPropertyValue negateOp() 
-    throws EvaluationException
-    {
-        value = value.negate();
-        
-        return this;
+        IOp op = node.getDivisionOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callEqOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IEqOp op = node.getEqOp();
-        return op.eqOp(this);
+        IOp op = node.getEqOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callNotEqOp(IPropertyValue node) 
     throws EvaluationException
     {
-        INotEqOp op = node.getNotEqOp();
-        return op.notEqOp(this);
+        IOp op = node.getNotEqOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callLtOp(IPropertyValue node) 
     throws EvaluationException
     {
-        ILtOp op = node.getLtOp();
-        return op.ltOp(this);
+        IOp op = node.getLtOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callGtOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IGtOp op = node.getGtOp();
-        return op.gtOp(this);
+        IOp op = node.getGtOp();
+        return op.op(this);
+    }
+    
+    @Override
+    public IPropertyValue negateOp() 
+    throws EvaluationException
+    {
+        return new DimensionPropertyValue(value.negate(), unit);
     }
     
     @Override

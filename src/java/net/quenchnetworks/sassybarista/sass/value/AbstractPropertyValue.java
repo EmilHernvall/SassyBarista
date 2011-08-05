@@ -26,51 +26,51 @@ public abstract class AbstractPropertyValue implements IPropertyValue
     }
     
     @Override
-    public IAdditionOp getAdditionOp()
+    public IOp getAdditionOp()
     {
-        return new AdditionOpAdapter() {};
+        return new OpAdapter() {};
     }
     
     @Override
-    public ISubtractionOp getSubtractionOp()
+    public IOp getSubtractionOp()
     {
-        return new SubtractionOpAdapter() {};
+        return new OpAdapter() {};
     }
     
     @Override
-    public IMultiplicationOp getMultiplicationOp()
+    public IOp getMultiplicationOp()
     {
-        return new MultiplicationOpAdapter() {};
+        return new OpAdapter() {};
     }
     
     @Override
-    public IDivisionOp getDivisionOp()
+    public IOp getDivisionOp()
     {
-        return new DivisionOpAdapter() {};
+        return new OpAdapter() {};
     }
     
     @Override
-    public IEqOp getEqOp()
+    public IOp getEqOp()
     {
-        return new EqOpAdapter() {};
+        return new OpAdapter() {};
     }
     
     @Override
-    public INotEqOp getNotEqOp()
+    public IOp getNotEqOp()
     {
-        return new NotEqOpAdapter() {};
+        return new OpAdapter() {};
     }
     
     @Override
-    public ILtOp getLtOp()
+    public IOp getLtOp()
     {
-        return new LtOpAdapter() {};
+        return new OpAdapter() {};
     }
     
     @Override
-    public IGtOp getGtOp()
+    public IOp getGtOp()
     {
-        return new GtOpAdapter() {};
+        return new OpAdapter() {};
     }
     
     @Override

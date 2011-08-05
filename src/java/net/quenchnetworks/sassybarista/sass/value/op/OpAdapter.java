@@ -7,63 +7,63 @@ import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
 
-public abstract class EqOpAdapter implements IEqOp
+public abstract class OpAdapter implements IOp
 {
-    public IPropertyValue eqOp(ColorPropertyValue v)
+    public IPropertyValue op(ColorPropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("ColorPropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(BooleanPropertyValue v)
+    public IPropertyValue op(BooleanPropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("BooleanPropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(DefaultPropertyValue v)
+    public IPropertyValue op(DefaultPropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("DefaultPropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(DimensionPropertyValue v)
+    public IPropertyValue op(DimensionPropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("DimensionPropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(FunctionPropertyValue v)
+    public IPropertyValue op(FunctionPropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("FunctionPropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(NumberPropertyValue v)
+    public IPropertyValue op(NumberPropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("NumberPropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(PercentagePropertyValue v)
+    public IPropertyValue op(PercentagePropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("PercentagePropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(StringPropertyValue v)
+    public IPropertyValue op(StringPropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("StringPropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(URIPropertyValue v)
+    public IPropertyValue op(URIPropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("URIPropertyValue is unsupported.");
     }
     
-    public IPropertyValue eqOp(VariablePropertyValue v)
+    public IPropertyValue op(VariablePropertyValue v)
     throws EvaluationException
     {
         throw new EvaluationException("VariablePropertyValue is unsupported.");

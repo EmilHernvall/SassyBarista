@@ -10,7 +10,7 @@ import net.quenchnetworks.sassybarista.sass.value.op.*;
 
 public class StringPropertyValue extends AbstractPropertyValue implements Serializable
 {
-    private static class AdditionOp extends AdditionOpAdapter
+    private static class AdditionOp extends OpAdapter
     {
         private StringPropertyValue value1;
 
@@ -20,7 +20,7 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue addOp(DefaultPropertyValue value2)
+        public IPropertyValue op(DefaultPropertyValue value2)
         throws EvaluationException
         {
             String v1 = value1.getValue();
@@ -30,7 +30,7 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
         }
         
         @Override
-        public IPropertyValue addOp(StringPropertyValue value2)
+        public IPropertyValue op(StringPropertyValue value2)
         throws EvaluationException
         {
             String v1 = value1.getValue();
@@ -76,7 +76,7 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
     }
     
     @Override
-    public IAdditionOp getAdditionOp()
+    public IOp getAdditionOp()
     {
         return new AdditionOp(this);
     }
@@ -85,64 +85,64 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
     public IPropertyValue callAddOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IAdditionOp op = node.getAdditionOp();
-        return op.addOp(this);
+        IOp op = node.getAdditionOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callSubOp(IPropertyValue node) 
     throws EvaluationException
     {
-        ISubtractionOp op = node.getSubtractionOp();
-        return op.subOp(this);
+        IOp op = node.getSubtractionOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callMulOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IMultiplicationOp op = node.getMultiplicationOp();
-        return op.mulOp(this);
+        IOp op = node.getMultiplicationOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callDivOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IDivisionOp op = node.getDivisionOp();
-        return op.divOp(this);
+        IOp op = node.getDivisionOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callEqOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IEqOp op = node.getEqOp();
-        return op.eqOp(this);
+        IOp op = node.getEqOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callNotEqOp(IPropertyValue node) 
     throws EvaluationException
     {
-        INotEqOp op = node.getNotEqOp();
-        return op.notEqOp(this);
+        IOp op = node.getNotEqOp();
+        return op.op(this);
     }
 
     @Override
     public IPropertyValue callLtOp(IPropertyValue node) 
     throws EvaluationException
     {
-        ILtOp op = node.getLtOp();
-        return op.ltOp(this);
+        IOp op = node.getLtOp();
+        return op.op(this);
     }
     
     @Override
     public IPropertyValue callGtOp(IPropertyValue node) 
     throws EvaluationException
     {
-        IGtOp op = node.getGtOp();
-        return op.gtOp(this);
+        IOp op = node.getGtOp();
+        return op.op(this);
     }
     
     @Override
