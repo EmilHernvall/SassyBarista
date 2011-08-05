@@ -15,6 +15,12 @@ public abstract class AdditionOpAdapter implements IAdditionOp
         throw new EvaluationException("ColorPropertyValue is unsupported.");
     }
     
+    public IPropertyValue addOp(BooleanPropertyValue v)
+    throws EvaluationException
+    {
+        throw new EvaluationException("BooleanPropertyValue is unsupported.");
+    }
+    
     public IPropertyValue addOp(DefaultPropertyValue v)
     throws EvaluationException
     {

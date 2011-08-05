@@ -10,6 +10,7 @@ import net.quenchnetworks.sassybarista.sass.expression.*;
 public interface ISubtractionOp
 {
     public IPropertyValue subOp(ColorPropertyValue v) throws EvaluationException;
+    public IPropertyValue subOp(BooleanPropertyValue v) throws EvaluationException;
     public IPropertyValue subOp(DefaultPropertyValue v) throws EvaluationException;
     public IPropertyValue subOp(DimensionPropertyValue v) throws EvaluationException;
     public IPropertyValue subOp(FunctionPropertyValue v) throws EvaluationException;

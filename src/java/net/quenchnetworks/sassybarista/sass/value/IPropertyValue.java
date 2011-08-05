@@ -26,5 +26,17 @@ public interface IPropertyValue extends INode
     
     public IPropertyValue negateOp() throws EvaluationException;
     
+    public IPropertyValue callEqOp(IPropertyValue node) throws EvaluationException;
+    public IEqOp getEqOp();
+    
+    public IPropertyValue callNotEqOp(IPropertyValue node) throws EvaluationException;
+    public INotEqOp getNotEqOp();
+    
+    public IPropertyValue callLtOp(IPropertyValue node) throws EvaluationException;
+    public ILtOp getLtOp();
+    
+    public IPropertyValue callGtOp(IPropertyValue node) throws EvaluationException;
+    public IGtOp getGtOp();
+    
     public IPropertyValue copy();
 }

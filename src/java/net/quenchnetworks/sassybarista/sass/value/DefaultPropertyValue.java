@@ -114,6 +114,38 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
     }
     
     @Override
+    public IPropertyValue callEqOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        IEqOp op = node.getEqOp();
+        return op.eqOp(this);
+    }
+
+    @Override
+    public IPropertyValue callNotEqOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        INotEqOp op = node.getNotEqOp();
+        return op.notEqOp(this);
+    }
+
+    @Override
+    public IPropertyValue callLtOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        ILtOp op = node.getLtOp();
+        return op.ltOp(this);
+    }
+    
+    @Override
+    public IPropertyValue callGtOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        IGtOp op = node.getGtOp();
+        return op.gtOp(this);
+    }
+    
+    @Override
     public IPropertyValue copy()
     {
         return new DefaultPropertyValue(value);

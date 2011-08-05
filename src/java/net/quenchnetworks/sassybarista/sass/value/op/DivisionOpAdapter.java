@@ -15,6 +15,12 @@ public abstract class DivisionOpAdapter implements IDivisionOp
         throw new EvaluationException("ColorPropertyValue is unsupported.");
     }
     
+    public IPropertyValue divOp(BooleanPropertyValue v)
+    throws EvaluationException
+    {
+        throw new EvaluationException("BooleanPropertyValue is unsupported.");
+    }
+    
     public IPropertyValue divOp(DefaultPropertyValue v)
     throws EvaluationException
     {

@@ -92,6 +92,38 @@ public class FunctionPropertyValue extends AbstractPropertyValue implements Seri
     }
     
     @Override
+    public IPropertyValue callEqOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        IEqOp op = node.getEqOp();
+        return op.eqOp(this);
+    }
+
+    @Override
+    public IPropertyValue callNotEqOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        INotEqOp op = node.getNotEqOp();
+        return op.notEqOp(this);
+    }
+
+    @Override
+    public IPropertyValue callLtOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        ILtOp op = node.getLtOp();
+        return op.ltOp(this);
+    }
+    
+    @Override
+    public IPropertyValue callGtOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        IGtOp op = node.getGtOp();
+        return op.gtOp(this);
+    }
+    
+    @Override
     public IPropertyValue copy()
     {
         FunctionPropertyValue newValue = new FunctionPropertyValue(name);

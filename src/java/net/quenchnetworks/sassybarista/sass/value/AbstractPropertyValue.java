@@ -50,6 +50,30 @@ public abstract class AbstractPropertyValue implements IPropertyValue
     }
     
     @Override
+    public IEqOp getEqOp()
+    {
+        return new EqOpAdapter() {};
+    }
+    
+    @Override
+    public INotEqOp getNotEqOp()
+    {
+        return new NotEqOpAdapter() {};
+    }
+    
+    @Override
+    public ILtOp getLtOp()
+    {
+        return new LtOpAdapter() {};
+    }
+    
+    @Override
+    public IGtOp getGtOp()
+    {
+        return new GtOpAdapter() {};
+    }
+    
+    @Override
     public IPropertyValue negateOp() 
     throws EvaluationException
     {

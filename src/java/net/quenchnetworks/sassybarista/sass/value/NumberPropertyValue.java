@@ -130,6 +130,86 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
             return new DimensionPropertyValue(v2.divide(v1), value2.getUnit());
         }
     }
+    
+    private static class EqOp extends EqOpAdapter
+    {
+        private NumberPropertyValue value1;
+
+        public EqOp(NumberPropertyValue value1)
+        {
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue eqOp(NumberPropertyValue value2)
+        throws EvaluationException
+        {
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1.equals(v2));
+        }
+    }
+    
+    private static class NotEqOp extends NotEqOpAdapter
+    {
+        private NumberPropertyValue value1;
+
+        public NotEqOp(NumberPropertyValue value1)
+        {
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue notEqOp(NumberPropertyValue value2)
+        throws EvaluationException
+        {
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(!v1.equals(v2));
+        }
+    }
+    
+    private static class LtOp extends LtOpAdapter
+    {
+        private NumberPropertyValue value1;
+
+        public LtOp(NumberPropertyValue value1)
+        {
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue ltOp(NumberPropertyValue value2)
+        throws EvaluationException
+        {
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1.compareTo(v2) > 0);
+        }
+    }
+    
+    private static class GtOp extends GtOpAdapter
+    {
+        private NumberPropertyValue value1;
+
+        public GtOp(NumberPropertyValue value1)
+        {
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue gtOp(NumberPropertyValue value2)
+        throws EvaluationException
+        {
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1.compareTo(v2) < 0);
+        }
+    }
 
     private BigDecimal value;
 
@@ -178,6 +258,30 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
     }
     
     @Override
+    public IEqOp getEqOp()
+    {
+        return new EqOp(this);
+    }
+    
+    @Override
+    public INotEqOp getNotEqOp()
+    {
+        return new NotEqOp(this);
+    }
+    
+    @Override
+    public ILtOp getLtOp()
+    {
+        return new LtOp(this);
+    }
+    
+    @Override
+    public IGtOp getGtOp()
+    {
+        return new GtOp(this);
+    }
+    
+    @Override
     public IPropertyValue callAddOp(IPropertyValue node) 
     throws EvaluationException
     {
@@ -216,6 +320,38 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         value = value.negate();
         
         return this;
+    }
+    
+    @Override
+    public IPropertyValue callEqOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        IEqOp op = node.getEqOp();
+        return op.eqOp(this);
+    }
+
+    @Override
+    public IPropertyValue callNotEqOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        INotEqOp op = node.getNotEqOp();
+        return op.notEqOp(this);
+    }
+
+    @Override
+    public IPropertyValue callLtOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        ILtOp op = node.getLtOp();
+        return op.ltOp(this);
+    }
+    
+    @Override
+    public IPropertyValue callGtOp(IPropertyValue node) 
+    throws EvaluationException
+    {
+        IGtOp op = node.getGtOp();
+        return op.gtOp(this);
     }
     
     @Override

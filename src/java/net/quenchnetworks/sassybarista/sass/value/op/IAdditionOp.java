@@ -10,6 +10,7 @@ import net.quenchnetworks.sassybarista.sass.expression.*;
 public interface IAdditionOp
 {
     public IPropertyValue addOp(ColorPropertyValue v) throws EvaluationException;
+    public IPropertyValue addOp(BooleanPropertyValue v) throws EvaluationException;
     public IPropertyValue addOp(DefaultPropertyValue v) throws EvaluationException;
     public IPropertyValue addOp(DimensionPropertyValue v) throws EvaluationException;
     public IPropertyValue addOp(FunctionPropertyValue v) throws EvaluationException;

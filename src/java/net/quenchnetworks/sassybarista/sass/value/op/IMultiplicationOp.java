@@ -10,6 +10,7 @@ import net.quenchnetworks.sassybarista.sass.expression.*;
 public interface IMultiplicationOp
 {
     public IPropertyValue mulOp(ColorPropertyValue v) throws EvaluationException;
+    public IPropertyValue mulOp(BooleanPropertyValue v) throws EvaluationException;
     public IPropertyValue mulOp(DefaultPropertyValue v) throws EvaluationException;
     public IPropertyValue mulOp(DimensionPropertyValue v) throws EvaluationException;
     public IPropertyValue mulOp(FunctionPropertyValue v) throws EvaluationException;

@@ -10,6 +10,7 @@ import net.quenchnetworks.sassybarista.sass.expression.*;
 public interface IDivisionOp
 {
     public IPropertyValue divOp(ColorPropertyValue v) throws EvaluationException;
+    public IPropertyValue divOp(BooleanPropertyValue v) throws EvaluationException;
     public IPropertyValue divOp(DefaultPropertyValue v) throws EvaluationException;
     public IPropertyValue divOp(DimensionPropertyValue v) throws EvaluationException;
     public IPropertyValue divOp(FunctionPropertyValue v) throws EvaluationException;

@@ -94,7 +94,7 @@ public class TestProcessing
     }
     
     @Test
-    public void mixin()
+    public void mixins()
     {
         processTest("mixin");
         processTest("mixin_parameter");
@@ -116,5 +116,11 @@ public class TestProcessing
     public void expressions()
     {
         processTest("expression_arithmetic");
+    }
+    
+    @Test 
+    public void controlstructures()
+    {
+        processTest("controlstructure_if");
     }
 }

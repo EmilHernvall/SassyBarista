@@ -102,6 +102,74 @@ public class ExpressionEvaluator implements NodeVisitor
     }
     
     @Override
+    public IPropertyValue visitEq(EqNode node) 
+    throws EvaluationException
+    {
+        INode left = node.getLeftNode();
+        INode right = node.getRightNode();
+        
+        IPropertyValue val1, val2;
+        
+        val1 = left.visit(this);
+        val2 = right.visit(this);
+        
+        IPropertyValue newValue = val1.callEqOp(val2);
+        
+        return newValue;
+    }
+    
+    @Override
+    public IPropertyValue visitNotEq(NotEqNode node) 
+    throws EvaluationException
+    {
+        INode left = node.getLeftNode();
+        INode right = node.getRightNode();
+        
+        IPropertyValue val1, val2;
+        
+        val1 = left.visit(this);
+        val2 = right.visit(this);
+        
+        IPropertyValue newValue = val1.callNotEqOp(val2);
+        
+        return newValue;
+    }
+    
+    @Override
+    public IPropertyValue visitLt(LtNode node) 
+    throws EvaluationException
+    {
+        INode left = node.getLeftNode();
+        INode right = node.getRightNode();
+        
+        IPropertyValue val1, val2;
+        
+        val1 = left.visit(this);
+        val2 = right.visit(this);
+        
+        IPropertyValue newValue = val1.callLtOp(val2);
+        
+        return newValue;
+    }
+    
+    @Override
+    public IPropertyValue visitGt(GtNode node) 
+    throws EvaluationException
+    {
+        INode left = node.getLeftNode();
+        INode right = node.getRightNode();
+        
+        IPropertyValue val1, val2;
+        
+        val1 = left.visit(this);
+        val2 = right.visit(this);
+        
+        IPropertyValue newValue = val1.callGtOp(val2);
+        
+        return newValue;
+    }
+    
+    @Override
     public IPropertyValue visitValue(IPropertyValue node)
     throws EvaluationException
     {

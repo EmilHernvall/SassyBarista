@@ -104,7 +104,7 @@ SassSheet parse() :
             { variableName = t.image; }
             ":"
             (<S>)*
-            variableValue = Expression()
+            variableValue = ConditionalExpression()
             ";"
             (LOOKAHEAD(2) <S>)*
             { variables.put(variableName, variableValue); }
@@ -463,6 +463,52 @@ Property Property(Block block) :
     (LOOKAHEAD(2) <S>)*
     
     { return property; }
+}
+
+INode ConditionalExpression() :
+{
+    INode node, current ;
+    IBinaryNode nextNode ;
+}
+{
+    node = Expression()
+    (<S>)*
+    (
+        (
+            { 
+                nextNode = new EqNode(); 
+                nextNode.setLeftNode(node);
+            }
+            "=="
+        |
+            { 
+                nextNode = new NotEqNode(); 
+                nextNode.setLeftNode(node);
+            }
+            "!="
+        |
+            { 
+                nextNode = new LtNode(); 
+                nextNode.setLeftNode(node);
+            }
+            "<"
+        |
+            { 
+                nextNode = new GtNode(); 
+                nextNode.setLeftNode(node);
+            }
+            ">"
+        )
+        (<S>)*
+        current = Expression()
+        { 
+            nextNode.setRightNode(current); 
+            node = nextNode;
+        }
+        (<S>)*
+    )*
+    
+    { return node; }
 }
 
 INode Expression() :

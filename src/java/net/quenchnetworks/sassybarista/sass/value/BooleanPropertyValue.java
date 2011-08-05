@@ -8,18 +8,28 @@ import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
 import net.quenchnetworks.sassybarista.sass.value.op.*;
 
-public class URIPropertyValue extends AbstractPropertyValue implements Serializable
+public class BooleanPropertyValue extends AbstractPropertyValue implements Serializable
 {
-    private String value;
+    private boolean value;
 
-    public URIPropertyValue()
+    public BooleanPropertyValue()
     {
-        this.value = null;
+        this.value = false;
     }
     
-    public URIPropertyValue(String value)
+    public BooleanPropertyValue(boolean v)
     {
-        this.value = value;
+        this.value = v;
+    }
+    
+    public BooleanPropertyValue(String value)
+    {
+        this.value = Boolean.valueOf(value);
+    }
+    
+    public boolean getValue()
+    {
+        return value;
     }
     
     @Override
@@ -89,12 +99,12 @@ public class URIPropertyValue extends AbstractPropertyValue implements Serializa
     @Override
     public IPropertyValue copy()
     {
-        return new URIPropertyValue(value);
+        return new BooleanPropertyValue(value);
     }
     
     @Override
     public String toString()
     {
-        return value;
+        return Boolean.toString(value);
     }
 }

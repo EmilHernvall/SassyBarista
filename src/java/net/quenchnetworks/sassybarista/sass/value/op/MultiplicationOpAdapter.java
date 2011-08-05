@@ -15,6 +15,12 @@ public abstract class MultiplicationOpAdapter implements IMultiplicationOp
         throw new EvaluationException("ColorPropertyValue is unsupported.");
     }
     
+    public IPropertyValue mulOp(BooleanPropertyValue v)
+    throws EvaluationException
+    {
+        throw new EvaluationException("BooleanPropertyValue is unsupported.");
+    }
+    
     public IPropertyValue mulOp(DefaultPropertyValue v)
     throws EvaluationException
     {
