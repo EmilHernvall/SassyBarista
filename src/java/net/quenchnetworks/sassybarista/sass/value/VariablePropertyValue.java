@@ -68,6 +68,12 @@ public class VariablePropertyValue extends AbstractPropertyValue implements Seri
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        return new VariablePropertyValue(variable);
+    }
+    
+    @Override
     public String toString()
     {
         return variable;

@@ -6,10 +6,14 @@ import net.quenchnetworks.sassybarista.sass.*;
 import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 
-public class NegationNode implements INode
+public class NegationNode implements INode, java.io.Serializable
 {
     private INode node;
 
+    public NegationNode()
+    {
+    }
+    
     public NegationNode(INode child)
     {
         this.node = child;
@@ -30,6 +34,15 @@ public class NegationNode implements INode
     throws EvaluationException
     {
         return visitor.visitNegatation(this);
+    }
+    
+    @Override
+    public INode copy()
+    {
+        NegationNode newNode = new NegationNode();
+        newNode.setNode(getNode().copy());
+        
+        return newNode;
     }
     
     @Override

@@ -55,6 +55,12 @@ public class URIPropertyValue extends AbstractPropertyValue implements Serializa
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        return new URIPropertyValue(value);
+    }
+    
+    @Override
     public String toString()
     {
         return value;

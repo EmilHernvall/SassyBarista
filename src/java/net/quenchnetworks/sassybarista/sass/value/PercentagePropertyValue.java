@@ -55,6 +55,12 @@ public class PercentagePropertyValue extends AbstractPropertyValue implements Se
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        return new PercentagePropertyValue(value);
+    }
+    
+    @Override
     public String toString()
     {
         return value;

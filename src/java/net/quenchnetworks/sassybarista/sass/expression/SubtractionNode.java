@@ -20,6 +20,16 @@ public class SubtractionNode extends AbstractNode
     }
     
     @Override
+    public INode copy()
+    {
+        SubtractionNode newNode = new SubtractionNode();
+        newNode.setLeftNode(getLeftNode().copy());
+        newNode.setRightNode(getRightNode().copy());
+        
+        return newNode;
+    }
+    
+    @Override
     public String toString()
     {
         return getLeftNode() + " - " + getRightNode();

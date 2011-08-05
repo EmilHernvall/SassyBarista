@@ -92,6 +92,17 @@ public class FunctionPropertyValue extends AbstractPropertyValue implements Seri
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        FunctionPropertyValue newValue = new FunctionPropertyValue(name);
+        for (IPropertyValue value : values) {
+            newValue.addValue(value.copy());
+        }
+        
+        return newValue;
+    }
+    
+    @Override
     public String toString()
     {
         StringBuilder buffer = new StringBuilder();

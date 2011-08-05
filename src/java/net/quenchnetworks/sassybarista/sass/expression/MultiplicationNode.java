@@ -20,6 +20,16 @@ public class MultiplicationNode extends AbstractNode
     }
     
     @Override
+    public INode copy()
+    {
+        MultiplicationNode newNode = new MultiplicationNode();
+        newNode.setLeftNode(getLeftNode().copy());
+        newNode.setRightNode(getRightNode().copy());
+        
+        return newNode;
+    }
+    
+    @Override
     public String toString()
     {
         StringBuilder result = new StringBuilder();

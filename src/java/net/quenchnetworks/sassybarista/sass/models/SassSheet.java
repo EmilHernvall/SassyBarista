@@ -35,4 +35,22 @@ public class SassSheet implements Serializable
     
     public List<Rule> getRules() { return rules; }
     public void setRules(List<Rule> v) { this.rules = v; }
+    
+    public SassSheet copy()
+    {
+        SassSheet newSheet = new SassSheet();
+        for (Map.Entry<String, INode> entry : variables.entrySet()) {
+            newSheet.variables.put(entry.getKey(), entry.getValue().copy());
+        }
+        
+        for (Map.Entry<String, Mixin> entry : mixins.entrySet()) {
+            newSheet.mixins.put(entry.getKey(), entry.getValue().copy());
+        }
+        
+        for (Rule rule : rules) {
+            newSheet.rules.add(rule.copy());
+        }
+        
+        return newSheet;
+    }
 }

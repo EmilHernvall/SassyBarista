@@ -59,6 +59,16 @@ public class Selector implements Serializable
         public void setValue(String v) { this.value = v; }
         public String getValue() { return value; }
         
+        public AttributeSelector copy()
+        {
+            AttributeSelector attrSel = new AttributeSelector();
+            attrSel.attribute = attribute;
+            attrSel.value = value;
+            attrSel.type = type;
+            
+            return attrSel;
+        }
+        
         @Override
         public int hashCode()
         {
@@ -84,7 +94,7 @@ public class Selector implements Serializable
         public String toString()
         {
             if (type != AttributeSelectorType.WITH_ATTRIBUTE) {
-                return String.format("%s%s\"%s\"", attribute, type, value);
+                return attribute + type + "\"" + value + "\"";
             } else {
                 return attribute;
             }
@@ -155,6 +165,20 @@ public class Selector implements Serializable
         }
         
         return true;
+    }
+    
+    public Selector copy()
+    {
+        Selector sel = new Selector();
+        sel.combinator = combinator;
+        sel.element = element;
+        sel.id = id;
+        sel.classNames = new ArrayList<String>(classNames);
+        sel.pseudoClass = pseudoClass;
+        sel.pseudoClassParam = pseudoClassParam;
+        sel.attributeSelector = attributeSelector != null ? attributeSelector.copy() : null;
+        
+        return sel;
     }
     
     @Override

@@ -219,6 +219,12 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        return new NumberPropertyValue(value);
+    }
+    
+    @Override
     public String toString()
     {
         return value.toString();

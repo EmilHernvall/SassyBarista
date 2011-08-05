@@ -44,7 +44,7 @@ public class SassSheetEvaluator
     }
     
     public void evaluate(SassSheet sheet)
-    throws ParseException, EvaluationException
+    throws EvaluationException
     {
         evaluator = new ExpressionEvaluator(functions);
     

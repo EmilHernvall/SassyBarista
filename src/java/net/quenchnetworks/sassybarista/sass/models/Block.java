@@ -49,6 +49,17 @@ public class Block implements Serializable
         return subrules;
     }
     
+    protected void copy(Block copyTo)
+    {
+        for (Property property : properties) {
+            copyTo.addProperty(property.copy());
+        }
+        
+        for (Rule rule : subrules) {
+            copyTo.addSubRule(rule.copy());
+        }
+    }
+    
     @Override
     public int hashCode()
     {

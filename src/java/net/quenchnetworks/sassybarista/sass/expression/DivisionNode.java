@@ -20,6 +20,16 @@ public class DivisionNode extends AbstractNode
     }
     
     @Override
+    public INode copy()
+    {
+        DivisionNode newNode = new DivisionNode();
+        newNode.setLeftNode(getLeftNode().copy());
+        newNode.setRightNode(getRightNode().copy());
+        
+        return newNode;
+    }
+    
+    @Override
     public String toString()
     {
         StringBuilder result = new StringBuilder();

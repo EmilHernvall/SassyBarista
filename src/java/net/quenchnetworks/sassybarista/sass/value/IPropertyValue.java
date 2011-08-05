@@ -25,4 +25,6 @@ public interface IPropertyValue extends INode
     public IDivisionOp getDivisionOp();
     
     public IPropertyValue negateOp() throws EvaluationException;
+    
+    public IPropertyValue copy();
 }

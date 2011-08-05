@@ -73,4 +73,30 @@ public class Rule extends Block implements Serializable
     {
         return extensions;
     }
+    
+    public Rule copy()
+    {
+        Rule rule = new Rule();
+        
+        // copies sub rules and properites
+        super.copy(rule);
+        
+        for (SelectorChain chain : selectorChains) {
+            rule.addSelectorChain(chain.copy());
+        }
+        
+        for (Selector sel : extensions) {
+            rule.addExtend(sel.copy());
+        }
+        
+        for (IncludeDirective include : includes) {
+            rule.addInclude(include.copy());
+        }
+        
+        for (String i : imports) {
+            rule.addImport(i);
+        }
+        
+        return rule;
+    }
 }

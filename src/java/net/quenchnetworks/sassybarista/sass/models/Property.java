@@ -42,4 +42,16 @@ public class Property implements Serializable
     {
         return values;
     }
+    
+    public Property copy()
+    {
+        Property newProp = new Property();
+        newProp.key = key;
+        
+        for (INode value : values) {
+            newProp.addValue(value.copy());
+        }
+        
+        return newProp;
+    }
 }

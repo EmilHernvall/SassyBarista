@@ -50,4 +50,16 @@ public class Mixin extends Block implements Serializable
     
     public String getName() { return name; }
     public void setName(String v) { this.name = v; }
+    
+    public Mixin copy()
+    {
+        Mixin mixin = new Mixin();
+        mixin.name = name;
+        mixin.parameters = new ArrayList<String>(parameters);
+        
+        // copies sub rules and properites
+        super.copy(mixin);
+        
+        return mixin;
+    }
 }

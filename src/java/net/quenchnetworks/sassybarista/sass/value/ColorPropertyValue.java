@@ -55,6 +55,12 @@ public class ColorPropertyValue extends AbstractPropertyValue implements Seriali
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        return new ColorPropertyValue(value);
+    }
+    
+    @Override
     public String toString()
     {
         return value;

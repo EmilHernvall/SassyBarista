@@ -20,6 +20,16 @@ public class AdditionNode extends AbstractNode
     }
     
     @Override
+    public INode copy()
+    {
+        AdditionNode newNode = new AdditionNode();
+        newNode.setLeftNode(getLeftNode().copy());
+        newNode.setRightNode(getRightNode().copy());
+        
+        return newNode;
+    }
+    
+    @Override
     public String toString()
     {
         return getLeftNode() + " + " + getRightNode();

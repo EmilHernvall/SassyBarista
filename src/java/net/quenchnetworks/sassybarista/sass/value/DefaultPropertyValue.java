@@ -96,6 +96,12 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        return new DefaultPropertyValue(value);
+    }
+    
+    @Override
     public String toString()
     {
         return value;

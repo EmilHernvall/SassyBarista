@@ -1,9 +1,9 @@
 package net.quenchnetworks.sassybarista.sass.expression;
 
-public abstract class AbstractNode implements IBinaryNode
+public abstract class AbstractNode implements IBinaryNode, java.io.Serializable
 {
-    private INode left;
-    private INode right;
+    protected INode left;
+    protected INode right;
 
     public AbstractNode()
     {

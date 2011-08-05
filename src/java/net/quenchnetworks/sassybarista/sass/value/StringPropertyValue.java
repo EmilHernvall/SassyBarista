@@ -114,6 +114,12 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        return new StringPropertyValue(value, quoteType);
+    }
+    
+    @Override
     public String toString()
     {
         return quoteType + value + quoteType;

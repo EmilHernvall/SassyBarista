@@ -36,4 +36,16 @@ public class IncludeDirective implements Serializable
     {
         return parameters;
     }
+    
+    public IncludeDirective copy()
+    {
+        IncludeDirective include = new IncludeDirective();
+        include.mixinName = mixinName;
+        
+        for (IPropertyValue param : parameters) {
+            include.addParameter(param.copy());
+        }
+        
+        return include;
+    }
 }

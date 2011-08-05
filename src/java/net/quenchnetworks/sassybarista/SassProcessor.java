@@ -27,6 +27,8 @@ public class SassProcessor
         SassParser parser = new SassParser(new FileInputStream(file));
         SassSheet sheet = parser.parse();
         
+        SassSheet copy = sheet.copy();
+        
         SassSheetEvaluator evaluator = new SassSheetEvaluator();
         evaluator.addFunction("formatProperty", new IFunction() {
             public IPropertyValue evaluate(List<IPropertyValue> params)
@@ -35,9 +37,9 @@ public class SassProcessor
             }
         });
         
-        evaluator.evaluate(sheet);
+        evaluator.evaluate(copy);
         
         SassSheetSerializer serializer = new SassSheetSerializer(System.out);
-        serializer.render(sheet);
+        serializer.render(copy);
     }
 }

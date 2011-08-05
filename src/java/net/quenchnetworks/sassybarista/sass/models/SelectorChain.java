@@ -27,6 +27,16 @@ public class SelectorChain implements Serializable
         return selectors;
     }
     
+    public SelectorChain copy()
+    {
+        SelectorChain newChain = new SelectorChain();
+        for (Selector selector : selectors) {
+            newChain.addSelector(selector.copy());
+        }
+        
+        return newChain;
+    }
+    
     @Override
     public int hashCode()
     {

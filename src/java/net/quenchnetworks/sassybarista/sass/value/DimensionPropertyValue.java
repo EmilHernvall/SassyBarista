@@ -256,8 +256,14 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
     }
     
     @Override
+    public IPropertyValue copy()
+    {
+        return new DimensionPropertyValue(value, unit);
+    }
+    
+    @Override
     public String toString()
     {
-        return value.toString() + "px";
+        return value.toString() + unit;
     }
 }
