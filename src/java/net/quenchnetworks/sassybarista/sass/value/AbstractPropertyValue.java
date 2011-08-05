@@ -46,4 +46,11 @@ public abstract class AbstractPropertyValue implements IPropertyValue
     {
         return new DivisionOpAdapter() {};
     }
+    
+    @Override
+    public IPropertyValue negateOp() 
+    throws EvaluationException
+    {
+        throw new EvaluationException("Negation is not supported for this node.");
+    }
 }

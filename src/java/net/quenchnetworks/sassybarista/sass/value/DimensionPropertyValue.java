@@ -1,6 +1,7 @@
 package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
+import java.math.*;
 import java.io.Serializable;
 
 import net.quenchnetworks.sassybarista.sass.*;
@@ -22,24 +23,24 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         public IPropertyValue addOp(NumberPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new DimensionPropertyValue(v1 + v2, value1.getUnit());
+            return new DimensionPropertyValue(v1.add(v2), value1.getUnit());
         }
         
         @Override
         public IPropertyValue addOp(DimensionPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
             if (!value2.getUnit().equals(value1.getUnit())) {
                 throw new EvaluationException("Arithmetic on values in different units is not yet supported.");
             }
             
-            return new DimensionPropertyValue(v1 + v2, value1.getUnit());
+            return new DimensionPropertyValue(v1.add(v2), value1.getUnit());
         }
     }
     
@@ -56,24 +57,24 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         public IPropertyValue subOp(NumberPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new DimensionPropertyValue(v1 - v2, value1.getUnit());
+            return new DimensionPropertyValue(v2.subtract(v1), value1.getUnit());
         }
         
         @Override
         public IPropertyValue subOp(DimensionPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
             if (!value2.getUnit().equals(value1.getUnit())) {
                 throw new EvaluationException("Arithmetic on values in different units is not yet supported.");
             }
             
-            return new DimensionPropertyValue(v1 - v2, value1.getUnit());
+            return new DimensionPropertyValue(v2.subtract(v1), value1.getUnit());
         }
     }
     
@@ -90,24 +91,24 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         public IPropertyValue mulOp(NumberPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new DimensionPropertyValue(v1 * v2, value1.getUnit());
+            return new DimensionPropertyValue(v1.multiply(v2), value1.getUnit());
         }
         
         @Override
         public IPropertyValue mulOp(DimensionPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
             if (!value2.getUnit().equals(value1.getUnit())) {
                 throw new EvaluationException("Arithmetic on values in different units is not yet supported.");
             }
             
-            return new DimensionPropertyValue(v1 * v2, value1.getUnit());
+            return new DimensionPropertyValue(v1.multiply(v2), value1.getUnit());
         }
     }
     
@@ -124,36 +125,36 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         public IPropertyValue divOp(NumberPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new DimensionPropertyValue(v1 / v2, value1.getUnit());
+            return new DimensionPropertyValue(v2.divide(v1), value1.getUnit());
         }
         
         @Override
         public IPropertyValue divOp(DimensionPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
             if (!value2.getUnit().equals(value1.getUnit())) {
                 throw new EvaluationException("Arithmetic on values in different units is not yet supported.");
             }
             
-            return new DimensionPropertyValue(v1 / v2, value1.getUnit());
+            return new DimensionPropertyValue(v2.divide(v1), value1.getUnit());
         }
     }
 
-    private int value;
+    private BigDecimal value;
     private String unit;
 
     public DimensionPropertyValue()
     {
-        this.value = 0;
+        this.value = new BigDecimal(0);
     }
     
-    public DimensionPropertyValue(int v, String unit)
+    public DimensionPropertyValue(BigDecimal v, String unit)
     {
         this.value = v;
         this.unit = unit;
@@ -162,15 +163,15 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
     public DimensionPropertyValue(String value)
     {
         if (value.endsWith("px")) {
-            this.value = Integer.parseInt(value.substring(0, value.length()-2));
+            this.value = new BigDecimal(value.substring(0, value.length()-2));
             unit = "px";
         }
         else if (value.endsWith("em")) {
-            this.value = Integer.parseInt(value.substring(0, value.length()-2));
+            this.value = new BigDecimal(value.substring(0, value.length()-2));
             unit = "em";
         }
         else if (value.endsWith("pt")) {
-            this.value = Integer.parseInt(value.substring(0, value.length()-2));
+            this.value = new BigDecimal(value.substring(0, value.length()-2));
             unit = "pt";
         }
         else {
@@ -178,7 +179,7 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
         }
     }
     
-    public int getValue()
+    public BigDecimal getValue()
     {
         return value;
     }
@@ -245,8 +246,17 @@ public class DimensionPropertyValue extends AbstractPropertyValue implements Ser
     }
     
     @Override
+    public IPropertyValue negateOp() 
+    throws EvaluationException
+    {
+        value = value.negate();
+        
+        return this;
+    }
+    
+    @Override
     public String toString()
     {
-        return Integer.toString(value) + "px";
+        return value.toString() + "px";
     }
 }

@@ -540,6 +540,10 @@ INode Primary() :
     (
         node = PropertyValue()
     |
+        "-"
+        node = Expression()
+        { node = new NegationNode(node); }
+    |
         "("
         node = Expression()
         ")"

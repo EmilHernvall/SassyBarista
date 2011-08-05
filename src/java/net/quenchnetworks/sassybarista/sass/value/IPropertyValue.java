@@ -21,4 +21,6 @@ public interface IPropertyValue extends INode
     
     public IPropertyValue callDivOp(IPropertyValue node) throws EvaluationException;
     public IDivisionOp getDivisionOp();
+    
+    public IPropertyValue negateOp() throws EvaluationException;
 }

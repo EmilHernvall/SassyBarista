@@ -1,6 +1,7 @@
 package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
+import java.math.*;
 import java.io.Serializable;
 
 import net.quenchnetworks.sassybarista.sass.*;
@@ -22,20 +23,20 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         public IPropertyValue addOp(NumberPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new NumberPropertyValue(v1 + v2);
+            return new NumberPropertyValue(v1.add(v2));
         }
         
         @Override
         public IPropertyValue addOp(DimensionPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new DimensionPropertyValue(v1 + v2, value2.getUnit());
+            return new DimensionPropertyValue(v1.add(v2), value2.getUnit());
         }
     }
     
@@ -52,20 +53,20 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         public IPropertyValue subOp(NumberPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new NumberPropertyValue(v2 - v1);
+            return new NumberPropertyValue(v2.subtract(v1));
         }
         
         @Override
         public IPropertyValue subOp(DimensionPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new DimensionPropertyValue(v2 - v1, value2.getUnit());
+            return new DimensionPropertyValue(v2.subtract(v1), value2.getUnit());
         }
     }
     
@@ -82,20 +83,20 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         public IPropertyValue mulOp(NumberPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new NumberPropertyValue(v1 * v2);
+            return new NumberPropertyValue(v1.multiply(v2));
         }
         
         @Override
         public IPropertyValue mulOp(DimensionPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new DimensionPropertyValue(v1 * v2, value2.getUnit());
+            return new DimensionPropertyValue(v1.multiply(v2), value2.getUnit());
         }
     }
     
@@ -112,41 +113,41 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
         public IPropertyValue divOp(NumberPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new NumberPropertyValue(v1 / v2);
+            return new NumberPropertyValue(v2.divide(v1));
         }
         
         @Override
         public IPropertyValue divOp(DimensionPropertyValue value2)
         throws EvaluationException
         {
-            int v1 = value1.getValue();
-            int v2 = value2.getValue();
+            BigDecimal v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
             
-            return new DimensionPropertyValue(v1 / v2, value2.getUnit());
+            return new DimensionPropertyValue(v2.divide(v1), value2.getUnit());
         }
     }
 
-    private int value;
+    private BigDecimal value;
 
     public NumberPropertyValue()
     {
-        this.value = 0;
+        this.value = new BigDecimal(0);
     }
     
     public NumberPropertyValue(String value)
     {
-        this.value = Integer.parseInt(value);
+        this.value = new BigDecimal(value);
     }
     
-    public NumberPropertyValue(int value)
+    public NumberPropertyValue(BigDecimal value)
     {
         this.value = value;
     }
     
-    public int getValue()
+    public BigDecimal getValue()
     {
         return value;
     }
@@ -210,6 +211,6 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
     @Override
     public String toString()
     {
-        return Integer.toString(value);
+        return value.toString();
     }
 }

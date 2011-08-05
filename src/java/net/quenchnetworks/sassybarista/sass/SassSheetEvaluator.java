@@ -34,20 +34,9 @@ public class SassSheetEvaluator
             
             IPropertyValue val1, val2;
             
-            left = left.visit(this);
-            if (left instanceof IPropertyValue) {
-                val1 = (IPropertyValue)left;
-            } else {
-                throw new EvaluationException("Subtree could not be reduced : " + left.toString());
-            }
-            
-            right = right.visit(this);
-            if (right instanceof IPropertyValue) {
-                val2 = (IPropertyValue)right;
-            } else {
-                throw new EvaluationException("Subtree could not be reduced." + right.toString());
-            }
-            
+            val1 = left.visit(this);
+            val2 = right.visit(this);
+ 
             IPropertyValue newValue = val1.callAddOp(val2);
             
             return newValue;
@@ -62,19 +51,8 @@ public class SassSheetEvaluator
             
             IPropertyValue val1, val2;
             
-            left = left.visit(this);
-            if (left instanceof IPropertyValue) {
-                val1 = (IPropertyValue)left;
-            } else {
-                throw new EvaluationException("Subtree could not be reduced : " + left.toString());
-            }
-            
-            right = right.visit(this);
-            if (right instanceof IPropertyValue) {
-                val2 = (IPropertyValue)right;
-            } else {
-                throw new EvaluationException("Subtree could not be reduced : " + right.toString());
-            }
+            val1 = left.visit(this);
+            val2 = right.visit(this);
             
             IPropertyValue newValue = val1.callSubOp(val2);
             
@@ -90,19 +68,8 @@ public class SassSheetEvaluator
             
             IPropertyValue val1, val2;
             
-            left = left.visit(this);
-            if (left instanceof IPropertyValue) {
-                val1 = (IPropertyValue)left;
-            } else {
-                throw new EvaluationException("Subtree could not be reduced : " + left.toString());
-            }
-            
-            right = right.visit(this);
-            if (right instanceof IPropertyValue) {
-                val2 = (IPropertyValue)right;
-            } else {
-                throw new EvaluationException("Subtree could not be reduced : " + right.toString());
-            }
+            val1 = left.visit(this);
+            val2 = right.visit(this);
             
             IPropertyValue newValue = val1.callMulOp(val2);
             
@@ -118,23 +85,22 @@ public class SassSheetEvaluator
             
             IPropertyValue val1, val2;
             
-            left = left.visit(this);
-            if (left instanceof IPropertyValue) {
-                val1 = (IPropertyValue)left;
-            } else {
-                throw new EvaluationException("Subtree could not be reduced : " + left.toString());
-            }
-            
-            right = right.visit(this);
-            if (right instanceof IPropertyValue) {
-                val2 = (IPropertyValue)right;
-            } else {
-                throw new EvaluationException("Subtree could not be reduced : " + right.toString());
-            }
+            val1 = left.visit(this);
+            val2 = right.visit(this);
             
             IPropertyValue newValue = val1.callDivOp(val2);
             
             return newValue;
+        }
+        
+        @Override
+        public IPropertyValue visitNegatation(NegationNode node) 
+        throws EvaluationException
+        {
+            INode child = node.getNode();
+            IPropertyValue val = child.visit(this);
+            
+            return val.negateOp();
         }
         
         @Override

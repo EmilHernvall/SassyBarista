@@ -9,5 +9,6 @@ public interface NodeVisitor
     IPropertyValue visitSubtraction(SubtractionNode node) throws EvaluationException;
     IPropertyValue visitMultiplication(MultiplicationNode node) throws EvaluationException;
     IPropertyValue visitDivision(DivisionNode node) throws EvaluationException;
+    IPropertyValue visitNegatation(NegationNode node) throws EvaluationException;
     IPropertyValue visitValue(IPropertyValue node) throws EvaluationException;
 }
