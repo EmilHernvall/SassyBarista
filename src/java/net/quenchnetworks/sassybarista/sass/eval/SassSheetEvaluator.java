@@ -243,7 +243,13 @@ public class SassSheetEvaluator
             // later use
             mixin = mixin.copy();
             
-            reduceMixin(mixin, mixin.getParameterMap(include));
+            Map<String, IPropertyValue> params = mixin.getParameterMap(include);
+            
+            for (ControlStatement stmt : mixin.getControlStatements()) {
+                stmt.evaluate(mixin, evaluator, params);
+            }
+            
+            reduceMixin(mixin, params);
             
             rule.addSubRules(mixin.getSubRules());
             rule.addProperties(mixin.getProperties());

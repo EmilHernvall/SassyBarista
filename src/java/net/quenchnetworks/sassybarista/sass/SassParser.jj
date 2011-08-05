@@ -278,6 +278,7 @@ void MixinBlock(Mixin block) :
     Token t ;
     Rule nestedRule;
     Property property ;
+    ControlStatement stmt ;
 }
 {
     "{"
@@ -287,6 +288,12 @@ void MixinBlock(Mixin block) :
         (
             nestedRule = Rule()
             { block.addSubRule(nestedRule); }
+        )
+        |
+        LOOKAHEAD( "@if" )
+        (
+            stmt = IfBlock()
+            { block.addControlStatement(stmt); }
         )
         |
         LOOKAHEAD( <IDENT> ":" )

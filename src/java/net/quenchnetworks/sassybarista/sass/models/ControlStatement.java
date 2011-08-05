@@ -29,4 +29,15 @@ public abstract class ControlStatement extends Block implements Serializable
     {
         return expr;
     }
+    
+    public ControlStatement copy()
+    {
+        IfStatement stmt = new IfStatement();
+        stmt.expr = expr.copy();
+        
+        // copies sub rules and properites
+        super.copy(stmt);
+        
+        return stmt;
+    }
 }

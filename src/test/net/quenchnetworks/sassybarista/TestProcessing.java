@@ -39,6 +39,8 @@ public class TestProcessing
             SassParser parser = new SassParser(new FileReader(scssFile));
             SassSheet sheet = parser.parse();
         
+            sheet = sheet.copy();
+        
             SassSheetEvaluator evaluator = new SassSheetEvaluator();
             evaluator.evaluate(sheet);
         

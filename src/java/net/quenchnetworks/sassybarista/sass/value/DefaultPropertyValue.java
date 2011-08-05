@@ -76,6 +76,16 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
             
             return new BooleanPropertyValue(v1.equals(v2));
         }
+        
+        @Override
+        public IPropertyValue op(StringPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1.equals(v2));
+        }
     }
     
     private static class NotEqOp extends OpAdapter
@@ -89,6 +99,16 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
         
         @Override
         public IPropertyValue op(DefaultPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(!v1.equals(v2));
+        }
+        
+        @Override
+        public IPropertyValue op(StringPropertyValue value2)
         throws EvaluationException
         {
             String v1 = value1.getValue();

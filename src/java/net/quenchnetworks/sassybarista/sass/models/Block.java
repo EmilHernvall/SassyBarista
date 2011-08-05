@@ -70,6 +70,10 @@ public class Block implements Serializable
         for (Rule rule : subrules) {
             copyTo.addSubRule(rule.copy());
         }
+        
+        for (ControlStatement stmt : ctrlStmts) {
+            copyTo.addControlStatement(stmt.copy());
+        }
     }
     
     @Override

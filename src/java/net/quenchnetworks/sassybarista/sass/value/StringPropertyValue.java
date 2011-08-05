@@ -39,6 +39,66 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
             return new StringPropertyValue(v2 + v1, value2.getQuoteType());
         }
     }
+    
+    private static class EqOp extends OpAdapter
+    {
+        private StringPropertyValue value1;
+
+        public EqOp(StringPropertyValue value1)
+        {
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue op(StringPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1.equals(v2));
+        }
+        
+        @Override
+        public IPropertyValue op(DefaultPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1.equals(v2));
+        }
+    }
+    
+    private static class NotEqOp extends OpAdapter
+    {
+        private StringPropertyValue value1;
+
+        public NotEqOp(StringPropertyValue value1)
+        {
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue op(StringPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(!v1.equals(v2));
+        }
+        
+        @Override
+        public IPropertyValue op(DefaultPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(!v1.equals(v2));
+        }
+    }
 
     private String value;
     private String quoteType;
@@ -79,6 +139,18 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
     public IOp getAdditionOp()
     {
         return new AdditionOp(this);
+    }
+    
+    @Override
+    public IOp getEqOp()
+    {
+        return new EqOp(this);
+    }
+    
+    @Override
+    public IOp getNotEqOp()
+    {
+        return new NotEqOp(this);
     }
     
     @Override

@@ -29,15 +29,4 @@ public class IfStatement extends ControlStatement implements Serializable
             parent.addProperties(getProperties());
         }
     }
-    
-    public IfStatement copy()
-    {
-        IfStatement stmt = new IfStatement();
-        stmt.expr = expr;
-        
-        // copies sub rules and properites
-        super.copy(stmt);
-        
-        return stmt;
-    }
 }
