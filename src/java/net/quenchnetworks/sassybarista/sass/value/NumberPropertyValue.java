@@ -5,6 +5,7 @@ import java.math.*;
 import java.io.Serializable;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
 import net.quenchnetworks.sassybarista.sass.value.op.*;
 
@@ -206,6 +207,15 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
     {
         IDivisionOp op = node.getDivisionOp();
         return op.divOp(this);
+    }
+    
+    @Override
+    public IPropertyValue negateOp() 
+    throws EvaluationException
+    {
+        value = value.negate();
+        
+        return this;
     }
     
     @Override

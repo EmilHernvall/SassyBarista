@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.Serializable;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
 import net.quenchnetworks.sassybarista.sass.value.op.*;
 
@@ -32,6 +33,30 @@ public class FunctionPropertyValue extends AbstractPropertyValue implements Seri
     public List<IPropertyValue> getValues()
     {
         return values;
+    }
+    
+    @Override
+    public IPropertyValue evaluate(Map<String, IPropertyValue> context, 
+        Map<String, IFunction> functions)
+    throws EvaluationException
+    {
+        List<IPropertyValue> newValues = new ArrayList<IPropertyValue>();
+        for (IPropertyValue value : values) {
+            IPropertyValue newValue = value.evaluate(context, functions);
+            newValues.add(newValue);
+        }
+        
+        this.values = newValues;
+    
+        IFunction func = functions.get(name);
+        
+        // functions that are not found are rendered as usual
+        if (func == null) {
+            return this;
+        }
+    
+        IPropertyValue newValue = func.evaluate(values);
+        return newValue;
     }
     
     @Override

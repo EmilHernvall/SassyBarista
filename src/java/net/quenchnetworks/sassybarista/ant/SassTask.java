@@ -9,6 +9,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.DirectoryScanner;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.models.*;
 
 public class SassTask extends Task 
@@ -119,6 +120,9 @@ public class SassTask extends Task
     {
         SassParser parser = new SassParser(new FileReader(inFile));
         SassSheet sheet = parser.parse();
+    
+        SassSheetEvaluator evaluator = new SassSheetEvaluator();
+        evaluator.evaluate(sheet);
     
         SassSheetSerializer serializer = new SassSheetSerializer(stream);
         serializer.render(sheet);

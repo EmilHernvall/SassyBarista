@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 
 public class Mixin extends Block implements Serializable

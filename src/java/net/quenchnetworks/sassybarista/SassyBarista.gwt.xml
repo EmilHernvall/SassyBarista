@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
+    <source path='sass/eval'/>
+    <source path='sass/expression'/>
     <source path='sass/models'/>
     <source path='sass/value'/>
+    <source path='sass/value/op'/>
 </module>

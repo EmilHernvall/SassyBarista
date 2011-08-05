@@ -4,13 +4,15 @@ import java.util.*;
 import java.io.Serializable;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
 import net.quenchnetworks.sassybarista.sass.value.op.*;
 
 public abstract class AbstractPropertyValue implements IPropertyValue
 {
     @Override
-    public IPropertyValue evaluate(Map<String, IPropertyValue> context)
+    public IPropertyValue evaluate(Map<String, IPropertyValue> context, 
+        Map<String, IFunction> functions)
     throws EvaluationException
     {
         return this;

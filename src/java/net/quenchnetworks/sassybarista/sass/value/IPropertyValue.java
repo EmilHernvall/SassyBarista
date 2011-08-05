@@ -3,12 +3,14 @@ package net.quenchnetworks.sassybarista.sass.value;
 import java.util.*;
 
 import net.quenchnetworks.sassybarista.sass.*;
+import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
 import net.quenchnetworks.sassybarista.sass.value.op.*;
 
 public interface IPropertyValue extends INode
 {
-    public IPropertyValue evaluate(Map<String, IPropertyValue> context) throws EvaluationException;
+    public IPropertyValue evaluate(Map<String, IPropertyValue> context, 
+        Map<String, IFunction> functions) throws EvaluationException;
 
     public IPropertyValue callAddOp(IPropertyValue node) throws EvaluationException;
     public IAdditionOp getAdditionOp();

@@ -8,6 +8,7 @@ package net.quenchnetworks.sassybarista.sass;
 
 import java.util.*;
 
+import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 import net.quenchnetworks.sassybarista.sass.models.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
