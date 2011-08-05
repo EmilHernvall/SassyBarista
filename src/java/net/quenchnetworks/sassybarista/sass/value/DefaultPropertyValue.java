@@ -57,6 +57,46 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
             return new DimensionPropertyValue(v2, v1);
         }
     }
+    
+    private static class EqOp extends OpAdapter
+    {
+        private DefaultPropertyValue value1;
+
+        public EqOp(DefaultPropertyValue value1)
+        {
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue op(DefaultPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1.equals(v2));
+        }
+    }
+    
+    private static class NotEqOp extends OpAdapter
+    {
+        private DefaultPropertyValue value1;
+
+        public NotEqOp(DefaultPropertyValue value1)
+        {
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue op(DefaultPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(!v1.equals(v2));
+        }
+    }
 
     private String value;
 
@@ -79,6 +119,18 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
     public IOp getAdditionOp()
     {
         return new AdditionOp(this);
+    }
+    
+    @Override
+    public IOp getEqOp()
+    {
+        return new EqOp(this);
+    }
+    
+    @Override
+    public IOp getNotEqOp()
+    {
+        return new NotEqOp(this);
     }
     
     @Override

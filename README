@@ -9,6 +9,11 @@ If you need a way to parse css and manipulate it programatically this project mi
 fit nicely, since it was partly designed for that purpose. The java API should be rather
 straight forward to use directly.
 
+The fact that it is meant to be usable as a css parser has some consequences for the design
+of the library. For example, the use of an AST is limited to expressions. This means that
+there is no total ordering of nodes outside of each scope. Whether or not this is a problem
+for you, I do not know. For my applications it is not.
+
 Currently supported:
 
  * Correctly parses most of the CSS specification, with a few exceptions. I'm working on
@@ -18,18 +23,7 @@ Currently supported:
  * Mixins (parameters are supported, although not yet named arguments)
  * Selector inheritance (chaining and multiple)
  * Basic arithmetic
- 
-Should be supported very soon:
-
- * Imports
- * Systematic testing approach
- * Functions
-
-Planned: 
-
- * Nested properties
- * Parent references
- * SassScript
+ * A basic if statement (no else if, no logical operators)
  
 To build it you'll need to download JavaCC and specify the path to it in build.xml. You can run it
 using:

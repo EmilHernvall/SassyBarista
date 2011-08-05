@@ -1,11 +1,11 @@
-$foo: 1+1==2;
-$bar: 1+1!=2;
-$baz: 1+1<3;
-$quux: 1+2>2;
+$foo: 2;
 
 div {
-    foo: $foo;
-    bar: $bar;
-    baz: $baz;
-    quux: $quux;
+    font-family: arial;
+    @if $foo==2 {
+        font-size: 12px;
+    }
+    @if foo==bar {
+        font-weight: bold;
+    }
 }

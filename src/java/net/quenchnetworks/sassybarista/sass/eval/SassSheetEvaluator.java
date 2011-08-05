@@ -249,6 +249,11 @@ public class SassSheetEvaluator
             rule.addProperties(mixin.getProperties());
         }
         
+        // Evaluate control statements
+        for (ControlStatement stmt : rule.getControlStatements()) {
+            stmt.evaluate(rule, evaluator, variables);
+        }
+        
         for (Property property : rule.getProperties()) {
             List<INode> newValues = new ArrayList<INode>();
             for (INode value : property.getValues()) {

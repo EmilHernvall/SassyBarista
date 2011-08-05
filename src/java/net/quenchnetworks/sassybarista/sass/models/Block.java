@@ -7,11 +7,13 @@ public class Block implements Serializable
 {
     private List<Property> properties;
     private List<Rule> subrules;
+    private List<ControlStatement> ctrlStmts;
 
     public Block()
     {
         this.properties = new ArrayList<Property>();
         this.subrules = new ArrayList<Rule>();
+        this.ctrlStmts = new ArrayList<ControlStatement>();
     }
     
     public void addProperty(Property property)
@@ -47,6 +49,16 @@ public class Block implements Serializable
     public List<Rule> getSubRules()
     {
         return subrules;
+    }
+    
+    public void addControlStatement(ControlStatement stmt)
+    {
+        ctrlStmts.add(stmt);
+    }
+    
+    public List<ControlStatement> getControlStatements()
+    {
+        return ctrlStmts;
     }
     
     protected void copy(Block copyTo)

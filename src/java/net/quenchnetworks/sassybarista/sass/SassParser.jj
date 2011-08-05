@@ -188,6 +188,7 @@ void RuleBlock(Rule block) :
 {
     Token t ;
     Rule nestedRule;
+    ControlStatement stmt ;
     Property property ;
     IncludeDirective i ;
     IPropertyValue value ;
@@ -205,8 +206,14 @@ void RuleBlock(Rule block) :
         |
         LOOKAHEAD( <IDENT> ":" )
         (
-            property = Property(block)
+            property = Property()
             { block.addProperty(property); }
+        )
+        |
+        LOOKAHEAD( "@if" )
+        (
+            stmt = IfBlock()
+            { block.addControlStatement(stmt); }
         )
         |
         (
@@ -284,12 +291,36 @@ void MixinBlock(Mixin block) :
         |
         LOOKAHEAD( <IDENT> ":" )
         (
-            property = Property(block)
+            property = Property()
             { block.addProperty(property); }
         )
     )*
     "}"
     (LOOKAHEAD(2) <S>)*
+}
+
+ControlStatement IfBlock() :
+{
+    ControlStatement stmt ;
+    Property property ;
+    INode expr ;
+}
+{
+    { stmt = new IfStatement(); }
+    "@if"
+    (<S>)*
+    expr = ConditionalExpression()
+    { stmt.setExpression(expr); }
+    "{"
+    (<S>)*
+    (
+        property = Property()
+        { stmt.addProperty(property); }
+    )+
+    "}"
+    (LOOKAHEAD(2) <S>)*
+    
+    { return stmt; }
 }
 
 SelectorChain SelectorChain() :
@@ -409,7 +440,7 @@ Selector Selector() :
     { return s; }
 }
 
-Property Property(Block block) :
+Property Property() :
 {
     Token t ;
     Property property ;
@@ -518,8 +549,9 @@ INode Expression() :
 }
 {
     node = Term()
-    (<S>)*
+    (LOOKAHEAD(2) <S>)*
     (
+        LOOKAHEAD(2)
         (
             { 
                 nextNode = new AdditionNode(); 
@@ -539,7 +571,7 @@ INode Expression() :
             nextNode.setRightNode(current); 
             node = nextNode;
         }
-        (<S>)*
+        (LOOKAHEAD(2) <S>)*
     )*
     
     { return node; }
@@ -552,8 +584,8 @@ INode Term() :
 }
 {
     node = Primary()
-    (<S>)*
     (
+        LOOKAHEAD(2)
         (
             { 
                 nextNode = new MultiplicationNode(); 
@@ -573,7 +605,7 @@ INode Term() :
             nextNode.setRightNode(current); 
             node = nextNode;
         }
-        (<S>)*
+        (LOOKAHEAD(2) <S>)*
     )*
     
     { return node; }
