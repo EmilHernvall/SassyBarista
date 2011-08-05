@@ -102,7 +102,7 @@ SassSheet parse() :
         (
             t = <VARIABLE>
             { variableName = t.image; }
-            ":"
+            ":" 
             (<S>)*
             variableValue = ConditionalExpression()
             ";"
@@ -584,6 +584,7 @@ INode Term() :
 }
 {
     node = Primary()
+    (LOOKAHEAD(2) <S>)*
     (
         LOOKAHEAD(2)
         (
