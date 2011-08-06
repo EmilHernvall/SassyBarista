@@ -17,6 +17,7 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
 
         public AdditionOp(DefaultPropertyValue value1)
         {
+            super("DefaultPropertyValue");
             this.value1 = value1;
         }
         
@@ -64,6 +65,7 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
 
         public EqOp(DefaultPropertyValue value1)
         {
+            super("DefaultPropertyValue");
             this.value1 = value1;
         }
         
@@ -94,6 +96,7 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
 
         public NotEqOp(DefaultPropertyValue value1)
         {
+            super("DefaultPropertyValue");
             this.value1 = value1;
         }
         
@@ -122,11 +125,13 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
 
     public DefaultPropertyValue()
     {
+        super("DefaultPropertyValue");
         this.value = null;
     }
     
     public DefaultPropertyValue(String value)
     {
+        super("DefaultPropertyValue");
         this.value = value;
     }
     

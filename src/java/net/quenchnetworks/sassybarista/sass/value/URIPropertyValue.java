@@ -14,11 +14,13 @@ public class URIPropertyValue extends AbstractPropertyValue implements Serializa
 
     public URIPropertyValue()
     {
+        super("URIPropertyValue");
         this.value = null;
     }
     
     public URIPropertyValue(String value)
     {
+        super("URIPropertyValue");
         this.value = value;
     }
     

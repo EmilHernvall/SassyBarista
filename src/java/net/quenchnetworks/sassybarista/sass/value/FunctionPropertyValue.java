@@ -15,12 +15,14 @@ public class FunctionPropertyValue extends AbstractPropertyValue implements Seri
 
     public FunctionPropertyValue()
     {
+        super("FunctionPropertyValue");
         this.name = null;
         this.values = new ArrayList<IPropertyValue>();
     }
     
     public FunctionPropertyValue(String name)
     {
+        super("FunctionPropertyValue");
         this.name = name;
         this.values = new ArrayList<IPropertyValue>();
     }

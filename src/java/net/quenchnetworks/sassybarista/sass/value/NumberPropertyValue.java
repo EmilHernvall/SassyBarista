@@ -17,6 +17,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
         public AdditionOp(NumberPropertyValue value1)
         {
+            super("NumberPropertyValue");
             this.value1 = value1;
         }
         
@@ -47,6 +48,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
         public SubtractionOp(NumberPropertyValue value1)
         {
+            super("NumberPropertyValue");
             this.value1 = value1;
         }
         
@@ -77,6 +79,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
         public MultiplicationOp(NumberPropertyValue value1)
         {
+            super("NumberPropertyValue");
             this.value1 = value1;
         }
         
@@ -107,6 +110,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
         public DivisionOp(NumberPropertyValue value1)
         {
+            super("NumberPropertyValue");
             this.value1 = value1;
         }
         
@@ -137,6 +141,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
         public EqOp(NumberPropertyValue value1)
         {
+            super("NumberPropertyValue");
             this.value1 = value1;
         }
         
@@ -157,6 +162,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
         public NotEqOp(NumberPropertyValue value1)
         {
+            super("NumberPropertyValue");
             this.value1 = value1;
         }
         
@@ -177,6 +183,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
         public LtOp(NumberPropertyValue value1)
         {
+            super("NumberPropertyValue");
             this.value1 = value1;
         }
         
@@ -197,6 +204,7 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
         public GtOp(NumberPropertyValue value1)
         {
+            super("NumberPropertyValue");
             this.value1 = value1;
         }
         
@@ -215,16 +223,19 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
 
     public NumberPropertyValue()
     {
+        super("NumberPropertyValue");
         this.value = new BigDecimal(0);
     }
     
     public NumberPropertyValue(String value)
     {
+        super("NumberPropertyValue");
         this.value = new BigDecimal(value);
     }
     
     public NumberPropertyValue(BigDecimal value)
     {
+        super("NumberPropertyValue");
         this.value = value;
     }
     

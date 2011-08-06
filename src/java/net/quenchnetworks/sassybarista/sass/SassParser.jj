@@ -95,7 +95,7 @@ SassSheet parse() :
 {
     { 
         rules = new ArrayList<Rule>(); 
-        variables = new HashMap<String, INode>();
+        variables = new LinkedHashMap<String, INode>();
         mixins = new HashMap<String, Mixin>();
     }
     (
@@ -651,28 +651,37 @@ IPropertyValue PropertyValue() :
 {
     (
             t = <IDENT> 
-            { p = new DefaultPropertyValue(t.image); } 
+            { 
+                if ("true".equals(t.image)) {
+                    p = new BooleanPropertyValue(true); 
+                } else if ("false".equals(t.image)) {
+                    p = new BooleanPropertyValue(false); 
+                } else {
+                    p = new DefaultPropertyValue(t.image); 
+                }
+                p.setLocation(t.beginLine, t.beginColumn); 
+            } 
         |
             t = <NUMBER> 
-            { p = new NumberPropertyValue(t.image); } 
+            { p = new NumberPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
         |
             t = <PERCENTAGE> 
-            { p = new PercentagePropertyValue(t.image); } 
+            { p = new PercentagePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
         |
             t = <DIMENSION> 
-            { p = new DimensionPropertyValue(t.image); } 
+            { p = new DimensionPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
         |
             t = <STRING> 
-            { p = new StringPropertyValue(t.image); } 
+            { p = new StringPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
         |
             t = <URI> 
-            { p = new URIPropertyValue(t.image); } 
+            { p = new URIPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
         |
             t = <HASH> 
-            { p = new ColorPropertyValue(t.image); } 
+            { p = new ColorPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
         |
             t = <VARIABLE>
-            { p = new VariablePropertyValue(t.image); }
+            { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
             t = <FUNCTION> 
             { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); } 
@@ -683,7 +692,7 @@ IPropertyValue PropertyValue() :
                 (<S>)*
             )* 
             ")"
-            { p = fp; }
+            { p = fp; p.setLocation(t.beginLine, t.beginColumn); }
     )
     
     { return p; }

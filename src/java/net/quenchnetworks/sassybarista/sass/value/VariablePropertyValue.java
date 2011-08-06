@@ -14,11 +14,13 @@ public class VariablePropertyValue extends AbstractPropertyValue implements Seri
     
     public VariablePropertyValue()
     {
+        super("VariablePropertyValue");
         this.variable = null;
     }
 
     public VariablePropertyValue(String variable)
     {
+        super("VariablePropertyValue");
         this.variable = variable;
     }
     
@@ -32,7 +34,7 @@ public class VariablePropertyValue extends AbstractPropertyValue implements Seri
             throw new EvaluationException("Variable " + variable + " is not available in current context.");
         }
     
-        return newValue;
+        return newValue.evaluate(context, functions);
     }
     
     @Override

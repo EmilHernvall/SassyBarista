@@ -10,26 +10,83 @@ import net.quenchnetworks.sassybarista.sass.value.op.*;
 
 public class BooleanPropertyValue extends AbstractPropertyValue implements Serializable
 {
+    private static class EqOp extends OpAdapter
+    {
+        private BooleanPropertyValue value1;
+
+        public EqOp(BooleanPropertyValue value1)
+        {
+            super("BooleanPropertyValue");
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue op(BooleanPropertyValue value2)
+        throws EvaluationException
+        {
+            boolean v1 = value1.getValue();
+            boolean v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1 == v2);
+        }
+    }
+    
+    private static class NotEqOp extends OpAdapter
+    {
+        private BooleanPropertyValue value1;
+
+        public NotEqOp(BooleanPropertyValue value1)
+        {
+            super("BooleanPropertyValue");
+            this.value1 = value1;
+        }
+        
+        @Override
+        public IPropertyValue op(BooleanPropertyValue value2)
+        throws EvaluationException
+        {
+            boolean v1 = value1.getValue();
+            boolean v2 = value2.getValue();
+            
+            return new BooleanPropertyValue(v1 != v2);
+        }
+    }
+
     private boolean value;
 
     public BooleanPropertyValue()
     {
+        super("BooleanPropertyValue");
         this.value = false;
     }
     
     public BooleanPropertyValue(boolean v)
     {
+        super("BooleanPropertyValue");
         this.value = v;
     }
     
     public BooleanPropertyValue(String value)
     {
+        super("BooleanPropertyValue");
         this.value = Boolean.valueOf(value);
     }
     
     public boolean getValue()
     {
         return value;
+    }
+    
+    @Override
+    public IOp getEqOp()
+    {
+        return new EqOp(this);
+    }
+    
+    @Override
+    public IOp getNotEqOp()
+    {
+        return new NotEqOp(this);
     }
     
     @Override

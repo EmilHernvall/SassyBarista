@@ -14,11 +14,13 @@ public class PercentagePropertyValue extends AbstractPropertyValue implements Se
     
     public PercentagePropertyValue()
     {
+        super("PercentagePropertyValue");
         this.value = null;
     }
 
     public PercentagePropertyValue(String value)
     {
+        super("PercentagePropertyValue");
         this.value = value;
     }
     

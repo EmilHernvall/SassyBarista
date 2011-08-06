@@ -9,6 +9,8 @@ import net.quenchnetworks.sassybarista.sass.value.*;
 public class NegationNode implements INode, java.io.Serializable
 {
     private INode node;
+    protected int line = 0;
+    protected int col = 0;
 
     public NegationNode()
     {
@@ -27,6 +29,25 @@ public class NegationNode implements INode, java.io.Serializable
     public void setNode(INode node)
     {
         this.node = node;
+    }
+    
+    @Override
+    public void setLocation(int line, int col)
+    {
+        this.line = line;
+        this.col = col;
+    }
+    
+    @Override
+    public int getLine()
+    {
+        return line;
+    }
+    
+    @Override
+    public int getColumn()
+    {
+        return col;
     }
     
     @Override

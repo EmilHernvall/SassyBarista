@@ -22,7 +22,7 @@ public class SassSheet implements Serializable
     
     public SassSheet()
     {
-        this.variables = new HashMap<String, INode>();
+        this.variables = new LinkedHashMap<String, INode>();
         this.mixins = new HashMap<String, Mixin>();
         this.rules = new ArrayList<Rule>();
     }

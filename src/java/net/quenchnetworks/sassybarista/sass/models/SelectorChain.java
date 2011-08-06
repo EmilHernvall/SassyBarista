@@ -37,6 +37,36 @@ public class SelectorChain implements Serializable
         return newChain;
     }
     
+    public boolean matchesPath(List<Selector> path)
+    {
+        Iterator<Selector> chainIt = selectors.iterator();
+        Iterator<Selector> pathIt = path.iterator();
+        
+        Selector chainSel = chainIt.next();
+        int matched = 0;
+        while (pathIt.hasNext()) {
+            Selector pathSel = pathIt.next();
+            //System.out.println("cmp: " + pathSel + " == " + chainSel);
+            if (chainSel.matches(pathSel)) {
+                //System.out.println("match");
+                matched++;
+                if (!chainIt.hasNext()) {
+                    if (!pathIt.hasNext()) {
+                        break;
+                    }
+                    return false;
+                }
+                chainSel = chainIt.next();
+            }
+        }
+    
+        if (matched == selectors.size()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     @Override
     public int hashCode()
     {

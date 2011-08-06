@@ -14,11 +14,13 @@ public class ColorPropertyValue extends AbstractPropertyValue implements Seriali
 
     public ColorPropertyValue()
     {
+        super("ColorPropertyValue");
         this.value = null;
     }
     
     public ColorPropertyValue(String value)
     {
+        super("ColorPropertyValue");
         this.value = value;
     }
     

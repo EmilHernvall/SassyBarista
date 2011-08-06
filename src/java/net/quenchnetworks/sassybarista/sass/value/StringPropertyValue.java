@@ -16,6 +16,7 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
 
         public AdditionOp(StringPropertyValue value1)
         {
+            super("StringPropertyValue");
             this.value1 = value1;
         }
         
@@ -46,6 +47,7 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
 
         public EqOp(StringPropertyValue value1)
         {
+            super("StringPropertyValue");
             this.value1 = value1;
         }
         
@@ -76,6 +78,7 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
 
         public NotEqOp(StringPropertyValue value1)
         {
+            super("StringPropertyValue");
             this.value1 = value1;
         }
         
@@ -105,17 +108,20 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
 
     public StringPropertyValue()
     {
+        super("StringPropertyValue");
         this.value = null;
     }
     
     public StringPropertyValue(String value, String quoteType)
     {
+        super("StringPropertyValue");
         this.value = value;
         this.quoteType = quoteType;
     }
     
     public StringPropertyValue(String value)
     {
+        super("StringPropertyValue");
         if (value.startsWith("\"")) {
             quoteType = "\"";
         } 

@@ -49,7 +49,7 @@ public class SassSheetEvaluator
         evaluator = new ExpressionEvaluator(functions);
     
         Map<String, INode> unprocessedVariables = sheet.getVariables();
-        variables = new HashMap<String, IPropertyValue>();
+        variables = new LinkedHashMap<String, IPropertyValue>();
         for (Map.Entry<String, INode> entry : unprocessedVariables.entrySet()) {
             variables.put(entry.getKey(), evaluator.evaluate(entry.getValue(), variables));
         }
