@@ -1,9 +1,9 @@
-SassyBarista is a java implementation of a CSS preprocessor. The goal is that it will eventually be 
-fully compatible with the SCSS syntax of SASS (http://sass-lang.com). It's based on a JavaCC grammar 
-and is in a comparatively early stage, although some advanced features are already supported. There
-are still a few glitches that prevents some standard CSS files from parsing correctly, but I'm
-working on getting rid of them. I'd love to hear from you if you try it and encounter such parsing
-bugs. You can contact me at emil@quench.at.
+SassyBarista is a java implementation of a CSS preprocessor. The goal is that it will 
+eventually be fully compatible with the SCSS syntax of SASS (http://sass-lang.com). It's 
+based on a JavaCC grammar and is in a comparatively early stage, although some advanced 
+features are already supported. Thereare still a few glitches that prevents some standard 
+CSS files from parsing correctly, but I'm working on getting rid of them. I'd love to hear 
+from you if you try it and encounter such parsing bugs. You can contact me at emil@quench.at.
 
 If you need a way to parse css and manipulate it programatically this project might also
 fit nicely, since it was partly designed for that purpose. The java API should be rather
