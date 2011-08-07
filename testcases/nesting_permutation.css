@@ -1,9 +1,18 @@
-div.a,
-div.b {
+div.wrapper1,
+div2.wrapper2 {
+    width: 200px;
+}
+
+div.wrapper1 div.a,
+div.wrapper1 div.b,
+div2.wrapper2 div.a,
+div2.wrapper2 div.b {
     font-family: Verdana;
 }
 
-div.a span,
-div.b span {
+div.wrapper1 div.a span,
+div.wrapper1 div.b span,
+div2.wrapper2 div.a span,
+div2.wrapper2 div.b span {
     font-weight: bold;
 }

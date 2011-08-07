@@ -1,0 +1,24 @@
+.error,
+.seriousError,
+.criticalError {
+    border: 1px #f00;
+    background-color: #fdd;
+}
+
+.seriousError,
+.criticalError {
+    border-width: 3px;
+}
+
+.badError,
+.criticalError {
+    color: red;
+}
+
+.criticalError {
+    position: fixed;
+    top: 10%;
+    bottom: 10%;
+    left: 10%;
+    right: 10%;
+}

@@ -98,6 +98,7 @@ SassSheet parse() :
         variables = new LinkedHashMap<String, INode>();
         mixins = new HashMap<String, Mixin>();
     }
+    (<S>)*
     (
         (
             t = <VARIABLE>

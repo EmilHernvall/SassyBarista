@@ -1,4 +1,10 @@
 div {
     font-family: arial;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
     font-size: 12px;
+    line-height: 1.2em;
+    font-weight: bold;
+    font-style: italic;
 }

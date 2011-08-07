@@ -116,6 +116,10 @@
 		<jar destfile="sassybarista.jar">
 			<fileset dir="${build}/src"/>
 			<fileset dir="${build}/bin"/>
+            
+			<manifest>
+				<attribute name="Main-Class" value="net.quenchnetworks.sassybarista.SassProcessor" />
+			</manifest>
 		</jar>
 	</target>
 </project>

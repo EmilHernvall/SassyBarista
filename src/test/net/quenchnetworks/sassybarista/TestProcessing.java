@@ -121,6 +121,15 @@ public class TestProcessing
     }
     
     @Test 
+    public void inheritance()
+    {
+        processTest("extend_basic");
+        processTest("extend_multiple");
+        processTest("extend_chain");
+        processTest("extend_complex");
+    }
+    
+    @Test 
     public void controlstructures()
     {
         processTest("controlstructure_if");

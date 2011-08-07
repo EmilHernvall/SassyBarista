@@ -1,11 +1,34 @@
-$foo: 2;
+@mixin blockAlign($align) {
+    display: block;
+    @if $align == "center" {
+        margin-right: auto;
+        margin-left: auto;
+    }
+    @if $align == "right" {
+        margin-right: 0;
+        margin-left: auto;
+    }   
+}
+
+$num: 2;
+$def: foo;
 
 div {
     font-family: arial;
-    @if $foo==2 {
+    @if $num==2 {
         font-size: 12px;
     }
-    @if foo==bar {
+    @if $num != 3 {
+        line-height: 1.2em;
+    }
+    @if $def == foo {
         font-weight: bold;
     }
+    @if $def == 'foo' {
+        font-style: italic;
+    }
+    @if $def != "foo" {
+        text-decoration: underline;
+    }
+    @include blockAlign("center");
 }

@@ -1,7 +1,11 @@
-div.a,
-div.b {
-    font-family: Verdana;
-    span {
-        font-weight: bold;
+div.wrapper1,
+div2.wrapper2 {
+    width: 200px;
+    div.a,
+    div.b {
+        font-family: Verdana;
+        span {
+            font-weight: bold;
+        }
     }
 }

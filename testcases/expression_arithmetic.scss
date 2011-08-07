@@ -1,11 +1,16 @@
-$standardMargin: 10px;
-$standardPadding: 5px;
-$complex: 1 * (2 + 2*3) + (4 - 1) * 5;
+/* test that previous variables are available to later definitions */
+$cols: 3;
+$width: 100px;
+$margin: 10px;
+$padding: 5px;
+$complex: $cols * ($width + 2*$padding) + ($cols - 1) * $margin;
 
 div {
+    /* test string concatenation */
     font-family: "comic" + " sans" + " ms";
-    width: 100px + 2*$standardPadding;
+    width: $width + 2*$padding;
     line-height: 1.2em;
-    margin: 2px*5px (-2*$standardMargin);
-    padding: $complex + px;
+    /* test unary negation operator */
+    margin: 2px*5px (-2*$margin);
+    padding: $complex;
 }
