@@ -1,6 +1,7 @@
 package net.quenchnetworks.sassybarista.sass.value;
 
 import java.util.*;
+import java.math.*;
 import java.io.Serializable;
 
 import net.quenchnetworks.sassybarista.sass.*;
@@ -38,6 +39,16 @@ public class StringPropertyValue extends AbstractPropertyValue implements Serial
             String v2 = value2.getValue();
             
             return new StringPropertyValue(v2 + v1, value2.getQuoteType());
+        }
+        
+        @Override
+        public IPropertyValue op(NumberPropertyValue value2)
+        throws EvaluationException
+        {
+            String v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
+            
+            return new StringPropertyValue(v2 + v1, value1.getQuoteType());
         }
     }
     

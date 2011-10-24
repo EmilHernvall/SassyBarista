@@ -40,6 +40,26 @@ public class NumberPropertyValue extends AbstractPropertyValue implements Serial
             
             return new DimensionPropertyValue(v1.add(v2), value2.getUnit());
         }
+        
+        @Override
+        public IPropertyValue op(StringPropertyValue value2)
+        throws EvaluationException
+        {
+            BigDecimal v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new StringPropertyValue(v2 + v1, value2.getQuoteType());
+        }
+        
+        @Override
+        public IPropertyValue op(DefaultPropertyValue value2)
+        throws EvaluationException
+        {
+            BigDecimal v1 = value1.getValue();
+            String v2 = value2.getValue();
+            
+            return new DefaultPropertyValue(v2 + v1);
+        }
     }
     
     private static class SubtractionOp extends OpAdapter

@@ -46,14 +46,14 @@ public class DefaultPropertyValue extends AbstractPropertyValue implements Seria
         throws EvaluationException
         {
             String v1 = value1.getValue();
+            BigDecimal v2 = value2.getValue();
+            
             if ("px".equals(v1)) {
             } else if ("pt".equals(v1)) {
             } else if ("em".equals(v1)) {
             }  else {
-                throw new EvaluationException("Only units can be added to numbers");
+                return new DefaultPropertyValue(v2 + v1);
             }
-            
-            BigDecimal v2 = value2.getValue();
             
             return new DimensionPropertyValue(v2, v1);
         }
