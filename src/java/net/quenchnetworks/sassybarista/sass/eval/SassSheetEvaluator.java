@@ -2,7 +2,6 @@ package net.quenchnetworks.sassybarista.sass.eval;
 
 import java.io.*;
 import java.util.*;
-import java.util.regex.*;
 
 import net.quenchnetworks.sassybarista.sass.*;
 import net.quenchnetworks.sassybarista.sass.models.*;
@@ -12,6 +11,16 @@ import net.quenchnetworks.sassybarista.sass.expression.*;
 
 public class SassSheetEvaluator
 {
+    // If this seems strange to isolate this part it is because it is,
+    // but unfortunately this needs to be able to compile in GWT,
+    // and GWT doesn't support java.util.regex. This means that the
+    // implementation has to be swappable.
+    public interface StringInterpolator
+    {
+        public String applyVariables(String str, ExpressionEvaluator evaluator, 
+            Map<String, IPropertyValue> scope) throws EvaluationException;
+    }
+
     private static class Extension
     {
         Rule rule;
@@ -28,15 +37,17 @@ public class SassSheetEvaluator
     }
 
     private ExpressionEvaluator evaluator;
+    private StringInterpolator interpolator;
     
     private List<Rule> ruleList;
     private Map<String, IFunction> functions;
     private Map<String, IPropertyValue> variables = null;
     private Map<String, Mixin> mixins = null;
 
-    public SassSheetEvaluator()
+    public SassSheetEvaluator(StringInterpolator interpolator)
     {
         this.functions = new HashMap<String, IFunction>();
+        this.interpolator = interpolator;
     }
     
     public void addFunction(String name, IFunction function)
@@ -73,25 +84,6 @@ public class SassSheetEvaluator
         sheet.setRules(ruleList);
     }
 
-    private String applyVariables(String str, Map<String, IPropertyValue> scope)
-    throws EvaluationException
-    {
-        Pattern pattern = Pattern.compile("#\\{(\\$\\w+)\\}");
-        Matcher matcher = pattern.matcher(str);
-
-        while (matcher.find()) {
-            String var = matcher.group(1);
-            IPropertyValue val = scope.get(var);
-            if (val == null) {
-                continue;
-            }
-            IPropertyValue flat = evaluator.evaluate(val, scope);
-            str = str.replace("#{" + var + "}", flat.toString());
-        }
-
-        return str;
-    }
-
     private void interpolateSelectors(List<SelectorChain> chains, 
         Map<String, IPropertyValue> scope)
     throws EvaluationException
@@ -99,14 +91,14 @@ public class SassSheetEvaluator
         for (SelectorChain chain : chains) {
             for (Selector selector : chain.getSelectors()) {
                 if (selector.getId() != null) {
-                    selector.setId(applyVariables(selector.getId(), scope));
+                    selector.setId(interpolator.applyVariables(selector.getId(), evaluator, scope));
                 }
                 if (selector.getElement() != null) {
-                    selector.setElement(applyVariables(selector.getElement(), scope));
+                    selector.setElement(interpolator.applyVariables(selector.getElement(), evaluator, scope));
                 }
                 List<String> classes = new ArrayList<String>();
                 for (String className : selector.getClassNames()) {
-                    classes.add(applyVariables(className, scope));
+                    classes.add(interpolator.applyVariables(className, evaluator, scope));
                 }
                 selector.setClassNames(classes);
             }
@@ -348,7 +340,7 @@ public class SassSheetEvaluator
         }
         
         for (Property property : rule.getProperties()) {
-            String key = applyVariables(property.getKey(), variables);
+            String key = interpolator.applyVariables(property.getKey(), evaluator, variables);
             property.setKey(key);
             List<INode> newValues = new ArrayList<INode>();
             for (INode value : property.getValues()) {

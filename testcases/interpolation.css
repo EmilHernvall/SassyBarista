@@ -20,6 +20,6 @@ div.test {
 }
 
 div.test #pink.foo {
-    color: red;
+    color: red !important;
     content: floyd;
 }

@@ -515,6 +515,12 @@ Property Property() :
             { property.addValue(value); }
             (<S>)*
         )
+        |
+        (
+            "!important"
+            { property.addValue(new ImportantPropertyValue()); }
+            (<S>)*
+        )
     )+
     ";"
     (LOOKAHEAD(2) <S>)*

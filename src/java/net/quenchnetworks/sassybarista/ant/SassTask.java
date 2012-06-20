@@ -121,7 +121,7 @@ public class SassTask extends Task
         SassParser parser = new SassParser(new FileReader(inFile));
         SassSheet sheet = parser.parse();
     
-        SassSheetEvaluator evaluator = new SassSheetEvaluator();
+        SassSheetEvaluator evaluator = new SassSheetEvaluator(new JavaStringInterpolator());
         evaluator.evaluate(sheet);
     
         SassSheetSerializer serializer = new SassSheetSerializer(stream);

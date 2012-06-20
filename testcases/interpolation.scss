@@ -6,7 +6,7 @@ $num: 2;
 @mixin test($a, $b) {
     line-height: 2em;
     ##{$a}.foo {
-        color: red;
+        color: red !important;
         content: $b;
     }
 }

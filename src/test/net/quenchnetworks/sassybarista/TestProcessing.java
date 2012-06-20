@@ -41,7 +41,7 @@ public class TestProcessing
         
             sheet = sheet.copy();
         
-            SassSheetEvaluator evaluator = new SassSheetEvaluator();
+            SassSheetEvaluator evaluator = new SassSheetEvaluator(new JavaStringInterpolator());
             evaluator.evaluate(sheet);
         
             ByteArrayOutputStream os = new ByteArrayOutputStream();

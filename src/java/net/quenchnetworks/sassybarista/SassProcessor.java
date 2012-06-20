@@ -42,7 +42,7 @@ public class SassProcessor
         
         SassSheet copy = sheet.copy();
         
-        SassSheetEvaluator evaluator = new SassSheetEvaluator();
+        SassSheetEvaluator evaluator = new SassSheetEvaluator(new JavaStringInterpolator());
         evaluator.addFunction("formatProperty", new IFunction() {
             public IPropertyValue evaluate(List<IPropertyValue> params)
             throws EvaluationException {
