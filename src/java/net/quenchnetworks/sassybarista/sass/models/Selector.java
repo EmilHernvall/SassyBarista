@@ -101,6 +101,7 @@ public class Selector implements Serializable
         }
     }
 
+    private boolean parentRef = false;
     private Combinator combinator = Combinator.DESCENDANT_OF;
     private String element = null;
     private String id = null;
@@ -113,6 +114,9 @@ public class Selector implements Serializable
     {
         this.classNames = new ArrayList<String>();
     }
+
+    public void setParentRef(boolean v) { this.parentRef = v; }
+    public boolean isParentRef() { return parentRef; }
     
     public void setCombinator(Combinator v) { this.combinator = v; }
     public Combinator getCombinator() { return combinator; }
@@ -171,6 +175,7 @@ public class Selector implements Serializable
     {
         Selector sel = new Selector();
         sel.combinator = combinator;
+        sel.parentRef = parentRef;
         sel.element = element;
         sel.id = id;
         sel.classNames = new ArrayList<String>(classNames);
@@ -185,6 +190,7 @@ public class Selector implements Serializable
     public int hashCode()
     {
         int code = 17;
+        code = 31 * code + (parentRef ? 1 : 0);
         code = 31 * code + combinator.hashCode();
         code = 31 * code + (element != null ? element.hashCode() : 0);
         code = 31 * code + (id != null ? id.hashCode() : 0);
@@ -215,6 +221,9 @@ public class Selector implements Serializable
         if (combinator != null && combinator != Combinator.DESCENDANT_OF) {
             buffer.append(combinator.toString());
             buffer.append(" ");
+        }
+        if (parentRef) {
+            buffer.append("&");
         }
         if (element != null) {
             buffer.append(element);

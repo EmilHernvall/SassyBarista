@@ -71,6 +71,7 @@ public class TestProcessing
             }
         }
         catch (ParseException e) {
+            System.out.println("ParseException occured for " + testCase);
             e.printStackTrace();
             fail("Caught ParseException.");
         }
@@ -133,5 +134,11 @@ public class TestProcessing
     public void controlstructures()
     {
         processTest("controlstructure_if");
+    }
+
+    @Test 
+    public void parentReferences()
+    {
+        processTest("parentref");
     }
 }

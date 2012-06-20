@@ -4,3 +4,7 @@ div.somewarning {
     text-align: center;
     font-weight: bold;
 }
+
+div.somewarning p {
+    line-height: 2em;
+}

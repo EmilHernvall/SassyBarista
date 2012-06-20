@@ -1,0 +1,60 @@
+a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+body.firefox a {
+    font-weight: normal;
+}
+
+body.chrome > a {
+    font-weight: bold;
+}
+
+#main {
+    color: black;
+}
+
+#main a {
+    font-weight: bold;
+}
+
+#main a:hover {
+    color: red;
+}
+
+#main a.selected {
+    color: green;
+}
+
+#main span.text {
+    line-height: 2em;
+}
+
+#main span.text.hidden {
+    display: none;
+}
+
+#main span#stupidExample.text {
+    font-size: 72px;
+}
+
+div.foo {
+    display: inline-block;
+}
+
+div.foo:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+* html div.foo {
+    height: 1px;
+}

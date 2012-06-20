@@ -76,6 +76,7 @@ TOKEN : { < DASHMATCH : "|=" > }
 TOKEN : { < PREFIXMATCH : "^=" > }
 TOKEN : { < SUFFIXMATCH : "$=" > }
 TOKEN : { < SUBSTRINGMATCH : "*=" > }
+TOKEN : { < PARENTREF : "&" > }
 
 TOKEN : { < VARIABLE : "$" <name> > }
 
@@ -394,6 +395,19 @@ Selector Selector() :
             // Element
             t = <IDENT>
             { s.setElement(t.image); }
+        |
+            "*"
+            { s.setElement("*"); }
+        |
+            // Parent ref
+            <PARENTREF>
+            { 
+                if (s.getElement() != null) {
+                    throw new ParseException("Parent references cannot be combined " +
+                        "with element selectors.");
+                }
+                s.setParentRef(true); 
+            }
         )
     )+
     

@@ -6,20 +6,32 @@ import java.util.*;
 public class SelectorChain implements Serializable
 {
     private List<Selector> selectors;
+    private boolean hasParentRef = false;
 
     public SelectorChain()
     {
         this.selectors = new ArrayList<Selector>();
     }
+
+    public boolean hasParentRef() { return hasParentRef; }
     
     public void addSelector(Selector selector)
     {
+        if (selector.isParentRef()) {
+            if (hasParentRef) {
+                throw new RuntimeException("A selector chain can only contain " +
+                    "a single parent reference.");
+            }
+            hasParentRef = true;
+        }
         selectors.add(selector);
     }
     
     public void addSelectors(List<Selector> newSelectors)
     {
-        selectors.addAll(newSelectors);
+        for (Selector sel : newSelectors) {
+            addSelector(sel);
+        }
     }
     
     public List<Selector> getSelectors()

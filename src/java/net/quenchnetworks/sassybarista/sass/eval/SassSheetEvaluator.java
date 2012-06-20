@@ -56,15 +56,15 @@ public class SassSheetEvaluator
         
         this.mixins = sheet.getMixins();
 
-        for (Rule rule : sheet.getRules()) {
+        /*for (Rule rule : sheet.getRules()) {
             nestSelectors(rule);
-        }
+        }*/
         
         processExtends(sheet);
         
         ruleList = new ArrayList<Rule>();
         for (Rule rule : sheet.getRules()) {
-            processRule(rule);
+            processRule(rule, true);
         }
         
         sheet.setVariables(new HashMap<String, INode>());
@@ -80,10 +80,8 @@ public class SassSheetEvaluator
             List<SelectorChain> newChains = new ArrayList<SelectorChain>();
             for (SelectorChain selectorChain : selectorChains) {
                 for (SelectorChain subSelectorChain : subrule.getSelectorChains()) {
-                    SelectorChain newChain = new SelectorChain();
-                    newChain.addSelectors(selectorChain.getSelectors());
-                    newChain.addSelectors(subSelectorChain.getSelectors());
-                    newChains.add(newChain);
+                    newChains.add(mergeSelectorChains(selectorChain.copy(), 
+                        subSelectorChain.copy()));
                 }
             }
             
@@ -95,6 +93,50 @@ public class SassSheetEvaluator
             
             nestSelectors(subrule);
         }
+    }
+
+    private SelectorChain mergeSelectorChains(SelectorChain first, SelectorChain second)
+    {
+        SelectorChain newChain = new SelectorChain();
+        if (first.hasParentRef()) {
+            throw new RuntimeException("First chain cannot contain parent references.");
+        } 
+
+        if (second.hasParentRef()) {
+            for (Selector sel : second.getSelectors()) {
+                if (sel.isParentRef()) {
+                    newChain.addSelectors(first.getSelectors());
+                    List<Selector> res = newChain.getSelectors();
+                    Selector last = res.get(res.size()-1);
+                    if (sel.getCombinator() != Selector.Combinator.DESCENDANT_OF) {
+                        last.setCombinator(sel.getCombinator());
+                    }
+                    if (sel.getId() != null) {
+                        last.setId(sel.getId());
+                    }
+                    for (String className : sel.getClassNames()) {
+                        last.addClassName(className);
+                    }
+                    if (sel.getPseudoClass() != null) {
+                        last.setPseudoClass(sel.getPseudoClass());
+                    }
+                    if (sel.getPseudoClassParameter() != null) {
+                        last.setPseudoClassParameter(sel.getPseudoClassParameter());
+                    }
+                    if (sel.getAttributeSelector() != null) {
+                        last.setAttributeSelector(sel.getAttributeSelector());
+                    }
+                } else {
+                    newChain.addSelector(sel);
+                }
+            }
+        }
+        else {
+            newChain.addSelectors(first.getSelectors());
+            newChain.addSelectors(second.getSelectors());
+        }
+
+        return newChain;
     }
     
     private void processExtends(SassSheet sheet)
@@ -228,7 +270,7 @@ public class SassSheetEvaluator
         return matches;
     }
     
-    private void processRule(Rule rule)
+    private void processRule(Rule rule, boolean topLevel)
     throws EvaluationException
     {
         // Fetch all includes and just copy all the subrules
@@ -273,8 +315,11 @@ public class SassSheetEvaluator
         ruleList.add(rule);
         
         // Render subrules
+        if (topLevel) {
+            nestSelectors(rule);
+        }
         for (Rule subrule : rule.getSubRules()) {
-            processRule(subrule);
+            processRule(subrule, false);
         }
         rule.setSubRules(new ArrayList<Rule>());
     }

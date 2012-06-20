@@ -16,15 +16,17 @@ for you, I do not know. For my applications it is not.
 
 Currently supported:
 
- * Correctly parses most of the CSS specification, with a few exceptions. I'm working on
-   the remaining glitches (such as the * selector).
+ * Correctly parses most of the CSS specification. If you find examples of valid
+   css that it can't process, I'd like to hear about it.
  * Nesting of rules
  * Variables (has to be defined in the global scope right now)
- * Mixins (parameters are supported, although not keyword arguments)
+ * Mixins (parameters are supported, although not keyword arguments, nesting rules
+   within mixins works as expected)
  * Selector inheritance (chaining and multiple, no partial substitutions)
  * Basic arithmetic
  * A basic @if statement (no else if, no logical operators)
  * Functions are supported, although currently no functions are implemented.
+ * Parent references
  
 Planned:
 

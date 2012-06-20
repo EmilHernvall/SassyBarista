@@ -1,0 +1,41 @@
+@mixin clearfix {
+  display: inline-block;
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+  * html & { height: 1px; }
+}
+
+a {
+  font-weight: bold;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+  body.firefox & { font-weight: normal; }
+  body.chrome > & { font-weight: bold; }
+}
+#main {
+  color: black;
+  a {
+    font-weight: bold;
+    &:hover { color: red; }
+    &.selected { color: green; }
+  }
+  span.text {
+    line-height: 2em;
+
+    &.hidden {
+      display: none;
+    }
+    &#stupidExample {
+      font-size: 72px;
+    }
+  }
+}
+
+div.foo {
+    @include clearfix;
+}
