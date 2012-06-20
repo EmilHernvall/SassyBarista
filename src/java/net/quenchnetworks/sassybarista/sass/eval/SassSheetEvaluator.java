@@ -74,6 +74,7 @@ public class SassSheetEvaluator
     }
 
     private String applyVariables(String str, Map<String, IPropertyValue> scope)
+    throws EvaluationException
     {
         Pattern pattern = Pattern.compile("#\\{(\\$\\w+)\\}");
         Matcher matcher = pattern.matcher(str);
@@ -84,10 +85,32 @@ public class SassSheetEvaluator
             if (val == null) {
                 continue;
             }
-            str = str.replace("#{" + var + "}", val.toString());
+            IPropertyValue flat = evaluator.evaluate(val, scope);
+            str = str.replace("#{" + var + "}", flat.toString());
         }
 
         return str;
+    }
+
+    private void interpolateSelectors(List<SelectorChain> chains, 
+        Map<String, IPropertyValue> scope)
+    throws EvaluationException
+    {
+        for (SelectorChain chain : chains) {
+            for (Selector selector : chain.getSelectors()) {
+                if (selector.getId() != null) {
+                    selector.setId(applyVariables(selector.getId(), scope));
+                }
+                if (selector.getElement() != null) {
+                    selector.setElement(applyVariables(selector.getElement(), scope));
+                }
+                List<String> classes = new ArrayList<String>();
+                for (String className : selector.getClassNames()) {
+                    classes.add(applyVariables(className, scope));
+                }
+                selector.setClassNames(classes);
+            }
+        }
     }
     
     private void nestSelectors(Rule rule)
@@ -310,6 +333,10 @@ public class SassSheetEvaluator
             }
             
             reduceMixin(mixin, params);
+
+            for (Rule subrule : mixin.getSubRules()) {
+                interpolateSelectors(subrule.getSelectorChains(), params);
+            }
             
             rule.addSubRules(mixin.getSubRules());
             rule.addProperties(mixin.getProperties());
@@ -340,21 +367,7 @@ public class SassSheetEvaluator
         }
 
         // Handle interpolations in selector chains
-        for (SelectorChain chain : rule.getSelectorChains()) {
-            for (Selector selector : chain.getSelectors()) {
-                if (selector.getId() != null) {
-                    selector.setId(applyVariables(selector.getId(), variables));
-                }
-                if (selector.getElement() != null) {
-                    selector.setElement(applyVariables(selector.getElement(), variables));
-                }
-                List<String> classes = new ArrayList<String>();
-                for (String className : selector.getClassNames()) {
-                    classes.add(applyVariables(className, variables));
-                }
-                selector.setClassNames(classes);
-            }
-        }
+        interpolateSelectors(rule.getSelectorChains(), variables);
 
         // Render subrules
         for (Rule subrule : rule.getSubRules()) {

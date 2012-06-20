@@ -3,6 +3,14 @@ $bar: color;
 $baz: whatever;
 $num: 2;
 
+@mixin test($a, $b) {
+    line-height: 2em;
+    ##{$a}.foo {
+        color: red;
+        content: $b;
+    }
+}
+
 div#quench_#{$foo} {
     background-#{$bar}: #fff;
     color: #000000; 
@@ -15,4 +23,7 @@ h#{$num} {
     div.#{$bar}_#{$baz} {
         font-weight: bold;
     }
+}
+div.test {
+    @include test(pink,floyd);
 }

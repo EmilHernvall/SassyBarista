@@ -14,3 +14,12 @@ h2 div.whatever {
 h2 div.color_whatever {
     font-weight: bold;
 }
+
+div.test {
+    line-height: 2em;
+}
+
+div.test #pink.foo {
+    color: red;
+    content: floyd;
+}

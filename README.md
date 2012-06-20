@@ -27,12 +27,12 @@ Currently supported:
  * A basic @if statement (no else if, no logical operators)
  * Functions are supported, although currently no functions are implemented.
  * Parent references
+ * Interpolation using #{} in selectors and property-names.
  
 Planned:
 
  * Improved error messages (currently javacc's default ParseException are used, which
    can be really confusing)
- * Interpolation using #{}
  * Various output styles
  * @else, @else if, @for, @each and @while
  * Keyword arguments to mixins
