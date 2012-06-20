@@ -60,11 +60,14 @@ TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0027"-"\u007E"] |
 TOKEN : { < #nl : "\n" | "\r" "\n" | "\r" | "\u000C" > }
 TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
 TOKEN : { < #w : (<wc>)* > }
+TOKEN : { < #variable : "$" <name> > }
+TOKEN : { < #interpolation : "#" "{" <variable> "}" > }
+TOKEN : { < #hexcolor : "#" (["a"-"f","A"-"F","0"-"9"]){3,6} > }
 
-TOKEN : { < IDENT : <ident> > }
+//TOKEN : { < IDENT : <ident> > }
+TOKEN : { < IDENT : (<ident>|<interpolation>)+ > }
 //TOKEN : { < ATKEYWORD : "@" <ident> > }
 TOKEN : { < STRING : <string> > }
-TOKEN : { < HASH : "#" <name> > }
 TOKEN : { < NUMBER : <num> > }
 TOKEN : { < PERCENTAGE : <num> "%" > }
 TOKEN : { < DIMENSION : <num> <ident> > }
@@ -77,8 +80,8 @@ TOKEN : { < PREFIXMATCH : "^=" > }
 TOKEN : { < SUFFIXMATCH : "$=" > }
 TOKEN : { < SUBSTRINGMATCH : "*=" > }
 TOKEN : { < PARENTREF : "&" > }
-
-TOKEN : { < VARIABLE : "$" <name> > }
+TOKEN : { < VARIABLE : <variable> > }
+TOKEN : { < HEXCOLOR : <hexcolor> > }
 
 //MORE : { < DELIMETER : <delim> > }
 
@@ -379,12 +382,13 @@ Selector Selector() :
         LOOKAHEAD(2)
         (
             // ID
-            t = <HASH>
+            "#"
+            t = <IDENT>
             { 
                 if (s.getClassNames().size() > 0) {
                     throw new ParseException("Encountered id selector after class selector.");
                 }
-                s.setId(t.image.substring(1)); 
+                s.setId(t.image); 
             }
         |
             // Class
@@ -692,7 +696,7 @@ IPropertyValue PropertyValue() :
             t = <URI> 
             { p = new URIPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
         |
-            t = <HASH> 
+            t = <HEXCOLOR> 
             { p = new ColorPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
         |
             t = <VARIABLE>

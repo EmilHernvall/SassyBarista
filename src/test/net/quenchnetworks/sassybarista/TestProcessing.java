@@ -141,4 +141,10 @@ public class TestProcessing
     {
         processTest("parentref");
     }
+
+    @Test 
+    public void interpolation()
+    {
+        processTest("interpolation");
+    }
 }

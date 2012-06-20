@@ -32,6 +32,11 @@ public class Property implements Serializable
     {
         values.add(value);
     }
+
+    public void setKey(String v)
+    {
+        this.key = v;
+    }
     
     public String getKey()
     {

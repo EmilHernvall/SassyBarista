@@ -1,0 +1,18 @@
+$foo: test;
+$bar: color;
+$baz: whatever;
+$num: 2;
+
+div#quench_#{$foo} {
+    background-#{$bar}: #fff;
+    color: #000000; 
+}
+h#{$num} {
+    font-size: (6-$num)*10px;
+    div.#{$baz} {
+        font-weight: bold;
+    }
+    div.#{$bar}_#{$baz} {
+        font-weight: bold;
+    }
+}

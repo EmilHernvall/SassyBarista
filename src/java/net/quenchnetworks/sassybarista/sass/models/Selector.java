@@ -127,6 +127,7 @@ public class Selector implements Serializable
     public void setId(String v) { this.id = v; }
     public String getId() { return id; }
     
+    public void setClassNames(List<String> v) { this.classNames = v; }
     public void addClassName(String v) { this.classNames.add(v); }
     public List<String> getClassNames() { return classNames; }
     

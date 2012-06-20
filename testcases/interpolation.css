@@ -1,0 +1,16 @@
+div#quench_test {
+    background-color: #fff;
+    color: #000000;
+}
+
+h2 {
+    font-size: 40px;
+}
+
+h2 div.whatever {
+    font-weight: bold;
+}
+
+h2 div.color_whatever {
+    font-weight: bold;
+}

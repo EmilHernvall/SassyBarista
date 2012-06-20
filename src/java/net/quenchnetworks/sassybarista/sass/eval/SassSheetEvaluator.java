@@ -2,6 +2,7 @@ package net.quenchnetworks.sassybarista.sass.eval;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.*;
 
 import net.quenchnetworks.sassybarista.sass.*;
 import net.quenchnetworks.sassybarista.sass.models.*;
@@ -70,6 +71,23 @@ public class SassSheetEvaluator
         sheet.setVariables(new HashMap<String, INode>());
         sheet.setMixins(new HashMap<String, Mixin>());
         sheet.setRules(ruleList);
+    }
+
+    private String applyVariables(String str, Map<String, IPropertyValue> scope)
+    {
+        Pattern pattern = Pattern.compile("#\\{(\\$\\w+)\\}");
+        Matcher matcher = pattern.matcher(str);
+
+        while (matcher.find()) {
+            String var = matcher.group(1);
+            IPropertyValue val = scope.get(var);
+            if (val == null) {
+                continue;
+            }
+            str = str.replace("#{" + var + "}", val.toString());
+        }
+
+        return str;
     }
     
     private void nestSelectors(Rule rule)
@@ -303,6 +321,8 @@ public class SassSheetEvaluator
         }
         
         for (Property property : rule.getProperties()) {
+            String key = applyVariables(property.getKey(), variables);
+            property.setKey(key);
             List<INode> newValues = new ArrayList<INode>();
             for (INode value : property.getValues()) {
                 newValues.add(evaluator.evaluate(value, variables));
@@ -314,10 +334,29 @@ public class SassSheetEvaluator
 
         ruleList.add(rule);
         
-        // Render subrules
+        // Nest selectors, but only if we're at a top-level rule
         if (topLevel) {
             nestSelectors(rule);
         }
+
+        // Handle interpolations in selector chains
+        for (SelectorChain chain : rule.getSelectorChains()) {
+            for (Selector selector : chain.getSelectors()) {
+                if (selector.getId() != null) {
+                    selector.setId(applyVariables(selector.getId(), variables));
+                }
+                if (selector.getElement() != null) {
+                    selector.setElement(applyVariables(selector.getElement(), variables));
+                }
+                List<String> classes = new ArrayList<String>();
+                for (String className : selector.getClassNames()) {
+                    classes.add(applyVariables(className, variables));
+                }
+                selector.setClassNames(classes);
+            }
+        }
+
+        // Render subrules
         for (Rule subrule : rule.getSubRules()) {
             processRule(subrule, false);
         }
