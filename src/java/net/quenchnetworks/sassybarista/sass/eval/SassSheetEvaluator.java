@@ -76,7 +76,7 @@ public class SassSheetEvaluator
         
         ruleList = new ArrayList<Rule>();
         for (Rule rule : sheet.getRules()) {
-            processRule(rule, true);
+            processRule(rule);
         }
         
         sheet.setVariables(new HashMap<String, INode>());
@@ -105,29 +105,6 @@ public class SassSheetEvaluator
         }
     }
     
-    private void nestSelectors(Rule rule)
-    {
-        List<SelectorChain> selectorChains = rule.getSelectorChains();
-        for (Rule subrule : rule.getSubRules()) {
-            // Permute all combinations of this level and the next levels selector
-            List<SelectorChain> newChains = new ArrayList<SelectorChain>();
-            for (SelectorChain selectorChain : selectorChains) {
-                for (SelectorChain subSelectorChain : subrule.getSelectorChains()) {
-                    newChains.add(mergeSelectorChains(selectorChain.copy(), 
-                        subSelectorChain.copy()));
-                }
-            }
-            
-            // Replace all the current selectors of the sub rule with the new
-            // permutations. This will be done again for each level, which will
-            // generate all the needed permutations regardless of the number of
-            // lvels
-            subrule.setSelectorChains(newChains);
-            
-            nestSelectors(subrule);
-        }
-    }
-
     private SelectorChain mergeSelectorChains(SelectorChain first, SelectorChain second)
     {
         SelectorChain newChain = new SelectorChain();
@@ -303,7 +280,7 @@ public class SassSheetEvaluator
         return matches;
     }
     
-    private void processRule(Rule rule, boolean topLevel)
+    private void processRule(Rule rule)
     throws EvaluationException
     {
         // Fetch all includes and just copy all the subrules
@@ -320,16 +297,8 @@ public class SassSheetEvaluator
             
             Map<String, IPropertyValue> params = mixin.getParameterMap(include);
             
-            for (ControlStatement stmt : mixin.getControlStatements()) {
-                stmt.evaluate(mixin, evaluator, params);
-            }
-            
             reduceMixin(mixin, params);
 
-            for (Rule subrule : mixin.getSubRules()) {
-                interpolateSelectors(subrule.getSelectorChains(), params);
-            }
-            
             rule.addSubRules(mixin.getSubRules());
             rule.addProperties(mixin.getProperties());
         }
@@ -353,17 +322,28 @@ public class SassSheetEvaluator
 
         ruleList.add(rule);
         
-        // Nest selectors, but only if we're at a top-level rule
-        if (topLevel) {
-            nestSelectors(rule);
-        }
-
         // Handle interpolations in selector chains
         interpolateSelectors(rule.getSelectorChains(), variables);
 
-        // Render subrules
+        // Render subrules, nest selectors
+        List<SelectorChain> selectorChains = rule.getSelectorChains();
         for (Rule subrule : rule.getSubRules()) {
-            processRule(subrule, false);
+            // Permute all combinations of this level and the next levels selector
+            List<SelectorChain> newChains = new ArrayList<SelectorChain>();
+            for (SelectorChain selectorChain : selectorChains) {
+                for (SelectorChain subSelectorChain : subrule.getSelectorChains()) {
+                    newChains.add(mergeSelectorChains(selectorChain.copy(), 
+                        subSelectorChain.copy()));
+                }
+            }
+            
+            // Replace all the current selectors of the sub rule with the new
+            // permutations. This will be done again for each level, which will
+            // generate all the needed permutations regardless of the number of
+            // lvels
+            subrule.setSelectorChains(newChains);
+            
+            processRule(subrule);
         }
         rule.setSubRules(new ArrayList<Rule>());
     }
@@ -371,14 +351,25 @@ public class SassSheetEvaluator
     private void reduceMixin(Block block, Map<String, IPropertyValue> params)
     throws EvaluationException
     {
+        for (Rule subrule : block.getSubRules()) {
+            interpolateSelectors(subrule.getSelectorChains(), params);
+        }
+            
+        for (ControlStatement stmt : block.getControlStatements()) {
+            stmt.evaluate(block, evaluator, params);
+        }
+        block.setControlStatements(new ArrayList<ControlStatement>());
+            
         for (Property property : block.getProperties()) {
+            String key = interpolator.applyVariables(property.getKey(), evaluator, variables);
+            property.setKey(key);
             List<INode> newValues = new ArrayList<INode>();
             for (INode value : property.getValues()) {
                 newValues.add(evaluator.evaluate(value, params));
             }
             property.setValues(newValues);
         }
-        
+
         for (Rule subrule : block.getSubRules()) {
             reduceMixin(subrule, params);
         }

@@ -11,30 +11,25 @@ import net.quenchnetworks.sassybarista.sass.value.op.*;
 public class FunctionPropertyValue extends AbstractPropertyValue implements Serializable
 {
     private String name;
-    private List<IPropertyValue> values;
+    private List<INode> values;
 
     public FunctionPropertyValue()
     {
         super("FunctionPropertyValue");
         this.name = null;
-        this.values = new ArrayList<IPropertyValue>();
+        this.values = new ArrayList<INode>();
     }
     
     public FunctionPropertyValue(String name)
     {
         super("FunctionPropertyValue");
         this.name = name;
-        this.values = new ArrayList<IPropertyValue>();
+        this.values = new ArrayList<INode>();
     }
     
-    public void addValue(IPropertyValue value)
+    public void addValue(INode value)
     {
         values.add(value);
-    }
-    
-    public List<IPropertyValue> getValues()
-    {
-        return values;
     }
     
     @Override
@@ -42,14 +37,16 @@ public class FunctionPropertyValue extends AbstractPropertyValue implements Seri
         Map<String, IFunction> functions)
     throws EvaluationException
     {
+        ExpressionEvaluator evaluator = new ExpressionEvaluator(functions);
         List<IPropertyValue> newValues = new ArrayList<IPropertyValue>();
-        for (IPropertyValue value : values) {
-            IPropertyValue newValue = value.evaluate(context, functions);
+        for (INode value : values) {
+            IPropertyValue newValue = evaluator.evaluate(value, context);
             newValues.add(newValue);
         }
+
+        values.clear();
+        values.addAll(newValues);
         
-        this.values = newValues;
-    
         IFunction func = functions.get(name);
         
         // functions that are not found are rendered as usual
@@ -57,7 +54,7 @@ public class FunctionPropertyValue extends AbstractPropertyValue implements Seri
             return this;
         }
     
-        IPropertyValue newValue = func.evaluate(values);
+        IPropertyValue newValue = func.evaluate(newValues);
         return newValue;
     }
     
@@ -129,7 +126,7 @@ public class FunctionPropertyValue extends AbstractPropertyValue implements Seri
     public IPropertyValue copy()
     {
         FunctionPropertyValue newValue = new FunctionPropertyValue(name);
-        for (IPropertyValue value : values) {
+        for (INode value : values) {
             newValue.addValue(value.copy());
         }
         
@@ -145,7 +142,7 @@ public class FunctionPropertyValue extends AbstractPropertyValue implements Seri
         buffer.append("(");
         
         int i = 0;
-        for (IPropertyValue value : values) {
+        for (INode value : values) {
             buffer.append(value.toString());
             if (i < values.size() - 1) {
                 buffer.append(" ");

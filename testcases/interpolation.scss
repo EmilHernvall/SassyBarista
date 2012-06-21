@@ -3,14 +3,6 @@ $bar: color;
 $baz: whatever;
 $num: 2;
 
-@mixin test($a, $b) {
-    line-height: 2em;
-    ##{$a}.foo {
-        color: red !important;
-        content: $b;
-    }
-}
-
 div#quench_#{$foo} {
     background-#{$bar}: #fff;
     color: #000000; 
@@ -24,6 +16,31 @@ h#{$num} {
         font-weight: bold;
     }
 }
-div.test {
-    @include test(pink,floyd);
+
+.topPanel {
+    background-image: url('newgfx/header_bg.png');
+    width: 100%;
+    height: 93px;
+    
+    .navigationPanel {
+        clear: both;
+        float: right;
+        width: 500px;
+        margin-top: 20px;
+
+        @mixin menuLink($name, $width) {
+            td.#{$name} {
+                width: $width;
+            }
+            a.link.#{$name} {
+                background-image: 'newgfx/menu_' + $name + '.png';
+                width: $width;
+                height: 10px;
+            }
+        }
+
+        @include menuLink(home, 34px);
+        @include menuLink(news, 110px);
+    }
 }
+

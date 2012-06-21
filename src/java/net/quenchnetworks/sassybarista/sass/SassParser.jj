@@ -14,6 +14,10 @@ import net.quenchnetworks.sassybarista.sass.models.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
 
 public class SassParser {
+    private List<Rule> rules ;
+    private Map<String, INode> variables ;
+    private Map<String, Mixin> mixins ;
+
     public static void main( String[] args )
     throws EvaluationException, ParseException, TokenMgrError {
         SassParser parser = new SassParser(System.in);
@@ -54,9 +58,9 @@ TOKEN : { < #unicode : "\\" (["a"-"f","A"-"F","0"-"9"]){1,6} (<wc>)? > }
 TOKEN : { < #escape : <unicode> | "\\" ["\u0020"-"\u007E","\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
 TOKEN : { < #nmchar : ["a"-"z","A"-"Z","0"-"9"] | "-" | "_" | <nonascii> | <escape> > }
 TOKEN : { < #num : (["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+ > }
-TOKEN : { < #string : "\"" (<stringchar> | "'")* "\"" | "'" (<stringchar> | "\"")* "'" > }
+TOKEN : { < #string : "\"" (<stringchar> | "'")* "\"" | "'" (<urlchar> | "\"")* "'" > }
 TOKEN : { < #stringchar : <urlchar> | "\u0020" | "\\" <nl> > }
-TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0027"-"\u007E"] | <nonascii> | <escape> > }
+TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0028"-"\u007E"] | <nonascii> | <escape> > }
 TOKEN : { < #nl : "\n" | "\r" "\n" | "\r" | "\u000C" > }
 TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
 TOKEN : { < #w : (<wc>)* > }
@@ -88,11 +92,8 @@ TOKEN : { < HEXCOLOR : <hexcolor> > }
 SassSheet parse() :
 {
     Token t ;
-    List<Rule> rules ;
     Rule rule ;
     Mixin mixin ;
-    Map<String, INode> variables ;
-    Map<String, Mixin> mixins ;
     String variableName ;
     INode variableValue ;
 }
@@ -198,11 +199,20 @@ void RuleBlock(Rule block) :
     IncludeDirective i ;
     IPropertyValue value ;
     Selector sel ;
+    Mixin mixin ;
 }
 {
     "{"
     (LOOKAHEAD(2) <S>)*
     (
+        LOOKAHEAD ( "@mixin" )
+        (
+            "@mixin"
+            (<S>)+
+            mixin = Mixin()
+            { mixins.put(mixin.getName(), mixin); }
+        )
+        |
         LOOKAHEAD(Rule())
         (
             nestedRule = Rule()
@@ -670,7 +680,7 @@ IPropertyValue PropertyValue() :
 {
     Token t ;
     IPropertyValue p ;
-    IPropertyValue tmp ;
+    INode tmp ;
     FunctionPropertyValue fp ;
 }
 {
@@ -712,7 +722,7 @@ IPropertyValue PropertyValue() :
             { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); } 
             (<S>)* 
             (
-                tmp = PropertyValue() 
+                tmp = Expression() 
                 { fp.addValue(tmp); }
                 (<S>)*
             )* 

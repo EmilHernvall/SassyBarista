@@ -15,11 +15,36 @@ h2 div.color_whatever {
     font-weight: bold;
 }
 
-div.test {
-    line-height: 2em;
+.topPanel {
+    background-image: url('newgfx/header_bg.png');
+    width: 100%;
+    height: 93px;
 }
 
-div.test #pink.foo {
-    color: red !important;
-    content: floyd;
+.topPanel .navigationPanel {
+    clear: both;
+    float: right;
+    width: 500px;
+    margin-top: 20px;
 }
+
+.topPanel .navigationPanel td.home {
+    width: 34px;
+}
+
+.topPanel .navigationPanel a.link.home {
+    background-image: 'newgfx/menu_home.png';
+    width: 34px;
+    height: 10px;
+}
+
+.topPanel .navigationPanel td.news {
+    width: 110px;
+}
+
+.topPanel .navigationPanel a.link.news {
+    background-image: 'newgfx/menu_news.png';
+    width: 110px;
+    height: 10px;
+}
+

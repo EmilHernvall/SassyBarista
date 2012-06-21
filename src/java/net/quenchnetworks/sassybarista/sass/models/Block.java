@@ -55,6 +55,11 @@ public class Block implements Serializable
     {
         ctrlStmts.add(stmt);
     }
+
+    public void setControlStatements(List<ControlStatement> v) 
+    {
+        ctrlStmts = v;
+    }
     
     public List<ControlStatement> getControlStatements()
     {
