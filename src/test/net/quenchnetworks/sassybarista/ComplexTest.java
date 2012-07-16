@@ -48,7 +48,7 @@ public class ComplexTest {
                 "@import \"example\";\n" +
                 "@import \"response\";";
 
-        String resultingSource = processor.preProcessImports(new StringReader(source), new File("./src/test/sample-pages/sass/application.scss"));
+        String resultingSource = processor.preProcessImports(new StringReader(source), new File("testcases/complex/application.scss"));
 
         System.out.println(resultingSource);
 
