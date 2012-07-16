@@ -1,0 +1,343 @@
+.hide {
+  @include hide-text;
+}
+
+$color_1: #000;
+$color_2: #66ae3d;
+$color_3: #66ae3d;
+$color_4: #b7dc7d;
+$color_default_text: #000;
+$color_background: #fff;
+$color_borders: #eaeaea;
+$color_links: #2a9cb3;
+
+$fontstack: "helvetica, arial, sans-serif";
+$heading_fontstack: $fontstack;
+
+/* ============================================================
+    Sections
+============================================================ */
+
+.clearfix {
+  @include clearfix;
+}
+
+body, body * {
+  @include box-sizing(border-box);
+/* border: 1px solid rgba(255,0,0,0.5); */
+}
+
+body {
+  margin: 0 auto;
+  padding: 0 2em; /* Temporary */
+  color: $color_default_text;
+  font: 100%/1.5 $fontstack;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: none;
+  background: $color_background;
+}
+
+nav { 
+  ul {
+    list-style:none;
+  }
+}
+
+h1 {
+  margin: 30px 0 0 0;
+  color: $color_1;
+  font: 500 2.55em/1.2em $heading_fontstack; 
+  letter-spacing: -1px;
+  span {
+    color: $color_2;
+  }
+}
+h2 {
+  margin: 22px 0 0 0;
+  padding: 11px 0 5px 0;
+  color: $color_2;
+  font: 300 2.1em/1.1em $heading_fontstack;
+  letter-spacing: -1px;
+}
+h3 {
+  margin: 20px 0 0 0;
+  color: $color_3;
+  font: 300 1.5em/1.275 $heading_fontstack;
+}
+h4, h5, h6 {
+  margin: 12px 0 4px 0;
+  color: $color_3;
+  font: 300 1em/1 $heading_fontstack;
+}
+
+button, input, select, textarea {
+  font-size: 100%;
+  font-family: $fontstack;
+}
+
+.button, button, input[type="submit"] {
+  display: inline-block;
+  cursor: pointer;
+}
+
+
+/* ============================================================
+    Grouping content
+============================================================ */
+p, pre, ol, ul, dl, figure, figcaption, table, fieldset {
+  margin: 12px 0 0 0;
+}
+
+pre {
+  white-space: pre-line;
+}
+
+hr {
+  clear: both;
+  display: block;
+  height: 0;
+  padding: 0;
+  font: 600 2em/1 "Akagi SemiBold", "Helvetica Neue", "Arial", "sans-serif";
+  text-align: center;
+  margin: 1em 0 2em 0;
+  border: 0;
+}
+
+hr::after {
+  content: "···";
+  height: 0;
+  padding-left: 1em;
+  color: #bbb;
+  letter-spacing: 1em;
+}
+
+blockquote, q {
+  quotes:none;
+  &:before, &:after {
+    content:'';
+    content:none;
+  }
+}
+
+ul {
+  list-style-type: inherit;
+  ul, ol {
+    margin-top:0;
+  }
+}
+ol {
+  list-style-type: decimal;
+}
+li, dd {
+  margin-left: 24px;
+}
+dt {
+  font-family: 'Proxima Nova Bold',sans-serif;
+  font-weight: bold;
+}
+
+figcaption, caption {
+  margin: 12px 0;
+  line-height: 16px;
+  color: lighten($color_4,50%);
+  font-size: 14px;
+  font-family: 'Proxima Nova Regular',sans-serif;
+  text-align: left;
+  caption-side: bottom;
+}
+
+figure {
+  img {
+    width: 100%;
+  }
+}
+
+
+
+/* ============================================================
+    Text-level semantics
+============================================================ */
+a {
+  color: $color_links;
+  font-size: 100%;
+  font-family: arial ,sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+  &:hover,
+  &:focus {
+    $my_color: darken($color_links, 10%);
+    color: $my_color;
+    border-bottom: 1px solid $my_color;
+  }
+}
+
+:lang(en-gb)>q {
+  quotes:"\201C" "\201D" "\2018" "\2019";
+}
+q {
+  &::before {
+    content: open-quote;
+  }
+  &::after {
+    content: close-quote;
+  }
+}
+
+small {
+    font-size: 14px; /* 14px */
+    line-height: 16px; /* 16px */
+}
+
+abbr {
+  letter-spacing: 1px;
+  &[title]:hover {
+    border-bottom: 1px dotted rgba(0,0,0,0.2);
+    cursor: help;
+  }
+}
+time {
+  color: lighten($color_4,50%);
+  font-family: arial ,sans-serif;
+  font-size: 12px; 
+  line-height: 16px;
+  text-transform: uppercase;
+}
+code, samp {
+  font: 14px/90% Menlo,Monaco,'Courier New',Courier,monospace;
+}
+code {
+  color:$color_2;
+}
+kbd {
+  margin: 0 0.4px 0;
+  padding: 2px 6px;
+  background-color: lighten($color_3,40%);
+  color: darken($color_3,20%);
+  font: normal 14px/90% sans-serif; 
+  border: 1px solid lighten($color_4,10%);
+  @include border-radius(4px);
+  @include background-clip(padding-box);
+}
+sub {
+  font-size: smaller;
+  line-height: 90%;
+  vertical-align: sub;
+}
+sup {
+  font-size: smaller;
+  line-height: 90%;
+  vertical-align: super;
+}
+
+/* ============================================================
+    Edits
+============================================================ */
+mark, ins {
+  color: $color_4;
+  background-color: lighten($color_2,20%);
+  text-decoration:none;
+}
+del {
+  text-decoration: line-through;
+}
+
+
+/* ============================================================
+    Tabular data
+============================================================ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td, th {
+  padding: 6px 16px;
+  border-bottom: 1px solid lighten($color_3,45%);
+  text-align: left;
+}
+th {
+  border-bottom-color: lighten($color_3,30%);
+  color: $color_3;
+  font: bold 1em/1em arial, sans-serif;
+}
+td {
+  vertical-align: top;
+}
+
+
+/* ============================================================
+    Forms
+============================================================ */
+input[type=submit], button {
+  padding: 10px 15px;
+  color: #fff;
+  font-size: 1.2em;
+  background: $color_3 url(/images/shared/button-corner.png) no-repeat 100% 100%; 
+  border: 0;
+  &:active {
+    background-color: $color_2;
+  }
+}
+.field {
+  width: 100%;
+  padding: 2px 5px;
+  border: 1px solid darken($color_borders,20%);
+  font: 1em/1.5 sans-serif;
+  @include border-radius(2px);
+}
+.field-small, .field-medium {
+  @extend .field;
+}
+label {
+  display: block;
+  margin: 4px 0 0 0;
+  font-weight: 400;
+  line-height: 1.5;
+  &.check {
+    font-weight: normal;
+    float: none;
+  }
+}
+legend {
+  padding: 0 0 5px 0;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+fieldset {
+  div {
+    margin: 12px 0;
+  }
+  abbr[title="Required"] {
+    color: #900;
+    font:normal 20px/0.1 sans-serif;
+    border-bottom: 0 none;
+  }
+  em {
+    display: block;
+    margin: 4px 0 4px 0;
+    color: lighten($color_4,50%);
+    font-family: sans-serif;
+    font-style: normal;
+    font-size: 14px; 
+    line-height: 16px; 
+  }
+  &.options {
+    clear: left;
+    ul {
+      margin: 4px 0 4px 0;
+      list-style: none;
+      li {
+        margin-left: 0;
+      }
+      label {
+        float: none;
+        width: auto;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+#container {
+  margin: 0 auto;
+}
