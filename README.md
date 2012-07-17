@@ -24,7 +24,7 @@ Currently supported:
    within mixins works as expected)
  * Selector inheritance (chaining and multiple, no partial substitutions)
  * Basic arithmetic
- * A basic @if statement (no else if, no logical operators)
+ * An @if statement, @else if and @else (no logical operators)
  * Functions are supported, although currently no functions are implemented.
  * Parent references
  * Interpolation using #{} in selectors and property-names.
@@ -34,7 +34,7 @@ Planned:
  * Improved error messages (currently javacc's default ParseException are used, which
    can be really confusing)
  * Various output styles
- * @else, @else if, @for, @each and @while
+ * @for, @each and @while
  * Keyword arguments to mixins
  
 Not planned:

@@ -3,8 +3,21 @@ div {
     display: block;
     margin-right: auto;
     margin-left: auto;
+    text-align: center;
     font-size: 12px;
     line-height: 1.2em;
     font-weight: bold;
     font-style: italic;
+}
+
+div.foo {
+    display: block;
+    margin-right: 0;
+    margin-left: auto;
+    text-align: right;
+}
+
+div.bar {
+    display: block;
+    text-align: left;
 }

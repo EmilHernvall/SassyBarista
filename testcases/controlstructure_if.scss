@@ -3,11 +3,16 @@
     @if $align == "center" {
         margin-right: auto;
         margin-left: auto;
+        text-align: center;
     }
-    @if $align == "right" {
+    @else if $align == "right" {
         margin-right: 0;
         margin-left: auto;
+        text-align: right;
     }   
+    @else {
+        text-align: left;
+    }
 }
 
 $num: 2;
@@ -31,4 +36,10 @@ div {
         text-decoration: underline;
     }
     @include blockAlign("center");
+}
+div.foo {
+    @include blockAlign("right");
+}
+div.bar {
+    @include blockAlign("left");
 }

@@ -17,7 +17,7 @@ public abstract class ControlStatement extends Block implements Serializable
         super();
     }
     
-    public abstract void evaluate(Block parent, ExpressionEvaluator evaluator, Map<String, IPropertyValue> context)
+    public abstract boolean evaluate(Block parent, ExpressionEvaluator evaluator, Map<String, IPropertyValue> context)
     throws EvaluationException;
     
     public void setExpression(INode v)
@@ -29,15 +29,6 @@ public abstract class ControlStatement extends Block implements Serializable
     {
         return expr;
     }
-    
-    public ControlStatement copy()
-    {
-        IfStatement stmt = new IfStatement();
-        stmt.expr = expr.copy();
-        
-        // copies sub rules and properites
-        super.copy(stmt);
-        
-        return stmt;
-    }
+
+    public abstract ControlStatement copy();
 }
