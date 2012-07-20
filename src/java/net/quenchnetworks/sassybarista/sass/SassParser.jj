@@ -787,32 +787,44 @@ INode Primary() :
 IPropertyValue PropertyValue() :
 {
     Token t ;
-    IPropertyValue p ;
+    IPropertyValue p = null;
     INode tmp ;
     FunctionPropertyValue fp ;
+    StringBuilder commaSeparatedIdents = new StringBuilder();
+    int commaListBeginLine = -1;
+    int commaListBeginColumn = -1;
 }
 {
     (
             t = <IDENT> 
             {
-                System.out.println("Hey we are in propertyValue land");
                 if ("true".equals(t.image)) {
-                    p = new BooleanPropertyValue(true); 
+                    p = new BooleanPropertyValue(true);
+                    p.setLocation(t.beginLine, t.beginColumn);
                 } else if ("false".equals(t.image)) {
-                    p = new BooleanPropertyValue(false); 
+                    p = new BooleanPropertyValue(false);
+                    p.setLocation(t.beginLine, t.beginColumn);
                 } else {
-                    p = new DefaultPropertyValue(t.image); 
+                    commaSeparatedIdents.append(t.image);
+                    commaListBeginLine = t.beginLine;
+                    commaListBeginColumn = t.beginColumn;
                 }
-                p.setLocation(t.beginLine, t.beginColumn); 
+
             }
             (LOOKAHEAD(2) <S>)*
             (  LOOKAHEAD(2)
                ","
                (<S>)*
-               <IDENT>
+               t = <IDENT>
+               { commaSeparatedIdents.append(", ").append(t.image); }
                (LOOKAHEAD(2) <S>)*
-               { System.out.println("We got mo' idents!"); }
             )*
+            {
+              if (p == null) {
+                p = new DefaultPropertyValue(commaSeparatedIdents.toString());
+                p.setLocation(commaListBeginLine, commaListBeginColumn);
+              }
+            }
 
         |
             t = <NUMBER> 
