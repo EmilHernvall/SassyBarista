@@ -205,7 +205,7 @@ Rule Import() :
     (LOOKAHEAD(2) <S>)*
     {
         rule = new Rule();
-        rule.addImport(new ImportRule(importRef, media.toString()));
+        rule.setImport(new ImportRule(importRef, media.toString()));
     }
     { return rule; }
 }
