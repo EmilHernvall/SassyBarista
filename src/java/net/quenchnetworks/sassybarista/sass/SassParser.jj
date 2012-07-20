@@ -107,7 +107,7 @@ SassSheet parse() :
         variables = new LinkedHashMap<String, INode>();
         mixins = new HashMap<String, Mixin>();
     }
-    (<S>)*
+    (LOOKAHEAD(2) <S>)*
     (
         (
             t = <VARIABLE>
@@ -164,27 +164,41 @@ Rule Rule() :
 
 Rule Import() :
 {
-    Token t, t1;
+    Token t;
     Rule rule;
-    String mediaTypes = "";
+    String importRef;
+    StringBuilder media = new StringBuilder();
 }
 {
     <IMPORT>
     (<S>)+
-    t = <STRING>
-    (<S>)*
     (
-      (t1 = <IDENT>)
-      (",")*
-      { mediaTypes += t1.image; }
-      (<S>) *
-    )*
+      (t = <STRING>)
+      |
+      (t = <URI>)
+    )
+    { importRef = t.image.substring(1, t.image.length()-1); }
+    (LOOKAHEAD(2) <S>)*
+    (
+      (t = <IDENT>)
+      { media.append(t.image); }
+      (<S>)*
+      (
+          ","
+          (<S>)*
+          t = <IDENT>
+          { System.out.println("Found another media"); }
+          { media.append(t.image); }
+          (LOOKAHEAD(2) <S>)*
+      )*
+    )?
+    (<S>)*
     ";"
     (LOOKAHEAD(2) <S>)*
     {
-        System.out.println("Hey I found some media " + mediaTypes);
+        System.out.println("Media: " + media);
         rule = new Rule();
-        rule.addImport(t.image.substring(1, t.image.length()-1));
+        rule.addImport(importRef);
     }
     { return rule; }
 }
