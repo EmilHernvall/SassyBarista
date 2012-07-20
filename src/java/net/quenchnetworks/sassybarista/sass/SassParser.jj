@@ -164,17 +164,25 @@ Rule Rule() :
 
 Rule Import() :
 {
-    Token t;
+    Token t, t1;
     Rule rule;
+    String mediaTypes = "";
 }
 {
     <IMPORT>
     (<S>)+
     t = <STRING>
     (<S>)*
+    (
+      (t1 = <IDENT>)
+      (",")*
+      { mediaTypes += t1.image; }
+      (<S>) *
+    )*
     ";"
     (LOOKAHEAD(2) <S>)*
     {
+        System.out.println("Hey I found some media " + mediaTypes);
         rule = new Rule();
         rule.addImport(t.image.substring(1, t.image.length()-1));
     }
