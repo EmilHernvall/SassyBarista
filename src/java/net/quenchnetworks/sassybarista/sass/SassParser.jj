@@ -19,14 +19,11 @@ public class SassParser {
     private Map<String, INode> variables ;
     private Map<String, Mixin> mixins ;
 
-    private ImportProcessor importProcessor;
+    private ImportProcessor importProcessor = new ImportProcessor();
 
     public static void main( String[] args )
     throws EvaluationException, ParseException, TokenMgrError {
         SassParser parser = new SassParser(System.in);
-
-        ImportProcessor importProcessor = new ImportProcessor(parser);
-        parser.setImportProcessor(importProcessor);
 
         SassSheet result = parser.parse();
         
@@ -34,9 +31,12 @@ public class SassParser {
         serializer.render(result);
     }
 
-    public void setImportProcessor(ImportProcessor importProcessor) {
-        this.importProcessor = importProcessor;
+    public void addFrom(SassSheet sheet) {
+        rules.addAll(sheet.getRules());
+        variables.putAll(sheet.getVariables());
+        mixins.putAll(sheet.getMixins());
     }
+
 }
 PARSER_END(SassParser)
 
@@ -105,7 +105,7 @@ TOKEN : { < IMPORT : "@import" > }
 
 //MORE : { < DELIMETER : <delim> > }
 
-SassSheet parse() :
+SassSheet parse(java.io.File... importPaths) :
 {
     Token t ;
     Rule rule ;
@@ -143,7 +143,7 @@ SassSheet parse() :
             rule = Rule()
             {
                 if (rule.isSassImport()) {
-                    importProcessor.importSassFrom(rule.asImportRule());
+                    importProcessor.importSassFrom(rule.asImportRule(), this, importPaths);
                 } else {
                   rules.add(rule);
                 }

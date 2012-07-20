@@ -5,13 +5,10 @@ import net.quenchnetworks.sassybarista.sass.models.ImportRule;
 
 public class ImportProcessor {
 
-    private final SassParser parent;
-
-    public ImportProcessor(SassParser parent) {
-        this.parent = parent;
+    public ImportProcessor() {
     }
 
-    public void importSassFrom(ImportRule importRule) {
-
+    public void importSassFrom(ImportRule importRule, SassParser parent) {
+        System.out.println("Hey I'm going to try and import this: " + importRule.getImportRef());
     }
 }

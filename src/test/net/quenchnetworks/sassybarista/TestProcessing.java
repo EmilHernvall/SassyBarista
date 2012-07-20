@@ -34,10 +34,10 @@ public class TestProcessing
             refText = refText.replace("    ","");
         
             // load and parse scss
-            String scssFile = "testcases/" + testCase + ".scss";
+            File scssFile = new File("testcases/" + testCase + ".scss");
         
             SassParser parser = new SassParser(new FileReader(scssFile));
-            SassSheet sheet = parser.parse();
+            SassSheet sheet = parser.parse(scssFile.getParentFile());
         
             sheet = sheet.copy();
         
@@ -93,7 +93,10 @@ public class TestProcessing
     public void imports()
     {
         processTest("import_css");
+        processTest("import_sass");
     }
+
+
     
     @Test
     public void nesting()

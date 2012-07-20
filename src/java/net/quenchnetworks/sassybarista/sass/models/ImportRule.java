@@ -20,6 +20,13 @@ public class ImportRule {
 
 
     public boolean isSassImport() {
-        return false;
+        return !isCssImport();
+    }
+
+    private boolean isCssImport() {
+        return (importRef.startsWith("url")
+                || importRef.startsWith("http://")
+                || importRef.endsWith(".css")
+                || media.length() > 0);
     }
 }
