@@ -40,7 +40,7 @@ public class SassFileProcessor {
             withImports = readFileAsString(file, "UTF8");
 
             SassParser parser = new SassParser(new StringReader(withImports));
-            SassSheet sheet = parser.parse();
+            SassSheet sheet = parser.parse(file.getParentFile());
 
 
             SassSheetEvaluator evaluator = new SassSheetEvaluator(new JavaStringInterpolator());

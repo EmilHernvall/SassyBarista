@@ -29,4 +29,31 @@ public class ImportRule {
                 || importRef.endsWith(".css")
                 || media.length() > 0);
     }
+
+    public String asScssFile() {
+        return importFileNameFrom(importRef);
+
+    }
+
+    private static String importFileNameFrom(String importKey) {
+        int posToInsertUnderscore = importKey.lastIndexOf("/");
+
+
+        if (posToInsertUnderscore == -1) {
+            return new StringBuilder()
+                    .append("_")
+                    .append(importKey)
+                    .append(".scss")
+                    .toString();
+        }
+
+        String pre = importKey.substring(0, posToInsertUnderscore);
+        String post = importKey.substring(posToInsertUnderscore + 1, importKey.length());
+
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(pre).append("/_").append(post).append(".scss");
+
+        return sb.toString();
+    }
 }
