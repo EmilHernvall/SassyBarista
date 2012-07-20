@@ -88,6 +88,12 @@ public class TestProcessing
             fail("Caught IOException.");
         }
     }
+
+    @Test
+    public void imports()
+    {
+        processTest("import_css");
+    }
     
     @Test
     public void nesting()

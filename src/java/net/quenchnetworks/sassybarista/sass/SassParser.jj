@@ -62,7 +62,7 @@ TOKEN : { < #string : "\"" (<stringchar> | "'")* "\"" | "'" (<stringchar> | "\""
 TOKEN : { < #stringchar : <urlchar> | "\u0020" | "\\" <nl> > }
 TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0028"-"\u007E"] | <nonascii> | <escape> > }
 TOKEN : { < #nl : "\n" | "\r" "\n" | "\r" | "\u000C" > }
-TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "\u0020" > }
+TOKEN : { < #wc: "\u0009" | "\n" | "\u000C" | "\r" | "-" > }
 TOKEN : { < #w : (<wc>)* > }
 TOKEN : { < #variable : "$" <name> > }
 TOKEN : { < #interpolation : "#" "{" <variable> "}" > }

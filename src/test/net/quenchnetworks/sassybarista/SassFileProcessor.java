@@ -36,7 +36,8 @@ public class SassFileProcessor {
 
         try {
             in = new FileReader(file);
-            withImports = preProcessImports(in, file);
+            //withImports = preProcessImports(in, file);
+            withImports = readFileAsString(file, "UTF8");
 
             SassParser parser = new SassParser(new StringReader(withImports));
             SassSheet sheet = parser.parse();
