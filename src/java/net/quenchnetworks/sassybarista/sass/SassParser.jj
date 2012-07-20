@@ -147,16 +147,7 @@ Rule Rule() :
     (<S>)*
     (
         (
-            <IMPORT>
-            (<S>)+
-            t = <STRING>
-            (<S>)*
-            ";"
-            (LOOKAHEAD(2) <S>)*
-            {
-                rule = new Rule();
-                rule.addImport(t.image.substring(1, t.image.length()-1));
-            }
+            rule = Import()
         )
         |
         (
@@ -168,6 +159,25 @@ Rule Rule() :
           RuleBlock(rule)
         )
     )
+    { return rule; }
+}
+
+Rule Import() :
+{
+    Token t;
+    Rule rule;
+}
+{
+    <IMPORT>
+    (<S>)+
+    t = <STRING>
+    (<S>)*
+    ";"
+    (LOOKAHEAD(2) <S>)*
+    {
+        rule = new Rule();
+        rule.addImport(t.image.substring(1, t.image.length()-1));
+    }
     { return rule; }
 }
 
