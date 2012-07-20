@@ -849,12 +849,16 @@ IPropertyValue PropertyValue() :
             t = <VARIABLE>
             { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
-            t = <FUNCTION> 
-            { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); } 
+            t = <FUNCTION>
+            { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); }
+            p = ParameterValue()
+            { fp.addValue(p); }
             (<S>)* 
             (
-                tmp = Expression() 
-                { fp.addValue(tmp); }
+                ","
+                (<S>)*
+                p = ParameterValue()
+                { fp.addValue(p); }
                 (<S>)*
             )* 
             ")"

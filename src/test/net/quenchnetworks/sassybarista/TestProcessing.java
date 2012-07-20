@@ -90,6 +90,11 @@ public class TestProcessing
     }
 
     @Test
+    public void built_in_functions() {
+        processTest("built_in_functions");
+    }
+
+    @Test
     public void imports()
     {
         processTest("import_css");
