@@ -89,6 +89,7 @@ TOKEN : { < HEXCOLOR : <hexcolor> > }
 TOKEN : { < IFSTMT : "@if" > }
 TOKEN : { < ELSEIFSTMT : "@else" (<wc>)+ "if" > }
 TOKEN : { < ELSESTMT : "@else" > }
+TOKEN : { < IMPORT : "@import" > }
 
 //MORE : { < DELIMETER : <delim> > }
 
@@ -144,13 +145,29 @@ Rule Rule() :
 }
 {
     (<S>)*
-    { rule = new Rule(); }
     (
-        selectorChain = SelectorChain()
-        { rule.addSelectorChain(selectorChain); }
-    )+
-    RuleBlock(rule)
-    
+        (
+            <IMPORT>
+            (<S>)+
+            t = <STRING>
+            (<S>)*
+            ";"
+            (LOOKAHEAD(2) <S>)*
+            {
+                rule = new Rule();
+                rule.addImport(t.image.substring(1, t.image.length()-1));
+            }
+        )
+        |
+        (
+          { rule = new Rule(); }
+          (
+              selectorChain = SelectorChain()
+              { rule.addSelectorChain(selectorChain); }
+          )+
+          RuleBlock(rule)
+        )
+    )
     { return rule; }
 }
 
