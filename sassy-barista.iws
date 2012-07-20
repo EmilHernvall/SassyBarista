@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testcases/built_in_functions.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testcases/built_in_functions.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.iws" afterPath="$PROJECT_DIR$/sassy-barista.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" afterPath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" />
     </list>
     <ignored path="sassy-barista.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -108,19 +105,19 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="TestProcessing.java" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="TestProcessing.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="16" selection-start="289" selection-end="289" vertical-scroll-proportion="0.17777778">
+                <state line="11" column="16" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="SassParser.jj" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="SassParser.jj" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="860" column="31" selection-start="19956" selection-end="19956" vertical-scroll-proportion="0.0">
+                <state line="856" column="12" selection-start="19842" selection-end="19842" vertical-scroll-proportion="0.63760686">
                   <folding />
                 </state>
               </provider>
@@ -179,9 +176,9 @@
         <option value="$PROJECT_DIR$/testcases/variable.css" />
         <option value="$PROJECT_DIR$/testcases/built_in_functions.scss" />
         <option value="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" />
-        <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
         <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/value/FunctionPropertyValue.java" />
         <option value="$PROJECT_DIR$/testcases/built_in_functions.css" />
+        <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
       </list>
     </option>
   </component>
@@ -925,7 +922,11 @@
       <created>1342800463080</created>
       <updated>1342800463081</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="[jmdb] Fixed bug with function parameter lists not working (was treating each parameter as an expression - may be right?)">
+      <created>1342802265291</created>
+      <updated>1342802265291</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -968,7 +969,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6111675" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22374701" sideWeight="0.6345178" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36548224" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36548224" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1013,7 +1014,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Fixed bug with CSS3 psuedo selectors ::" />
+    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Fixed bug with function parameter lists not working (was treating each parameter as an expression - may be right?)" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1045,6 +1046,7 @@
     <MESSAGE value="[jmdb] Got it returning comma separated values" />
     <MESSAGE value="[jmdb] Fixed broken interpolation tests by duplication" />
     <MESSAGE value="[jmdb] Fixed bug with CSS3 psuedo selectors ::" />
+    <MESSAGE value="[jmdb] Fixed bug with function parameter lists not working (was treating each parameter as an expression - may be right?)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1149,13 +1151,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="860" column="31" selection-start="19956" selection-end="19956" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassSheetSerializer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="153" column="17" selection-start="4397" selection-end="4397" vertical-scroll-proportion="0.0">
@@ -1179,7 +1174,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="16" selection-start="289" selection-end="289" vertical-scroll-proportion="0.17777778">
+        <state line="11" column="16" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="856" column="12" selection-start="19842" selection-end="19842" vertical-scroll-proportion="0.63760686">
           <folding />
         </state>
       </provider>
