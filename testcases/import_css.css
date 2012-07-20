@@ -1,4 +1,4 @@
 @import "foo.css";
 @import "foo" screen, print;
-@import "http://foo.com/bar" screen, print;
+@import "http://foo.com/bar" screen, print, mobile;
 @import url(foo) screen;

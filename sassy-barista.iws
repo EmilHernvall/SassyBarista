@@ -102,13 +102,13 @@
     <favorites_list name="sassy-barista" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.60053617">
       <split-first>
         <leaf>
           <file leaf-file-name="SassParser.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="294" column="8" selection-start="6900" selection-end="6900" vertical-scroll-proportion="0.0">
+                <state line="250" column="8" selection-start="6024" selection-end="6024" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -126,7 +126,7 @@
           <file leaf-file-name="SassParser.jj" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="188" column="20" selection-start="4905" selection-end="4905" vertical-scroll-proportion="0.51111114">
+                <state line="191" column="12" selection-start="5020" selection-end="5020" vertical-scroll-proportion="0.5555556">
                   <folding />
                 </state>
               </provider>
@@ -150,15 +150,6 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="import_css.css" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/testcases/import_css.css">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="3" column="23" selection-start="115" selection-end="115" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
         </leaf>
       </split-first>
       <split-second>
@@ -166,7 +157,16 @@
           <file leaf-file-name="SassParser.jj" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="182" column="19" selection-start="4799" selection-end="4799" vertical-scroll-proportion="-1.6444445">
+                <state line="216" column="5" selection-start="5349" selection-end="5349" vertical-scroll-proportion="0.044444446">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="import_css.css" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/testcases/import_css.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="1" column="25" selection-start="44" selection-end="44" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -1337,7 +1337,11 @@
       <created>1342749142619</created>
       <updated>1342749142619</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="[jmdb] Doesnt quite work">
+      <created>1342751064299</created>
+      <updated>1342751064299</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1425,7 +1429,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Got it parsing the media types aswell" />
+    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Doesnt quite work" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1445,6 +1449,7 @@
     <MESSAGE value="[jmdb] Added import rule need to add screens" />
     <MESSAGE value="[jmdb] Extracted BNF production for @import" />
     <MESSAGE value="[jmdb] Got it parsing the media types aswell" />
+    <MESSAGE value="[jmdb] Doesnt quite work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1544,7 +1549,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="294" column="8" selection-start="6900" selection-end="6900" vertical-scroll-proportion="0.0">
+        <state line="250" column="8" selection-start="6024" selection-end="6024" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1572,14 +1577,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testcases/import_css.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="23" selection-start="115" selection-end="115" vertical-scroll-proportion="0.0">
+        <state line="1" column="25" selection-start="44" selection-end="44" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="188" column="20" selection-start="4905" selection-end="4905" vertical-scroll-proportion="0.51111114">
+        <state line="191" column="12" selection-start="5020" selection-end="5020" vertical-scroll-proportion="0.5555556">
           <folding />
         </state>
       </provider>

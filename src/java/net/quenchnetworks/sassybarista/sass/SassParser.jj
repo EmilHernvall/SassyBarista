@@ -173,30 +173,28 @@ Rule Import() :
     <IMPORT>
     (<S>)+
     (
-      (t = <STRING>)
+      (
+          t = <STRING>
+          { importRef = t.image.substring(1, t.image.length()-1); }
+      )
       |
-      (t = <URI>)
+      (
+          t = <URI>
+          { importRef = t.image; }
+      )
     )
-    { importRef = t.image.substring(1, t.image.length()-1); }
-    (LOOKAHEAD(2) <S>)*
-    (
-      (t = <IDENT>)
+    { System.out.println("importRef: " + importRef); }
+    (<S>)*
+    [
+      t = <IDENT>
+      { System.out.println("Media: [" + t.image + "]"); }
       { media.append(t.image); }
       (<S>)*
-      (
-          ","
-          (<S>)*
-          t = <IDENT>
-          { System.out.println("Found another media"); }
-          { media.append(t.image); }
-          (LOOKAHEAD(2) <S>)*
-      )*
-    )?
-    (<S>)*
+    ]
+
     ";"
     (LOOKAHEAD(2) <S>)*
     {
-        System.out.println("Media: " + media);
         rule = new Rule();
         rule.addImport(importRef);
     }
