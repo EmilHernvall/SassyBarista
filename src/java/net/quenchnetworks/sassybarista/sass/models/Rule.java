@@ -8,7 +8,7 @@ public class Rule extends Block implements Serializable
     private List<SelectorChain> selectorChains;
     private List<Selector> extensions;
     private List<IncludeDirective> includes;
-    private List<String> imports;
+    private ImportRule importRule;
 
     public Rule()
     {
@@ -16,7 +16,6 @@ public class Rule extends Block implements Serializable
         this.selectorChains = new ArrayList<SelectorChain>();
         this.extensions = new ArrayList<Selector>();
         this.includes = new ArrayList<IncludeDirective>();
-        this.imports = new ArrayList<String>();
     }
     
     public void setSelectorChains(List<SelectorChain> selectorChains)
@@ -49,14 +48,18 @@ public class Rule extends Block implements Serializable
         return includes;
     }
     
-    public void addImport(String v)
+    public void setImport(ImportRule importRule)
     {
-        imports.add(v);
+        this.importRule = importRule;
     }
-    
-    public List<String> getImports()
+
+    public boolean isImportRule() {
+        return importRule != null;
+    }
+
+    public ImportRule asImportRule()
     {
-        return imports;
+        return importRule;
     }
     
     public void setExtends(List<Selector> v)
@@ -93,10 +96,10 @@ public class Rule extends Block implements Serializable
             rule.addInclude(include.copy());
         }
         
-        for (String i : imports) {
-            rule.addImport(i);
-        }
+        rule.setImport(importRule);
         
         return rule;
     }
+
+
 }

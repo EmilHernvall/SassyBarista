@@ -130,7 +130,12 @@ SassSheet parse() :
         |
         (
             rule = Rule()
-            { rules.add(rule); }
+            {
+                if (rule.isSassImport()) {
+                    processSassImport(rule.asImportRule());
+                }
+                rules.add(rule);
+            }
         )
     )+
     { 
