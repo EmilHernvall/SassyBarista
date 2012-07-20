@@ -126,7 +126,10 @@ SassSheet parse(java.io.File... importPaths) :
             { variableName = t.image; }
             ":" 
             (<S>)*
-            variableValue = ConditionalExpression()
+            (
+              variableValue = ConditionalExpression()
+            )
+
             ";"
             (LOOKAHEAD(2) <S>)*
             { variables.put(variableName, variableValue); }
@@ -791,7 +794,8 @@ IPropertyValue PropertyValue() :
 {
     (
             t = <IDENT> 
-            { 
+            {
+                System.out.println("Hey we are in propertyValue land");
                 if ("true".equals(t.image)) {
                     p = new BooleanPropertyValue(true); 
                 } else if ("false".equals(t.image)) {
@@ -800,7 +804,16 @@ IPropertyValue PropertyValue() :
                     p = new DefaultPropertyValue(t.image); 
                 }
                 p.setLocation(t.beginLine, t.beginColumn); 
-            } 
+            }
+            (LOOKAHEAD(2) <S>)*
+            (  LOOKAHEAD(2)
+               ","
+               (<S>)*
+               <IDENT>
+               (LOOKAHEAD(2) <S>)*
+               { System.out.println("We got mo' idents!"); }
+            )*
+
         |
             t = <NUMBER> 
             { p = new NumberPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 

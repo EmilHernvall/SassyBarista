@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="[jmdb] Got it adding in imports">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/ImportProcessor.java" afterPath="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/ImportProcessor.java" />
+    <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.iws" afterPath="$PROJECT_DIR$/sassy-barista.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/ImportProcessor.java" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/ImportProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/models/ImportRule.java" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/models/ImportRule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/models/SassSheet.java" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/models/SassSheet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/SassFileProcessor.java" afterPath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/SassFileProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/complex/_fonts.scss" afterPath="$PROJECT_DIR$/testcases/complex/_fonts.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/complex/compass/_css3.scss" afterPath="$PROJECT_DIR$/testcases/complex/compass/_css3.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/complex/compass/_reset.scss" afterPath="$PROJECT_DIR$/testcases/complex/compass/_reset.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/variable.css" afterPath="$PROJECT_DIR$/testcases/variable.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/variable.scss" afterPath="$PROJECT_DIR$/testcases/variable.scss" />
     </list>
     <ignored path="sassy-barista.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -83,37 +78,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="import_css.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testcases/import_css.css">
+      <file leaf-file-name="_global.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcases/complex/_global.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="214" selection-end="214" vertical-scroll-proportion="0.0">
+            <state line="13" column="41" selection-start="207" selection-end="248" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="import_css.scss" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testcases/import_css.scss">
+      <file leaf-file-name="variable.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcases/variable.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="214" selection-end="214" vertical-scroll-proportion="0.0">
+            <state line="0" column="7" selection-start="7" selection-end="36" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ImportProcessor.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/ImportProcessor.java">
+      <file leaf-file-name="TestProcessing.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="41" selection-start="793" selection-end="793" vertical-scroll-proportion="0.0">
+            <state line="11" column="17" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ImportProcessor.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/ImportProcessor.java">
+      <file leaf-file-name="variable.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcases/variable.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="41" selection-start="793" selection-end="793" vertical-scroll-proportion="0.8888889">
+            <state line="4" column="0" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SassParser.jj" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="812" column="34" selection-start="18096" selection-end="18096" vertical-scroll-proportion="0.9111111">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="expression_arithmetic.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcases/expression_arithmetic.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -135,15 +148,12 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/models/Rule.java" />
-        <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassSheetSerializer.java" />
         <option value="$PROJECT_DIR$/testcases/_importme.scss" />
         <option value="$PROJECT_DIR$/testcases/import_sass.css" />
         <option value="$PROJECT_DIR$/testcases/import_sass.scss" />
         <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/models/ImportRule.java" />
         <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/models/SassSheet.java" />
         <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java" />
-        <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
         <option value="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" />
         <option value="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/SassFileProcessor.java" />
         <option value="$PROJECT_DIR$/testcases/complex/compass/_reset.scss" />
@@ -151,6 +161,9 @@
         <option value="$PROJECT_DIR$/testcases/complex/_fonts.scss" />
         <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/ImportProcessor.java" />
         <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/ImportProcessor.java" />
+        <option value="$PROJECT_DIR$/testcases/variable.scss" />
+        <option value="$PROJECT_DIR$/testcases/variable.css" />
+        <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
       </list>
     </option>
   </component>
@@ -596,35 +609,7 @@
       <recent name="net.quenchnetworks.sassybarista.SassFileProcessor" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ComplexTest.can_parse_some_sass">
-    <configuration default="false" name="ComplexTest.can_work_out_the_filename_of_an_import" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="net.quenchnetworks.sassybarista.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="sassy-barista" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="net.quenchnetworks.sassybarista" />
-      <option name="MAIN_CLASS_NAME" value="net.quenchnetworks.sassybarista.ComplexTest" />
-      <option name="METHOD_NAME" value="can_work_out_the_filename_of_an_import" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.TestProcessing.variables">
     <configuration default="false" name="TestProcessing.controlstructures" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" runner="idea">
         <pattern>
@@ -747,6 +732,34 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
+    <configuration default="false" name="TestProcessing.variables" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="net.quenchnetworks.sassybarista.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="sassy-barista" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.quenchnetworks.sassybarista" />
+      <option name="MAIN_CLASS_NAME" value="net.quenchnetworks.sassybarista.TestProcessing" />
+      <option name="METHOD_NAME" value="variables" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -832,11 +845,11 @@
       </method>
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.ComplexTest.can_work_out_the_filename_of_an_import" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.TestProcessing.controlstructures" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.TestProcessing.imports" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.TestProcessing" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ComplexTest.can_parse_some_sass" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.TestProcessing.controlstructures" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.TestProcessing.imports" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.TestProcessing" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.ComplexTest.can_parse_some_sass" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.TestProcessing.variables" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -924,7 +937,11 @@
       <created>1342796039237</created>
       <updated>1342796039238</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="[jmdb] Added search paths for imports">
+      <created>1342796662926</created>
+      <updated>1342796662926</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -949,25 +966,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1676" height="1028" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18984772" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1097852" sideWeight="0.67005074" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1097852" sideWeight="0.6345178" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4720812" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.61421317" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6111675" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22374701" sideWeight="0.6345178" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36548224" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36548224" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1012,7 +1029,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Got it adding in imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Added search paths for imports" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1039,6 +1056,7 @@
     <MESSAGE value="[jmdb] Adding the java classes" />
     <MESSAGE value="[jmdb] Adding import processing ready for the test" />
     <MESSAGE value="[jmdb] Got it adding in imports" />
+    <MESSAGE value="[jmdb] Added search paths for imports" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1066,34 +1084,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/testcases/complex/application.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/import_sass.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="9" selection-start="9" selection-end="9" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="89" selection-start="4451" selection-end="4451" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="805" selection-end="805" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/SassFileProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="27" column="20" selection-start="1167" selection-end="1167" vertical-scroll-proportion="0.0">
@@ -1104,13 +1094,6 @@
     <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="34" column="18" selection-start="949" selection-end="949" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/variable.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="0" selection-end="59" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1143,16 +1126,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/complex/_global.scss">
+    <entry file="file://$PROJECT_DIR$/testcases/import_css.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="8" column="0" selection-start="214" selection-end="214" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/import_css.scss">
+    <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/ImportProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="214" selection-end="214" vertical-scroll-proportion="0.0">
+        <state line="27" column="41" selection-start="793" selection-end="793" vertical-scroll-proportion="0.8888889">
           <folding />
         </state>
       </provider>
@@ -1164,9 +1147,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/ImportProcessor.java">
+    <entry file="file://$PROJECT_DIR$/testcases/complex/_global.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="41" selection-start="793" selection-end="793" vertical-scroll-proportion="0.8888889">
+        <state line="13" column="41" selection-start="207" selection-end="248" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="17" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/import_css.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="214" selection-end="214" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/variable.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="7" selection-start="7" selection-end="36" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/expression_arithmetic.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/variable.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="80" selection-end="80" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="812" column="34" selection-start="18096" selection-end="18096" vertical-scroll-proportion="0.9111111">
           <folding />
         </state>
       </provider>
