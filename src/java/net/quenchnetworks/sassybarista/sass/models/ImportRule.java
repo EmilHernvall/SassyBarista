@@ -17,4 +17,9 @@ public class ImportRule {
     public String getMedia() {
         return media;
     }
+
+
+    public boolean isSassImport() {
+        return false;
+    }
 }

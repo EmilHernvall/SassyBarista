@@ -57,6 +57,10 @@ public class Rule extends Block implements Serializable
         return importRule != null;
     }
 
+    public boolean isSassImport() {
+        return isImportRule() && importRule.isSassImport();
+    }
+
     public ImportRule asImportRule()
     {
         return importRule;

@@ -8,6 +8,7 @@ package net.quenchnetworks.sassybarista.sass;
 
 import java.util.*;
 
+import net.quenchnetworks.sassybarista.ImportProcessor;
 import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 import net.quenchnetworks.sassybarista.sass.models.*;
@@ -18,13 +19,23 @@ public class SassParser {
     private Map<String, INode> variables ;
     private Map<String, Mixin> mixins ;
 
+    private ImportProcessor importProcessor;
+
     public static void main( String[] args )
     throws EvaluationException, ParseException, TokenMgrError {
         SassParser parser = new SassParser(System.in);
+
+        ImportProcessor importProcessor = new ImportProcessor(parser);
+        parser.setImportProcessor(importProcessor);
+
         SassSheet result = parser.parse();
         
         SassSheetSerializer serializer = new SassSheetSerializer(System.out);
         serializer.render(result);
+    }
+
+    public void setImportProcessor(ImportProcessor importProcessor) {
+        this.importProcessor = importProcessor;
     }
 }
 PARSER_END(SassParser)
@@ -132,9 +143,10 @@ SassSheet parse() :
             rule = Rule()
             {
                 if (rule.isSassImport()) {
-                    processSassImport(rule.asImportRule());
+                    importProcessor.importSassFrom(rule.asImportRule());
+                } else {
+                  rules.add(rule);
                 }
-                rules.add(rule);
             }
         )
     )+
