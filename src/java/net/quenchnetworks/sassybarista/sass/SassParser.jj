@@ -91,6 +91,7 @@ TOKEN : { < ELSEIFSTMT : "@else" (<wc>)+ "if" > }
 TOKEN : { < ELSESTMT : "@else" > }
 TOKEN : { < IMPORT : "@import" > }
 
+
 //MORE : { < DELIMETER : <delim> > }
 
 SassSheet parse() :
@@ -183,20 +184,28 @@ Rule Import() :
           { importRef = t.image; }
       )
     )
-    { System.out.println("importRef: " + importRef); }
     (<S>)*
     [
       t = <IDENT>
-      { System.out.println("Media: [" + t.image + "]"); }
       { media.append(t.image); }
       (<S>)*
+      (
+          ","
+          (<S>)*
+          t = <IDENT>
+          {
+              media.append(", ");
+              media.append(t.image);
+          }
+          (<S>)*
+      )*
     ]
 
     ";"
     (LOOKAHEAD(2) <S>)*
     {
         rule = new Rule();
-        rule.addImport(importRef);
+        rule.addImport(new ImportRule(importRef, media.toString()));
     }
     { return rule; }
 }
@@ -310,17 +319,6 @@ void RuleBlock(Rule block) :
             (LOOKAHEAD(2) <S>)*
             
             { block.addInclude(i); }
-        )
-        |
-        (
-            "@import"
-            (<S>)+
-            t = <STRING>
-            (<S>)*
-            ";"
-            (LOOKAHEAD(2) <S>)*
-            
-            { block.addImport(t.image.substring(1, t.image.length()-1)); }
         )
         |
         (
