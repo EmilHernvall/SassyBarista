@@ -4,8 +4,6 @@
     <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.iws" afterPath="$PROJECT_DIR$/sassy-barista.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/variable.css" afterPath="$PROJECT_DIR$/testcases/variable.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/variable.scss" afterPath="$PROJECT_DIR$/testcases/variable.scss" />
     </list>
     <ignored path="sassy-barista.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -78,28 +76,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="_global.scss" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testcases/complex/_global.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="41" selection-start="207" selection-end="248" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="variable.scss" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testcases/variable.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="7" selection-start="7" selection-end="36" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestProcessing.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="TestProcessing.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="17" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
+            <state line="11" column="17" selection-start="290" selection-end="290" vertical-scroll-proportion="0.17777778">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="interpolation.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcases/interpolation.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="41" column="32" selection-start="824" selection-end="824" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -114,10 +103,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SassParser.jj" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SassParser.jj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="812" column="34" selection-start="18096" selection-end="18096" vertical-scroll-proportion="0.9111111">
+            <state line="884" column="56" selection-start="20591" selection-end="20591" vertical-scroll-proportion="-14.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SassParser.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1742" column="49" selection-start="43043" selection-end="43043" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -609,39 +607,7 @@
       <recent name="net.quenchnetworks.sassybarista.SassFileProcessor" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.TestProcessing.variables">
-    <configuration default="false" name="TestProcessing.controlstructures" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="net.quenchnetworks.sassybarista.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="sassy-barista" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="net.quenchnetworks.sassybarista" />
-      <option name="MAIN_CLASS_NAME" value="net.quenchnetworks.sassybarista.TestProcessing" />
-      <option name="METHOD_NAME" value="controlstructures" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.TestProcessing">
     <configuration default="false" name="TestProcessing.imports" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" runner="idea">
         <pattern>
@@ -760,6 +726,34 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
+    <configuration default="false" name="TestProcessing.interpolation" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="net.quenchnetworks.sassybarista.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="sassy-barista" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.quenchnetworks.sassybarista" />
+      <option name="MAIN_CLASS_NAME" value="net.quenchnetworks.sassybarista.TestProcessing" />
+      <option name="METHOD_NAME" value="interpolation" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -845,11 +839,11 @@
       </method>
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.TestProcessing.controlstructures" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.TestProcessing.imports" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.TestProcessing" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.ComplexTest.can_parse_some_sass" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.TestProcessing.variables" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.TestProcessing.imports" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.TestProcessing" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.ComplexTest.can_parse_some_sass" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.TestProcessing.variables" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.TestProcessing.interpolation" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -941,7 +935,15 @@
       <created>1342796662926</created>
       <updated>1342796662926</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="[jmdb] Got it parsing multiple value idents">
+      <created>1342797981881</created>
+      <updated>1342797981881</updated>
+    </task>
+    <task id="LOCAL-00017" summary="[jmdb] Got it returning comma separated values">
+      <created>1342798472265</created>
+      <updated>1342798472265</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -966,7 +968,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1676" height="1028" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18984772" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1029,7 +1031,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Added search paths for imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Got it returning comma separated values" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1057,6 +1059,8 @@
     <MESSAGE value="[jmdb] Adding import processing ready for the test" />
     <MESSAGE value="[jmdb] Got it adding in imports" />
     <MESSAGE value="[jmdb] Added search paths for imports" />
+    <MESSAGE value="[jmdb] Got it parsing multiple value idents" />
+    <MESSAGE value="[jmdb] Got it returning comma separated values" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1084,20 +1088,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/SassFileProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="20" selection-start="1167" selection-end="1167" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="18" selection-start="949" selection-end="949" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testcases/complex/compass/_reset.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="9" selection-start="9" selection-end="9" vertical-scroll-proportion="0.0">
@@ -1154,13 +1144,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="17" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testcases/import_css.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="0" selection-start="214" selection-end="214" vertical-scroll-proportion="0.0">
@@ -1189,9 +1172,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/interpolation.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="32" selection-start="824" selection-end="824" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1742" column="49" selection-start="43043" selection-end="43043" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="812" column="34" selection-start="18096" selection-end="18096" vertical-scroll-proportion="0.9111111">
+        <state line="884" column="56" selection-start="20591" selection-end="20591" vertical-scroll-proportion="-14.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="17" selection-start="290" selection-end="290" vertical-scroll-proportion="0.17777778">
           <folding />
         </state>
       </provider>

@@ -322,13 +322,13 @@ void RuleBlock(Rule block) :
                 (
                     t = <FUNCTION>
                     { i = new IncludeDirective(t.image.substring(0, t.image.length()-1)); }
-                    value = PropertyValue()
+                    value = ParameterValue()
                     { i.addParameter(value); }
                     (<S>)*
                     (
                         ","
                         (<S>)*
-                        value = PropertyValue()
+                        value = ParameterValue()
                         { i.addParameter(value); }
                         (<S>)*
                     )*
@@ -815,7 +815,7 @@ IPropertyValue PropertyValue() :
             (  LOOKAHEAD(2)
                ","
                (<S>)*
-               t = <IDENT>
+               (t = <IDENT>)
                { commaSeparatedIdents.append(", ").append(t.image); }
                (LOOKAHEAD(2) <S>)*
             )*
@@ -860,5 +860,65 @@ IPropertyValue PropertyValue() :
             { p = fp; p.setLocation(t.beginLine, t.beginColumn); }
     )
     
+    { return p; }
+}
+
+IPropertyValue ParameterValue() :
+{
+    Token t ;
+    IPropertyValue p = null;
+    INode tmp ;
+    FunctionPropertyValue fp ;
+
+}
+{
+    (
+            t = <IDENT>
+            {
+                if ("true".equals(t.image)) {
+                    p = new BooleanPropertyValue(true);
+                    p.setLocation(t.beginLine, t.beginColumn);
+                } else if ("false".equals(t.image)) {
+                    p = new BooleanPropertyValue(false);
+                    p.setLocation(t.beginLine, t.beginColumn);
+                } else {
+                    p = new DefaultPropertyValue(t.image);
+                    p.setLocation(t.beginLine, t.beginColumn);
+                }
+            }
+        |
+            t = <NUMBER>
+            { p = new NumberPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <PERCENTAGE>
+            { p = new PercentagePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <DIMENSION>
+            { p = new DimensionPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <STRING>
+            { p = new StringPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <URI>
+            { p = new URIPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <HEXCOLOR>
+            { p = new ColorPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <VARIABLE>
+            { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <FUNCTION>
+            { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); }
+            (<S>)*
+            (
+                tmp = Expression()
+                { fp.addValue(tmp); }
+                (<S>)*
+            )*
+            ")"
+            { p = fp; p.setLocation(t.beginLine, t.beginColumn); }
+    )
+
     { return p; }
 }
