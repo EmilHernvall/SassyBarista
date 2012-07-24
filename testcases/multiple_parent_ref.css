@@ -1,0 +1,7 @@
+div.test {
+}
+
+div.test:hover,
+div.test:focus {
+    border-bottom: 1px solid #4565;
+}

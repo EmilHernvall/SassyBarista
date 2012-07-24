@@ -165,6 +165,7 @@ Rule Rule() :
     SelectorChain selectorChain ;
 }
 {
+    { System.out.println("-->rule"); }
     (<S>)*
     (
         (
@@ -282,6 +283,7 @@ void RuleBlock(Rule block) :
 }
 {
     "{"
+    { System.out.println("-->ruleBlock"); }
     (LOOKAHEAD(2) <S>)*
     (
         LOOKAHEAD ( "@mixin" )
@@ -292,25 +294,29 @@ void RuleBlock(Rule block) :
             { mixins.put(mixin.getName(), mixin); }
         )
         |
-        LOOKAHEAD(Rule())
+        LOOKAHEAD(2, Rule())
         (
+            { System.out.println("---->nestedRule"); }
             nestedRule = Rule()
             { block.addSubRule(nestedRule); }
         )
         |
         LOOKAHEAD( <IDENT> ":" )
         (
+            { System.out.println("---->property"); }
             property = Property()
             { block.addProperty(property); }
         )
         |
         LOOKAHEAD( <IFSTMT> )
         (
+            { System.out.println("---->ifStatement"); }
             stmt = IfBlock()
             { block.addControlStatement(stmt); }
         )
         |
         (
+            { System.out.println("---->@include"); }
             "@include"
             (<S>)+
             (
@@ -343,6 +349,7 @@ void RuleBlock(Rule block) :
         |
         (
             "@extend"
+            { System.out.println("---->@extend"); }
             (<S>)+
             sel = Selector()
             (<S>)*
@@ -351,6 +358,7 @@ void RuleBlock(Rule block) :
             
             { block.addExtend(sel); }
         )
+
     )*
     "}"
     (LOOKAHEAD(2) <S>)*
@@ -523,7 +531,8 @@ Selector Selector() :
         |
             // Parent ref
             <PARENTREF>
-            { 
+            {
+                System.out.println("-->parentRef");
                 if (s.getElement() != null) {
                     throw new ParseException("Parent references cannot be combined " +
                         "with element selectors.");

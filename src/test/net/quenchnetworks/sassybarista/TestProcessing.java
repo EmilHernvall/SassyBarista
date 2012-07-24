@@ -90,6 +90,16 @@ public class TestProcessing
     }
 
     @Test
+    public void nested_variables() {
+        processTest("nested_variables");
+    }
+
+    @Test
+    public void combination() {
+        processTest("combination");
+    }
+
+    @Test
     public void built_in_functions() {
         processTest("built_in_functions");
     }
@@ -154,6 +164,7 @@ public class TestProcessing
     public void parentReferences()
     {
         processTest("parentref");
+        processTest("multiple_parent_ref");
     }
 
     @Test 
