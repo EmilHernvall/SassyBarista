@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="[jmdb] Adding tests for multiple comb">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testcases/combination.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testcases/combination.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testcases/multiple_parent_ref.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testcases/multiple_parent_ref.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testcases/nested_variables.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testcases/nested_variables.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.iws" afterPath="$PROJECT_DIR$/sassy-barista.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" afterPath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" />
     </list>
     <ignored path="sassy-barista.iws" />
     <ignored path=".idea/workspace.xml" />
