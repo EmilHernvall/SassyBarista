@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="[jmdb] Adding tests for multiple comb">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.iws" afterPath="$PROJECT_DIR$/sassy-barista.iws" />
-    </list>
+    <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="[jmdb] Adding tests for multiple comb" />
     <ignored path="sassy-barista.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
