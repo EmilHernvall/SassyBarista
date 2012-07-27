@@ -34,10 +34,10 @@ public class TestProcessing
             refText = refText.replace("    ","");
         
             // load and parse scss
-            String scssFile = "testcases/" + testCase + ".scss";
+            File scssFile = new File("testcases/" + testCase + ".scss");
         
             SassParser parser = new SassParser(new FileReader(scssFile));
-            SassSheet sheet = parser.parse();
+            SassSheet sheet = parser.parse(scssFile.getParentFile());
         
             sheet = sheet.copy();
         
@@ -88,6 +88,30 @@ public class TestProcessing
             fail("Caught IOException.");
         }
     }
+
+    @Test
+    public void nested_variables() {
+        processTest("nested_variables");
+    }
+
+    @Test
+    public void combination() {
+        processTest("combination");
+    }
+
+    @Test
+    public void built_in_functions() {
+        processTest("built_in_functions");
+    }
+
+    @Test
+    public void imports()
+    {
+        processTest("import_css");
+        processTest("import_sass");
+    }
+
+
     
     @Test
     public void nesting()
@@ -140,6 +164,7 @@ public class TestProcessing
     public void parentReferences()
     {
         processTest("parentref");
+        processTest("multiple_parent_ref");
     }
 
     @Test 

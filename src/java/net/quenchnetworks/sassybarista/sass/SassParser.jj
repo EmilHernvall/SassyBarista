@@ -8,6 +8,7 @@ package net.quenchnetworks.sassybarista.sass;
 
 import java.util.*;
 
+import net.quenchnetworks.sassybarista.ImportProcessor;
 import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.value.*;
 import net.quenchnetworks.sassybarista.sass.models.*;
@@ -18,14 +19,24 @@ public class SassParser {
     private Map<String, INode> variables ;
     private Map<String, Mixin> mixins ;
 
+    private ImportProcessor importProcessor = new ImportProcessor();
+
     public static void main( String[] args )
     throws EvaluationException, ParseException, TokenMgrError {
         SassParser parser = new SassParser(System.in);
+
         SassSheet result = parser.parse();
         
         SassSheetSerializer serializer = new SassSheetSerializer(System.out);
         serializer.render(result);
     }
+
+    public void addFrom(SassSheet sheet) {
+        rules.addAll(sheet.getRules());
+        variables.putAll(sheet.getVariables());
+        mixins.putAll(sheet.getMixins());
+    }
+
 }
 PARSER_END(SassParser)
 
@@ -57,7 +68,7 @@ TOKEN : { < #nonascii : ["\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
 TOKEN : { < #unicode : "\\" (["a"-"f","A"-"F","0"-"9"]){1,6} (<wc>)? > }
 TOKEN : { < #escape : <unicode> | "\\" ["\u0020"-"\u007E","\u0080"-"\uD7FF","\uE000"-"\uFFFD"] > }
 TOKEN : { < #nmchar : ["a"-"z","A"-"Z","0"-"9"] | "-" | "_" | <nonascii> | <escape> > }
-TOKEN : { < #num : (["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+ > }
+TOKEN : { < #num : ("-")? ((["0"-"9"])+ | (["0"-"9"])* "." (["0"-"9"])+) > }
 TOKEN : { < #string : "\"" (<stringchar> | "'")* "\"" | "'" (<stringchar> | "\"")* "'" > }
 TOKEN : { < #stringchar : <urlchar> | "\u0020" | "\\" <nl> > }
 TOKEN : { < #urlchar : ["\u0009","\u0021","\u0023"-"\u0026","\u0028"-"\u007E"] | <nonascii> | <escape> > }
@@ -89,10 +100,12 @@ TOKEN : { < HEXCOLOR : <hexcolor> > }
 TOKEN : { < IFSTMT : "@if" > }
 TOKEN : { < ELSEIFSTMT : "@else" (<wc>)+ "if" > }
 TOKEN : { < ELSESTMT : "@else" > }
+TOKEN : { < IMPORT : "@import" > }
+
 
 //MORE : { < DELIMETER : <delim> > }
 
-SassSheet parse() :
+SassSheet parse(java.io.File... importPaths) :
 {
     Token t ;
     Rule rule ;
@@ -106,14 +119,17 @@ SassSheet parse() :
         variables = new LinkedHashMap<String, INode>();
         mixins = new HashMap<String, Mixin>();
     }
-    (<S>)*
+    (LOOKAHEAD(2) <S>)*
     (
         (
             t = <VARIABLE>
             { variableName = t.image; }
             ":" 
             (<S>)*
-            variableValue = ConditionalExpression()
+            (
+              variableValue = ConditionalExpression()
+            )
+
             ";"
             (LOOKAHEAD(2) <S>)*
             { variables.put(variableName, variableValue); }
@@ -128,7 +144,13 @@ SassSheet parse() :
         |
         (
             rule = Rule()
-            { rules.add(rule); }
+            {
+                if (rule.isSassImport()) {
+                    importProcessor.importSassFrom(rule.asImportRule(), this, importPaths);
+                } else {
+                  rules.add(rule);
+                }
+            }
         )
     )+
     { 
@@ -143,14 +165,69 @@ Rule Rule() :
     SelectorChain selectorChain ;
 }
 {
+    { System.out.println("-->rule"); }
     (<S>)*
-    { rule = new Rule(); }
     (
-        selectorChain = SelectorChain()
-        { rule.addSelectorChain(selectorChain); }
-    )+
-    RuleBlock(rule)
-    
+        (
+            rule = Import()
+        )
+        |
+        (
+          { rule = new Rule(); }
+          (
+              selectorChain = SelectorChain()
+              { rule.addSelectorChain(selectorChain); }
+          )+
+          RuleBlock(rule)
+        )
+    )
+    { return rule; }
+}
+
+Rule Import() :
+{
+    Token t;
+    Rule rule;
+    String importRef;
+    StringBuilder media = new StringBuilder();
+}
+{
+    <IMPORT>
+    (<S>)+
+    (
+      (
+          t = <STRING>
+          { importRef = t.image.substring(1, t.image.length()-1); }
+      )
+      |
+      (
+          t = <URI>
+          { importRef = t.image; }
+      )
+    )
+    (<S>)*
+    [
+      t = <IDENT>
+      { media.append(t.image); }
+      (<S>)*
+      (
+          ","
+          (<S>)*
+          t = <IDENT>
+          {
+              media.append(", ");
+              media.append(t.image);
+          }
+          (<S>)*
+      )*
+    ]
+
+    ";"
+    (LOOKAHEAD(2) <S>)*
+    {
+        rule = new Rule();
+        rule.setImport(new ImportRule(importRef, media.toString()));
+    }
     { return rule; }
 }
 
@@ -206,6 +283,7 @@ void RuleBlock(Rule block) :
 }
 {
     "{"
+    { System.out.println("-->ruleBlock"); }
     (LOOKAHEAD(2) <S>)*
     (
         LOOKAHEAD ( "@mixin" )
@@ -216,25 +294,29 @@ void RuleBlock(Rule block) :
             { mixins.put(mixin.getName(), mixin); }
         )
         |
-        LOOKAHEAD(Rule())
+        LOOKAHEAD(2, Rule())
         (
+            { System.out.println("---->nestedRule"); }
             nestedRule = Rule()
             { block.addSubRule(nestedRule); }
         )
         |
         LOOKAHEAD( <IDENT> ":" )
         (
+            { System.out.println("---->property"); }
             property = Property()
             { block.addProperty(property); }
         )
         |
         LOOKAHEAD( <IFSTMT> )
         (
+            { System.out.println("---->ifStatement"); }
             stmt = IfBlock()
             { block.addControlStatement(stmt); }
         )
         |
         (
+            { System.out.println("---->@include"); }
             "@include"
             (<S>)+
             (
@@ -246,13 +328,13 @@ void RuleBlock(Rule block) :
                 (
                     t = <FUNCTION>
                     { i = new IncludeDirective(t.image.substring(0, t.image.length()-1)); }
-                    value = PropertyValue()
+                    value = ParameterValue()
                     { i.addParameter(value); }
                     (<S>)*
                     (
                         ","
                         (<S>)*
-                        value = PropertyValue()
+                        value = ParameterValue()
                         { i.addParameter(value); }
                         (<S>)*
                     )*
@@ -266,18 +348,8 @@ void RuleBlock(Rule block) :
         )
         |
         (
-            "@import"
-            (<S>)+
-            t = <STRING>
-            (<S>)*
-            ";"
-            (LOOKAHEAD(2) <S>)*
-            
-            { block.addImport(t.image.substring(1, t.image.length()-1)); }
-        )
-        |
-        (
             "@extend"
+            { System.out.println("---->@extend"); }
             (<S>)+
             sel = Selector()
             (<S>)*
@@ -286,6 +358,7 @@ void RuleBlock(Rule block) :
             
             { block.addExtend(sel); }
         )
+
     )*
     "}"
     (LOOKAHEAD(2) <S>)*
@@ -458,7 +531,8 @@ Selector Selector() :
         |
             // Parent ref
             <PARENTREF>
-            { 
+            {
+                System.out.println("-->parentRef");
                 if (s.getElement() != null) {
                     throw new ParseException("Parent references cannot be combined " +
                         "with element selectors.");
@@ -471,6 +545,7 @@ Selector Selector() :
     // Pseudo class
     [
         ":"
+        [":"]
         t = <IDENT>
         { s.setPseudoClass(t.image); }
         (
@@ -722,23 +797,45 @@ INode Primary() :
 IPropertyValue PropertyValue() :
 {
     Token t ;
-    IPropertyValue p ;
+    IPropertyValue p = null;
     INode tmp ;
     FunctionPropertyValue fp ;
+    StringBuilder commaSeparatedIdents = new StringBuilder();
+    int commaListBeginLine = -1;
+    int commaListBeginColumn = -1;
 }
 {
     (
             t = <IDENT> 
-            { 
+            {
                 if ("true".equals(t.image)) {
-                    p = new BooleanPropertyValue(true); 
+                    p = new BooleanPropertyValue(true);
+                    p.setLocation(t.beginLine, t.beginColumn);
                 } else if ("false".equals(t.image)) {
-                    p = new BooleanPropertyValue(false); 
+                    p = new BooleanPropertyValue(false);
+                    p.setLocation(t.beginLine, t.beginColumn);
                 } else {
-                    p = new DefaultPropertyValue(t.image); 
+                    commaSeparatedIdents.append(t.image);
+                    commaListBeginLine = t.beginLine;
+                    commaListBeginColumn = t.beginColumn;
                 }
-                p.setLocation(t.beginLine, t.beginColumn); 
-            } 
+
+            }
+            (LOOKAHEAD(2) <S>)*
+            (  LOOKAHEAD(2)
+               ","
+               (<S>)*
+               (t = <IDENT>)
+               { commaSeparatedIdents.append(", ").append(t.image); }
+               (LOOKAHEAD(2) <S>)*
+            )*
+            {
+              if (p == null) {
+                p = new DefaultPropertyValue(commaSeparatedIdents.toString());
+                p.setLocation(commaListBeginLine, commaListBeginColumn);
+              }
+            }
+
         |
             t = <NUMBER> 
             { p = new NumberPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
@@ -761,17 +858,82 @@ IPropertyValue PropertyValue() :
             t = <VARIABLE>
             { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
-            t = <FUNCTION> 
-            { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); } 
-            (<S>)* 
+            t = <FUNCTION>
+            { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); }
+            p = ParameterValue()
+            { fp.addValue(p); }
+            (<S>)*
+            // I changed this from being a list of expressions - not sure if thats correct
             (
-                tmp = Expression() 
-                { fp.addValue(tmp); }
+                ","
+                (<S>)*
+                p = ParameterValue()
+                { fp.addValue(p); }
                 (<S>)*
             )* 
             ")"
             { p = fp; p.setLocation(t.beginLine, t.beginColumn); }
     )
     
+    { return p; }
+}
+
+IPropertyValue ParameterValue() :
+{
+    Token t ;
+    IPropertyValue p = null;
+    INode tmp ;
+    FunctionPropertyValue fp ;
+
+}
+{
+    (
+            t = <IDENT>
+            {
+                if ("true".equals(t.image)) {
+                    p = new BooleanPropertyValue(true);
+                    p.setLocation(t.beginLine, t.beginColumn);
+                } else if ("false".equals(t.image)) {
+                    p = new BooleanPropertyValue(false);
+                    p.setLocation(t.beginLine, t.beginColumn);
+                } else {
+                    p = new DefaultPropertyValue(t.image);
+                    p.setLocation(t.beginLine, t.beginColumn);
+                }
+            }
+        |
+            t = <NUMBER>
+            { p = new NumberPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <PERCENTAGE>
+            { p = new PercentagePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <DIMENSION>
+            { p = new DimensionPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <STRING>
+            { p = new StringPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <URI>
+            { p = new URIPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <HEXCOLOR>
+            { p = new ColorPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <VARIABLE>
+            { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+        |
+            t = <FUNCTION>
+            { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); }
+            (<S>)*
+            (
+                tmp = Expression()
+                { fp.addValue(tmp); }
+                (<S>)*
+            )*
+            ")"
+            { p = fp; p.setLocation(t.beginLine, t.beginColumn); }
+    )
+
     { return p; }
 }

@@ -1,0 +1,124 @@
+.button, button, input[type=submit] {
+  display: inline-block;
+  cursor: pointer;
+  &:hover {
+    background-color: lighten($color_2,5%);
+  }
+  &:active {
+    background-color: darken($color_2,5%);
+  }
+}
+
+.container {
+  width: 900px;
+  margin: auto;
+}
+.header {
+  border-bottom: 2px solid $color_borders;
+  a.logo {
+    display: block;
+    height: 90px;
+    background: url(/images/shared/header.png) no-repeat 50% 20px;
+    border: 0;
+    @extend .hide;
+  }
+}
+.breadcrumb {
+  margin: 20px 0 0 0;
+  @extend .clearfix;
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    width: 25%;
+    background: #a7a9ac;
+    float: left;
+    &:last-child a {
+      border-right: 0;
+      cursor: default;
+      &:hover {
+        border-bottom: 0;
+      }
+    }
+    a {
+      display: block;
+      height: 3em;
+      line-height: 3em;
+      text-align: center;
+      border-right: 1px solid #fff;
+      color: #fff;
+      &:hover {
+        border-bottom-width: 3px;  
+        border-bottom-color: $color_4;      
+      }
+    }
+  }
+}
+.main {
+  margin: 12px 0 0 0; 
+  padding: 0 15px; 
+}
+
+.results {
+  dl {
+    @extend .clearfix;
+  }
+  dt, dd {
+    margin-top: .75em;
+  }
+  dt {
+    width: 6.5em;
+    clear: both;
+    float: left;
+  }
+  dd {
+    float: left;
+    margin-left: 0;
+  }
+}
+
+table.documents {
+  td.tick {
+    text-align: center;
+  }
+  .total {
+    td {
+      padding-top: 1em;
+      padding-bottom: 1em;
+      border-bottom: 0;
+      font-weight: bold;
+    }
+    .title {
+      text-align: right;
+    }
+    .value {
+    }
+  }
+}
+
+.box {
+  margin: 22px 0 0 0;
+  padding: 40px;
+  border: 1px solid $color_4;
+  h2 {
+    margin-top: 0;
+  }
+  .downloads {
+    list-style: none;
+    li {
+      margin: 12px 0 0 0;
+      a {
+        display: inline-block;
+        cursor: pointer;
+        padding-left: 60px;
+        height: 53px;
+        line-height: 53px;
+        background: #fff url(/images/shared/icon-pdf.png) no-repeat 0 0;
+        &:hover {
+          border: 0;
+        }
+      }
+    }
+  }
+}

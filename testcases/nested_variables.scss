@@ -1,0 +1,5 @@
+a {
+    $my_color: darken($color_links, 10%);
+    color: $my_color;
+    border-bottom: 1px solid $my_color;
+}

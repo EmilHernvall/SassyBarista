@@ -73,7 +73,28 @@ public class SassSheetSerializer
     private void renderRule(Rule rule, int indentLevel)
     {
         String indent = generateIndent(indentLevel);
-    
+
+        // If it's an import rule render it and get out:
+        if (rule.isImportRule()) {
+            writer.print("@import ");
+
+            ImportRule importRule = rule.asImportRule();
+            String wrapper = (importRule.getImportRef().startsWith("url")) ? "" : "\"";
+
+            writer.print(wrapper);
+            writer.print(importRule.getImportRef());
+            writer.print(wrapper);
+
+            if (importRule.getMedia().length() > 0) {
+                writer.print(" ");
+                writer.print(importRule.getMedia());
+            }
+            writer.println(";");
+            return;
+        }
+
+
+
         // Render all selectors
         int i = 0;
         List<SelectorChain> selectorChains = rule.getSelectorChains();
