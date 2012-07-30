@@ -122,6 +122,7 @@ SassSheet parse(java.io.File... importPaths) :
     (LOOKAHEAD(2) <S>)*
     (
         (
+            { System.out.println("-->variableDeclaration"); }
             t = <VARIABLE>
             { variableName = t.image; }
             ":" 
@@ -247,6 +248,7 @@ Mixin Mixin() :
         )
         |
         (
+            { System.out.println("---->function"); }
             t = <FUNCTION>
             { mixin.setName(t.image.substring(0, t.image.length()-1)); }
             (<S>)*
@@ -294,14 +296,20 @@ void RuleBlock(Rule block) :
             { mixins.put(mixin.getName(), mixin); }
         )
         |
-        LOOKAHEAD(2, Rule())
+        LOOKAHEAD(3, VariableDeclaration())
+        (
+            { System.out.println("---->variableDeclaration"); }
+            VariableDeclaration()
+        )
+        |
+        LOOKAHEAD(3, Rule())
         (
             { System.out.println("---->nestedRule"); }
             nestedRule = Rule()
             { block.addSubRule(nestedRule); }
         )
         |
-        LOOKAHEAD( <IDENT> ":" )
+        LOOKAHEAD(3, Property())
         (
             { System.out.println("---->property"); }
             property = Property()
@@ -359,9 +367,31 @@ void RuleBlock(Rule block) :
             { block.addExtend(sel); }
         )
 
+
+
     )*
     "}"
     (LOOKAHEAD(2) <S>)*
+}
+
+void VariableDeclaration() :
+{
+  Token t;
+  String variableName ;
+  INode variableValue ;
+}
+{
+    t = <VARIABLE>
+    { variableName = t.image; }
+    ":"
+    (<S>)*
+    (
+      variableValue = ConditionalExpression()
+    )
+
+    ";"
+    (LOOKAHEAD(2) <S>)*
+    { variables.put(variableName, variableValue); }
 }
 
 void MixinBlock(Mixin block) :
@@ -488,7 +518,7 @@ Selector Selector() :
 }
 {
     { s = new Selector(); }
-    
+    { System.out.println("---->selector"); }
     // Combinator
     [
         (
@@ -708,6 +738,7 @@ INode Expression() :
     IBinaryNode nextNode ;
 }
 {
+    { System.out.println("---->expression"); }
     node = Term()
     (LOOKAHEAD(2) <S>)*
     (
@@ -805,6 +836,7 @@ IPropertyValue PropertyValue() :
     int commaListBeginColumn = -1;
 }
 {
+    { System.out.println("---->popertyValue"); }
     (
             t = <IDENT> 
             {
@@ -858,6 +890,7 @@ IPropertyValue PropertyValue() :
             t = <VARIABLE>
             { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
+            { System.out.println("---->function"); }
             t = <FUNCTION>
             { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); }
             p = ParameterValue()
@@ -887,6 +920,7 @@ IPropertyValue ParameterValue() :
 
 }
 {
+    { System.out.println("---->parameterValue"); }
     (
             t = <IDENT>
             {
