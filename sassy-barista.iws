@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="[jmdb] Adding tests for multiple comb">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.ipr" afterPath="$PROJECT_DIR$/sassy-barista.ipr" />
+    <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.iws" afterPath="$PROJECT_DIR$/sassy-barista.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java" afterPath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/built_in_functions.css" afterPath="$PROJECT_DIR$/testcases/built_in_functions.css" />
     </list>
     <ignored path="sassy-barista.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,19 +61,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="combination.scss" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testcases/combination.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="39" selection-start="31" selection-end="130" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SassParser.jj" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SassParser.jj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="881" column="1" selection-start="20656" selection-end="20656" vertical-scroll-proportion="0.38669065">
+            <state line="922" column="25" selection-start="22142" selection-end="22150" vertical-scroll-proportion="-122.57692">
               <folding />
             </state>
           </provider>
@@ -93,7 +82,25 @@
       <file leaf-file-name="TestProcessing.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="157" column="16" selection-start="4405" selection-end="4405" vertical-scroll-proportion="0.0">
+            <state line="102" column="16" selection-start="3434" selection-end="3434" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nested_variables.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcases/nested_variables.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="1" selection-start="109" selection-end="109" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="built_in_functions.css" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/testcases/built_in_functions.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="0" selection-start="42" selection-end="42" vertical-scroll-proportion="0.18097448">
               <folding />
             </state>
           </provider>
@@ -103,15 +110,6 @@
         <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="1055" column="0" selection-start="25299" selection-end="25299" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="combination.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testcases/combination.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -137,7 +135,6 @@
         <option value="$PROJECT_DIR$/testcases/variable.css" />
         <option value="$PROJECT_DIR$/testcases/built_in_functions.scss" />
         <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/value/FunctionPropertyValue.java" />
-        <option value="$PROJECT_DIR$/testcases/built_in_functions.css" />
         <option value="$PROJECT_DIR$/testcases/parent_selector.scss" />
         <option value="$PROJECT_DIR$/testcases/parent_selector.css" />
         <option value="$PROJECT_DIR$/testcases/multiple_parent_ref.scss" />
@@ -149,6 +146,7 @@
         <option value="$PROJECT_DIR$/testcases/combination.scss" />
         <option value="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java" />
         <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
+        <option value="$PROJECT_DIR$/testcases/built_in_functions.css" />
       </list>
     </option>
   </component>
@@ -670,34 +668,6 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.Run all tests">
-    <configuration default="false" name="TestProcessing.parentReferences" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="net.quenchnetworks.sassybarista.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="sassy-barista" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="net.quenchnetworks.sassybarista" />
-      <option name="MAIN_CLASS_NAME" value="net.quenchnetworks.sassybarista.TestProcessing" />
-      <option name="METHOD_NAME" value="parentReferences" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
     <configuration default="false" name="TestProcessing.combination" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" runner="idea">
         <pattern>
@@ -805,6 +775,34 @@
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestProcessing.built_in_functions" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="net.quenchnetworks.sassybarista.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="sassy-barista" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="net.quenchnetworks.sassybarista" />
+      <option name="MAIN_CLASS_NAME" value="net.quenchnetworks.sassybarista.TestProcessing" />
+      <option name="METHOD_NAME" value="built_in_functions" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
@@ -929,12 +927,12 @@
       <method />
     </configuration>
     <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.TestProcessing.parentReferences" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.TestProcessing.combination" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.TestProcessing.nested_variables" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.Run all tests" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.TestProcessing" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.TestProcessing.controlstructures" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.TestProcessing.combination" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.TestProcessing.nested_variables" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.Run all tests" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.TestProcessing" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.TestProcessing.controlstructures" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.TestProcessing.built_in_functions" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1054,7 +1052,11 @@
       <created>1342802586468</created>
       <updated>1342802586469</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="[jmdb] Fixing problem with rules not looking ahead enough">
+      <created>1343641182611</created>
+      <updated>1343641182612</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1084,7 +1086,7 @@
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18984772" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1097852" sideWeight="0.6314721" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1097852" sideWeight="0.49137056" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28324872" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -1095,8 +1097,8 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6111675" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22374701" sideWeight="0.6314721" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36852792" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22374701" sideWeight="0.49137056" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.50862944" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1142,7 +1144,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Allowing numbers to optionally start with a &quot;-&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Fixing problem with rules not looking ahead enough" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1177,6 +1179,7 @@
     <MESSAGE value="[jmdb] Fixed bug with function parameter lists not working (was treating each parameter as an expression - may be right?)" />
     <MESSAGE value="[jmdb] Adding a comment" />
     <MESSAGE value="[jmdb] Allowing numbers to optionally start with a &quot;-&quot;" />
+    <MESSAGE value="[jmdb] Fixing problem with rules not looking ahead enough" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1204,11 +1207,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/testcases/selectors.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testcases/parentref.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -1232,11 +1230,6 @@
     <entry file="file://$PROJECT_DIR$/testcases/complex/_global.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="0" selection-start="183" selection-end="205" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/nested_variables.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="1" selection-start="109" selection-end="109" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testcases/nested_variables.css">
@@ -1271,13 +1264,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="157" column="16" selection-start="4405" selection-end="4405" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="42" column="5" selection-start="1172" selection-end="1172" vertical-scroll-proportion="0.0">
@@ -1287,7 +1273,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="881" column="1" selection-start="20656" selection-end="20656" vertical-scroll-proportion="0.38669065">
+        <state line="922" column="25" selection-start="22142" selection-end="22150" vertical-scroll-proportion="-122.57692">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="16" selection-start="3434" selection-end="3434" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/nested_variables.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="1" selection-start="109" selection-end="109" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/built_in_functions.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="0" selection-start="42" selection-end="42" vertical-scroll-proportion="0.18097448">
           <folding />
         </state>
       </provider>
