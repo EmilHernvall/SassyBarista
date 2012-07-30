@@ -1,5 +1,6 @@
 package net.quenchnetworks.sassybarista;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class ComplexTest {
 
 
     @Test
+    @Ignore("WIP")
     public void can_parse_some_sass() {
 
         String resultingCss = processor.parseSomeSassFrom(new File("testcases/complex/application.scss"));

@@ -294,7 +294,7 @@ void RuleBlock(Rule block) :
             { mixins.put(mixin.getName(), mixin); }
         )
         |
-        LOOKAHEAD(2, Rule())
+        LOOKAHEAD(3, Rule())
         (
             { System.out.println("---->nestedRule"); }
             nestedRule = Rule()
