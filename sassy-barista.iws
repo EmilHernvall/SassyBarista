@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.iws" afterPath="$PROJECT_DIR$/sassy-barista.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/built_in_functions.css" afterPath="$PROJECT_DIR$/testcases/built_in_functions.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/combination.css" afterPath="$PROJECT_DIR$/testcases/combination.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/combination.scss" afterPath="$PROJECT_DIR$/testcases/combination.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/nested_variables.css" afterPath="$PROJECT_DIR$/testcases/nested_variables.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/nested_variables.scss" afterPath="$PROJECT_DIR$/testcases/nested_variables.scss" />
     </list>
     <ignored path="sassy-barista.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -14,6 +18,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/sassy-barista$TestProcessing_nested_variables.coverage" NAME="TestProcessing.nested_variables Coverage Results" MODIFIED="1343664611634" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>net.quenchnetworks.sassybarista.*</FILTER>
+    </SUITE>
+  </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
@@ -64,16 +73,7 @@
       <file leaf-file-name="SassParser.jj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="922" column="25" selection-start="22142" selection-end="22150" vertical-scroll-proportion="-122.57692">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComplexTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="5" selection-start="1172" selection-end="1172" vertical-scroll-proportion="0.0">
+            <state line="310" column="9" selection-start="7427" selection-end="7581" vertical-scroll-proportion="-18.884615">
               <folding />
             </state>
           </provider>
@@ -82,7 +82,7 @@
       <file leaf-file-name="TestProcessing.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="16" selection-start="3434" selection-end="3434" vertical-scroll-proportion="0.0">
+            <state line="97" column="16" selection-start="3349" selection-end="3349" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -91,25 +91,34 @@
       <file leaf-file-name="nested_variables.scss" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testcases/nested_variables.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="1" selection-start="109" selection-end="109" vertical-scroll-proportion="0.0">
+            <state line="3" column="39" selection-start="79" selection-end="79" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="built_in_functions.css" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/testcases/built_in_functions.css">
+      <file leaf-file-name="nested_variables.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcases/nested_variables.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="0" selection-start="42" selection-end="42" vertical-scroll-proportion="0.18097448">
+            <state line="1" column="0" selection-start="4" selection-end="99" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SassParser.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java">
+      <file leaf-file-name="combination.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testcases/combination.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1055" column="0" selection-start="25299" selection-end="25299" vertical-scroll-proportion="0.0">
+            <state line="0" column="19" selection-start="19" selection-end="19" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="combination.css" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/testcases/combination.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="6" column="42" selection-start="26" selection-end="93" vertical-scroll-proportion="0.25657895">
               <folding />
             </state>
           </provider>
@@ -131,7 +140,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/testcases/complex/_global.scss" />
         <option value="$PROJECT_DIR$/testcases/variable.css" />
         <option value="$PROJECT_DIR$/testcases/built_in_functions.scss" />
         <option value="$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/value/FunctionPropertyValue.java" />
@@ -139,14 +147,15 @@
         <option value="$PROJECT_DIR$/testcases/parent_selector.css" />
         <option value="$PROJECT_DIR$/testcases/multiple_parent_ref.scss" />
         <option value="$PROJECT_DIR$/testcases/multiple_parent_ref.css" />
-        <option value="$PROJECT_DIR$/testcases/combination.css" />
-        <option value="$PROJECT_DIR$/testcases/nested_variables.scss" />
         <option value="$PROJECT_DIR$/testcases/nexted_variables.css" />
         <option value="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" />
-        <option value="$PROJECT_DIR$/testcases/combination.scss" />
         <option value="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java" />
-        <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
         <option value="$PROJECT_DIR$/testcases/built_in_functions.css" />
+        <option value="$PROJECT_DIR$/testcases/nested_variables.scss" />
+        <option value="$PROJECT_DIR$/testcases/nested_variables.css" />
+        <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
+        <option value="$PROJECT_DIR$/testcases/combination.scss" />
+        <option value="$PROJECT_DIR$/testcases/combination.css" />
       </list>
     </option>
   </component>
@@ -726,7 +735,9 @@
       </option>
       <envs />
       <patterns />
+      <RunnerSettings RunnerId="Cover" />
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Cover" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -1056,7 +1067,11 @@
       <created>1343641182611</created>
       <updated>1343641182612</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="[jmdb] Fixed failure with built_in_functions because ref text was incorrect">
+      <created>1343641701641</created>
+      <updated>1343641701642</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1081,12 +1096,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1676" height="1028" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18984772" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1097852" sideWeight="0.49137056" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1097852" sideWeight="0.4101523" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28324872" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -1094,11 +1109,12 @@
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34517765" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1097852" sideWeight="0.22741117" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6111675" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22374701" sideWeight="0.49137056" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.50862944" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22374701" sideWeight="0.64467007" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35532996" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994923" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1144,7 +1160,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Fixing problem with rules not looking ahead enough" />
+    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Fixed failure with built_in_functions because ref text was incorrect" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1180,6 +1196,7 @@
     <MESSAGE value="[jmdb] Adding a comment" />
     <MESSAGE value="[jmdb] Allowing numbers to optionally start with a &quot;-&quot;" />
     <MESSAGE value="[jmdb] Fixing problem with rules not looking ahead enough" />
+    <MESSAGE value="[jmdb] Fixed failure with built_in_functions because ref text was incorrect" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1207,11 +1224,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/testcases/parentref.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testcases/parentref.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -1232,11 +1244,6 @@
         <state line="11" column="0" selection-start="183" selection-end="205" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/nested_variables.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="4" selection-end="4" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testcases/nesting_permutation.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -1247,19 +1254,9 @@
         <state line="5" column="22" selection-start="169" selection-end="169" vertical-scroll-proportion="0.22336769" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/combination.scss">
+    <entry file="file://$PROJECT_DIR$/testcases/built_in_functions.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="39" selection-start="31" selection-end="130" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/combination.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1055" column="0" selection-start="25299" selection-end="25299" vertical-scroll-proportion="0.0">
+        <state line="3" column="0" selection-start="42" selection-end="42" vertical-scroll-proportion="0.18097448">
           <folding />
         </state>
       </provider>
@@ -1271,30 +1268,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
+    <entry file="file://$PROJECT_DIR$/testcases/variable.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="922" column="25" selection-start="22142" selection-end="22150" vertical-scroll-proportion="-122.57692">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
+    <entry file="file://$PROJECT_DIR$/build/src/net/quenchnetworks/sassybarista/sass/SassParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="16" selection-start="3434" selection-end="3434" vertical-scroll-proportion="0.0">
+        <state line="678" column="21" selection-start="16882" selection-end="16882" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testcases/nested_variables.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="1" selection-start="109" selection-end="109" vertical-scroll-proportion="0.0">
+        <state line="3" column="39" selection-start="79" selection-end="79" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/built_in_functions.css">
+    <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="42" selection-end="42" vertical-scroll-proportion="0.18097448">
+        <state line="310" column="9" selection-start="7427" selection-end="7581" vertical-scroll-proportion="-18.884615">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="97" column="16" selection-start="3349" selection-end="3349" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/nested_variables.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="4" selection-end="99" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/combination.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="19" selection-start="19" selection-end="19" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/combination.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="42" selection-start="26" selection-end="93" vertical-scroll-proportion="0.25657895">
           <folding />
         </state>
       </provider>
