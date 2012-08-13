@@ -4,7 +4,7 @@
     <list default="true" id="7839c486-351a-4deb-8c0a-cf789b550e9e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sassy-barista.iws" afterPath="$PROJECT_DIR$/sassy-barista.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" afterPath="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" afterPath="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testcases/nested_variables.scss" afterPath="$PROJECT_DIR$/testcases/nested_variables.scss" />
     </list>
     <ignored path="sassy-barista.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,10 +67,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SassParser.jj" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SassParser.jj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="156" column="26" selection-start="4683" selection-end="4683" vertical-scroll-proportion="0.6520211">
+            <state line="307" column="19" selection-start="7472" selection-end="7472" vertical-scroll-proportion="-10.269231">
               <folding />
             </state>
           </provider>
@@ -112,10 +112,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nested_variables.scss" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="nested_variables.scss" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/testcases/nested_variables.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="8" selection-start="88" selection-end="88" vertical-scroll-proportion="0.0">
+            <state line="7" column="35" selection-start="149" selection-end="149" vertical-scroll-proportion="0.2993421">
               <folding />
             </state>
           </provider>
@@ -150,9 +150,9 @@
         <option value="$PROJECT_DIR$/testcases/combination.css" />
         <option value="$PROJECT_DIR$/testcases/complex/_global.scss" />
         <option value="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/ComplexTest.java" />
-        <option value="$PROJECT_DIR$/testcases/nested_variables.scss" />
         <option value="$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java" />
         <option value="$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj" />
+        <option value="$PROJECT_DIR$/testcases/nested_variables.scss" />
       </list>
     </option>
   </component>
@@ -639,7 +639,11 @@
       <created>1344851708684</created>
       <updated>1344851708684</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="[jmdb] Sucessfully moved @import out of Rule because it only belongs at top of file (see css at-rule spec)">
+      <created>1344852864553</created>
+      <updated>1344852864553</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -728,7 +732,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Commit with everything green before refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="[jmdb] Sucessfully moved @import out of Rule because it only belongs at top of file (see css at-rule spec)" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -741,7 +745,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="[jmdb] fixing path in the import test" />
     <MESSAGE value="[jmdb] Adding new test for @import" />
     <MESSAGE value="[jmdb] Broke everything but its back now" />
     <MESSAGE value="[jmdb] Added import rule need to add screens" />
@@ -766,6 +769,7 @@
     <MESSAGE value="[jmdb] Fixed failure with built_in_functions because ref text was incorrect" />
     <MESSAGE value="[jmdb] Fixed variable declarations in a rule block" />
     <MESSAGE value="[jmdb] Commit with everything green before refactor" />
+    <MESSAGE value="[jmdb] Sucessfully moved @import out of Rule because it only belongs at top of file (see css at-rule spec)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -862,13 +866,6 @@
         <state line="134" column="0" selection-start="2288" selection-end="2288" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testcases/nested_variables.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="8" selection-start="88" selection-end="88" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/net/quenchnetworks/sassybarista/TestProcessing.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="120" column="18" selection-start="4124" selection-end="4124" vertical-scroll-proportion="0.0">
@@ -878,7 +875,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/java/net/quenchnetworks/sassybarista/sass/SassParser.jj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="156" column="26" selection-start="4683" selection-end="4683" vertical-scroll-proportion="0.6520211">
+        <state line="307" column="19" selection-start="7472" selection-end="7472" vertical-scroll-proportion="-10.269231">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testcases/nested_variables.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="35" selection-start="149" selection-end="149" vertical-scroll-proportion="0.2993421">
           <folding />
         </state>
       </provider>

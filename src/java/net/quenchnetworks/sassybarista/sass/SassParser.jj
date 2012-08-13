@@ -305,7 +305,7 @@ void RuleBlock(Rule block) :
             VariableDeclaration()
         )
         |
-        LOOKAHEAD(3, Rule())
+        LOOKAHEAD(6, Rule())
         (
             { System.out.println("---->nestedRule"); }
             nestedRule = Rule()
