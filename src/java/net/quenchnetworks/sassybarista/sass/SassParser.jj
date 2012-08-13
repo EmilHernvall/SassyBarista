@@ -144,18 +144,25 @@ SassSheet parse(java.io.File... importPaths) :
         )
         |
         (
-            rule = Rule()
+            rule = Import()
             {
                 if (rule.isSassImport()) {
-                    importProcessor.importSassFrom(rule.asImportRule(), this, importPaths);
+                     importProcessor.importSassFrom(rule.asImportRule(), this, importPaths);
                 } else {
-                  rules.add(rule);
+                     rules.add(rule);
                 }
+            }
+        )
+        |
+        (
+            rule = Rule()
+            {
+               rules.add(rule);
             }
         )
     )+
     { 
-        return new SassSheet(variables, mixins, rules); 
+        return new SassSheet(variables, mixins, rules);
     }
 }
 
@@ -169,10 +176,6 @@ Rule Rule() :
     { System.out.println("-->rule"); }
     (<S>)*
     (
-        (
-            rule = Import()
-        )
-        |
         (
           { rule = new Rule(); }
           (
@@ -384,11 +387,10 @@ void VariableDeclaration() :
     t = <VARIABLE>
     { variableName = t.image; }
     ":"
-    (<S>)+
+    (<S>)*
     (
       variableValue = ConditionalExpression()
     )
-
     ";"
     (LOOKAHEAD(2) <S>)*
     { variables.put(variableName, variableValue); }
