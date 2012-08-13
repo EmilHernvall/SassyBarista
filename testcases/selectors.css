@@ -38,6 +38,10 @@ input[type="text"] {
     font-family: Verdana;
 }
 
+input[type="text"] {
+    font-family: Verdana;
+}
+
 a[class~="text"] {
     font-family: Verdana;
 }

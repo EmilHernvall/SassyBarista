@@ -614,8 +614,17 @@ Selector Selector() :
                 <DASHMATCH>
                 { attr.setType(Selector.AttributeSelectorType.DASHMATCH); }
             )
-            t = <STRING>
-            { attr.setValue(t.image.substring(1,t.image.length()-1)); }
+            (
+                (
+                    t = <STRING>
+                    { attr.setValue(t.image.substring(1,t.image.length()-1)); }
+                )
+                |
+                (
+                    t = <IDENT>
+                    { attr.setValue(t.image); }
+                )
+            )
         )*
         "]"
         { s.setAttributeSelector(attr); }
