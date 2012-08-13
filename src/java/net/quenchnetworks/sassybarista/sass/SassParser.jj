@@ -384,7 +384,7 @@ void VariableDeclaration() :
     t = <VARIABLE>
     { variableName = t.image; }
     ":"
-    (<S>)*
+    (<S>)+
     (
       variableValue = ConditionalExpression()
     )
