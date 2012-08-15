@@ -48,6 +48,11 @@ input[type="text"] {
     font-family: Verdana;
 }
 
+/* Selector with ident rather than string*/
+input[type=text] {
+  font-family: Verdana;
+}
+
 /* "includes" attribute selector */
 a[class~="text"] {
     font-family: Verdana;

@@ -144,18 +144,25 @@ SassSheet parse(java.io.File... importPaths) :
         )
         |
         (
-            rule = Rule()
+            rule = Import()
             {
                 if (rule.isSassImport()) {
-                    importProcessor.importSassFrom(rule.asImportRule(), this, importPaths);
+                     importProcessor.importSassFrom(rule.asImportRule(), this, importPaths);
                 } else {
-                  rules.add(rule);
+                     rules.add(rule);
                 }
+            }
+        )
+        |
+        (
+            rule = Rule()
+            {
+               rules.add(rule);
             }
         )
     )+
     { 
-        return new SassSheet(variables, mixins, rules); 
+        return new SassSheet(variables, mixins, rules);
     }
 }
 
@@ -169,10 +176,6 @@ Rule Rule() :
     { System.out.println("-->rule"); }
     (<S>)*
     (
-        (
-            rule = Import()
-        )
-        |
         (
           { rule = new Rule(); }
           (
@@ -302,7 +305,7 @@ void RuleBlock(Rule block) :
             VariableDeclaration()
         )
         |
-        LOOKAHEAD(3, Rule())
+        LOOKAHEAD(6, Rule())
         (
             { System.out.println("---->nestedRule"); }
             nestedRule = Rule()
@@ -388,7 +391,6 @@ void VariableDeclaration() :
     (
       variableValue = ConditionalExpression()
     )
-
     ";"
     (LOOKAHEAD(2) <S>)*
     { variables.put(variableName, variableValue); }
@@ -612,8 +614,17 @@ Selector Selector() :
                 <DASHMATCH>
                 { attr.setType(Selector.AttributeSelectorType.DASHMATCH); }
             )
-            t = <STRING>
-            { attr.setValue(t.image.substring(1,t.image.length()-1)); }
+            (
+                (
+                    t = <STRING>
+                    { attr.setValue(t.image.substring(1,t.image.length()-1)); }
+                )
+                |
+                (
+                    t = <IDENT>
+                    { attr.setValue(t.image); }
+                )
+            )
         )*
         "]"
         { s.setAttributeSelector(attr); }
