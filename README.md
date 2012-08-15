@@ -1,18 +1,13 @@
 SassyBarista is a java implementation of a CSS preprocessor. The goal is that it will 
 eventually be fully compatible with the SCSS syntax of SASS (http://sass-lang.com). It's 
 based on a JavaCC grammar and is in a comparatively early stage, although some advanced 
-features are already supported. Thereare still a few glitches that prevents some standard 
-CSS files from parsing correctly, but I'm working on getting rid of them. I'd love to hear 
-from you if you try it and encounter such parsing bugs. You can contact me at emil@quench.at.
+features are already supported. There are still a few glitches that prevents some standard 
+CSS files from parsing correctly, but worki on getting rid of them is in progress. All 
+feedback is very welcome.
 
 If you need a way to parse css and manipulate it programatically this project might also
 fit nicely, since it was partly designed for that purpose. The java API should be rather
 straight forward to use directly.
-
-The fact that it is meant to be usable as a css parser has some consequences for the design
-of the library. For example, the use of an AST is limited to expressions. This means that
-there is no total ordering of nodes outside of each scope. Whether or not this is a problem
-for you, I do not know. For my applications it is not.
 
 Currently supported:
 
@@ -60,3 +55,8 @@ Some relevant links:
  * http://javacc.java.net/
  * http://www.w3.org/TR/css3-selectors/
  * http://www.w3.org/TR/css3-syntax/
+
+Authors:
+ 
+ * Emil Hernvall
+ * Jim Barritt
