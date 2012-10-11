@@ -15,6 +15,7 @@ import net.quenchnetworks.sassybarista.sass.models.*;
 import net.quenchnetworks.sassybarista.sass.expression.*;
 
 public class SassParser {
+    private static final boolean DEBUG = false;
     private List<Rule> rules ;
     private Map<String, INode> variables ;
     private Map<String, Mixin> mixins ;
@@ -122,7 +123,7 @@ SassSheet parse(java.io.File... importPaths) :
     (LOOKAHEAD(2) <S>)*
     (
         (
-            { System.out.println("-->variableDeclaration"); }
+            { if (DEBUG) { System.out.println("-->variableDeclaration"); } }
             t = <VARIABLE>
             { variableName = t.image; }
             ":" 
@@ -173,7 +174,7 @@ Rule Rule() :
     SelectorChain selectorChain ;
 }
 {
-    { System.out.println("-->rule"); }
+    { if (DEBUG) { System.out.println("-->rule"); } }
     (<S>)*
     (
         (
@@ -251,7 +252,7 @@ Mixin Mixin() :
         )
         |
         (
-            { System.out.println("---->function"); }
+            { if (DEBUG) { System.out.println("---->function"); } }
             t = <FUNCTION>
             { mixin.setName(t.image.substring(0, t.image.length()-1)); }
             (<S>)*
@@ -288,7 +289,7 @@ void RuleBlock(Rule block) :
 }
 {
     "{"
-    { System.out.println("-->ruleBlock"); }
+    { if (DEBUG) { System.out.println("-->ruleBlock"); } }
     (LOOKAHEAD(2) <S>)*
     (
         LOOKAHEAD ( "@mixin" )
@@ -301,33 +302,33 @@ void RuleBlock(Rule block) :
         |
         LOOKAHEAD(3, VariableDeclaration())
         (
-            { System.out.println("---->variableDeclaration"); }
+            { if (DEBUG) { System.out.println("---->variableDeclaration"); } }
             VariableDeclaration()
         )
         |
         LOOKAHEAD(6, Rule())
         (
-            { System.out.println("---->nestedRule"); }
+            { if (DEBUG) { System.out.println("---->nestedRule"); } }
             nestedRule = Rule()
             { block.addSubRule(nestedRule); }
         )
         |
         LOOKAHEAD(3, Property())
         (
-            { System.out.println("---->property"); }
+            { if (DEBUG) { System.out.println("---->property"); } }
             property = Property()
             { block.addProperty(property); }
         )
         |
         LOOKAHEAD( <IFSTMT> )
         (
-            { System.out.println("---->ifStatement"); }
+            { if (DEBUG) { System.out.println("---->ifStatement"); } }
             stmt = IfBlock()
             { block.addControlStatement(stmt); }
         )
         |
         (
-            { System.out.println("---->@include"); }
+            { if (DEBUG) { System.out.println("---->@include"); } }
             "@include"
             (<S>)+
             (
@@ -360,7 +361,7 @@ void RuleBlock(Rule block) :
         |
         (
             "@extend"
-            { System.out.println("---->@extend"); }
+            { if (DEBUG) { System.out.println("---->@extend"); } }
             (<S>)+
             sel = Selector()
             (<S>)*
@@ -520,7 +521,7 @@ Selector Selector() :
 }
 {
     { s = new Selector(); }
-    { System.out.println("---->selector"); }
+    { if (DEBUG) { System.out.println("---->selector"); } }
     // Combinator
     [
         (
@@ -564,7 +565,7 @@ Selector Selector() :
             // Parent ref
             <PARENTREF>
             {
-                System.out.println("-->parentRef");
+                if (DEBUG) { System.out.println("-->parentRef"); }
                 if (s.getElement() != null) {
                     throw new ParseException("Parent references cannot be combined " +
                         "with element selectors.");
@@ -749,7 +750,7 @@ INode Expression() :
     IBinaryNode nextNode ;
 }
 {
-    { System.out.println("---->expression"); }
+    { if (DEBUG) { System.out.println("---->expression"); } }
     node = Term()
     (LOOKAHEAD(2) <S>)*
     (
@@ -847,7 +848,7 @@ IPropertyValue PropertyValue() :
     int commaListBeginColumn = -1;
 }
 {
-    { System.out.println("---->popertyValue"); }
+    { if (DEBUG) { System.out.println("---->popertyValue"); } }
     (
             t = <IDENT> 
             {
@@ -901,7 +902,7 @@ IPropertyValue PropertyValue() :
             t = <VARIABLE>
             { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
-            { System.out.println("---->function"); }
+            { if (DEBUG) { System.out.println("---->function"); } }
             t = <FUNCTION>
             { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); }
             p = ParameterValue()
@@ -931,7 +932,7 @@ IPropertyValue ParameterValue() :
 
 }
 {
-    { System.out.println("---->parameterValue"); }
+    { if (DEBUG) { System.out.println("---->parameterValue"); } }
     (
             t = <IDENT>
             {
