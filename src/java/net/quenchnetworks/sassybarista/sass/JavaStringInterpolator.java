@@ -32,4 +32,3 @@ public class JavaStringInterpolator implements SassSheetEvaluator.StringInterpol
         return str;
     }
 }
-

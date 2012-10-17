@@ -23,27 +23,28 @@ public class SassParser {
     private ImportProcessor importProcessor = new ImportProcessor();
 
     public static void main( String[] args )
-    throws EvaluationException, ParseException, TokenMgrError {
+    throws EvaluationException, ParseException, TokenMgrError
+    {
         SassParser parser = new SassParser(System.in);
 
         SassSheet result = parser.parse();
-        
+
         SassSheetSerializer serializer = new SassSheetSerializer(System.out);
         serializer.render(result);
     }
 
-    public void addFrom(SassSheet sheet) {
+    public void addFrom(SassSheet sheet)
+    {
         rules.addAll(sheet.getRules());
         variables.putAll(sheet.getVariables());
         mixins.putAll(sheet.getMixins());
     }
-
 }
 PARSER_END(SassParser)
 
 /*TOKEN_MGR_DECLS : {
-    int commentNestingDepth ; 
-} */
+    int commentNestingDepth ;
+}*/
 
 SKIP :
 {
@@ -60,7 +61,7 @@ SKIP :
 
 //SKIP : { " " }
 //SKIP : { "\t" | "\n" | "\r" | "\r\n" }
-//SKIP : {  "/*" { commentNestingDepth = 1 ; } : COMMENT } 
+//SKIP : {  "/*" { commentNestingDepth = 1 ; } : COMMENT }
 
 TOKEN : { < #ident : ("-")? <nmstart> (<nmchar>)* > }
 TOKEN : { < #name : (<nmchar>)+ > }
@@ -115,8 +116,8 @@ SassSheet parse(java.io.File... importPaths) :
     INode variableValue ;
 }
 {
-    { 
-        rules = new ArrayList<Rule>(); 
+    {
+        rules = new ArrayList<Rule>();
         variables = new LinkedHashMap<String, INode>();
         mixins = new HashMap<String, Mixin>();
     }
@@ -126,7 +127,7 @@ SassSheet parse(java.io.File... importPaths) :
             { if (DEBUG) { System.out.println("-->variableDeclaration"); } }
             t = <VARIABLE>
             { variableName = t.image; }
-            ":" 
+            ":"
             (<S>)*
             (
               variableValue = ConditionalExpression()
@@ -162,7 +163,7 @@ SassSheet parse(java.io.File... importPaths) :
             }
         )
     )+
-    { 
+    {
         return new SassSheet(variables, mixins, rules);
     }
 }
@@ -243,7 +244,7 @@ Mixin Mixin() :
 }
 {
     { mixin = new Mixin(); }
-    
+
     (
         (
             t = <IDENT>
@@ -272,7 +273,7 @@ Mixin Mixin() :
     )
 
     MixinBlock(mixin)
-    
+
     { return mixin; }
 }
 
@@ -355,7 +356,7 @@ void RuleBlock(Rule block) :
             )
             ";"
             (LOOKAHEAD(2) <S>)*
-            
+
             { block.addInclude(i); }
         )
         |
@@ -367,11 +368,9 @@ void RuleBlock(Rule block) :
             (<S>)*
             ";"
             (LOOKAHEAD(2) <S>)*
-            
+
             { block.addExtend(sel); }
         )
-
-
 
     )*
     "}"
@@ -464,8 +463,8 @@ ControlStatement IfBlock() :
         (<S>)*
         (
             property = Property()
-            { 
-                stmt2.addProperty(property); 
+            {
+                stmt2.addProperty(property);
             }
         )+
         "}"
@@ -482,15 +481,15 @@ ControlStatement IfBlock() :
         (<S>)*
         (
             property = Property()
-            { 
-                elseBlock.addProperty(property); 
+            {
+                elseBlock.addProperty(property);
             }
         )+
         "}"
         { stmt.setElseBlock(elseBlock); }
     )?
     (LOOKAHEAD(2) <S>)*
-    
+
     { return stmt; }
 }
 
@@ -509,7 +508,7 @@ SelectorChain SelectorChain() :
     )+
     (",")?
     (<S>)*
-    
+
     { return selectorChain; }
 }
 
@@ -536,18 +535,18 @@ Selector Selector() :
         )
         (<S>)+
     ]
-    
+
     (
         LOOKAHEAD(2)
         (
             // ID
             "#"
             t = <IDENT>
-            { 
+            {
                 if (s.getClassNames().size() > 0) {
                     throw new ParseException("Encountered id selector after class selector.");
                 }
-                s.setId(t.image); 
+                s.setId(t.image);
             }
         |
             // Class
@@ -570,11 +569,11 @@ Selector Selector() :
                     throw new ParseException("Parent references cannot be combined " +
                         "with element selectors.");
                 }
-                s.setParentRef(true); 
+                s.setParentRef(true);
             }
         )
     )+
-    
+
     // Pseudo class
     [
         ":"
@@ -588,7 +587,7 @@ Selector Selector() :
             ")"
         )*
     ]
-    
+
     // Attribute selector
     [
         { attr = new Selector.AttributeSelector(); }
@@ -630,9 +629,9 @@ Selector Selector() :
         "]"
         { s.setAttributeSelector(attr); }
     ]
-    
+
     (LOOKAHEAD(1) <S>)*
-    
+
     { return s; }
 }
 
@@ -662,7 +661,7 @@ Property Property() :
                 (<S>)*
                 ","
                 (<S>)*
-                { 
+                {
                     buffer.append(t.image);
                     buffer.append(", ");
                 }
@@ -673,10 +672,10 @@ Property Property() :
                 t = <STRING>
             )
             (<S>)*
-            
-            { 
+
+            {
                 buffer.append(t.image);
-                property.addValue(new DefaultPropertyValue(buffer.toString())); 
+                property.addValue(new DefaultPropertyValue(buffer.toString()));
             }
         )
         |
@@ -694,7 +693,7 @@ Property Property() :
     )+
     ";"
     (LOOKAHEAD(2) <S>)*
-    
+
     { return property; }
 }
 
@@ -708,39 +707,39 @@ INode ConditionalExpression() :
     (<S>)*
     (
         (
-            { 
-                nextNode = new EqNode(); 
+            {
+                nextNode = new EqNode();
                 nextNode.setLeftNode(node);
             }
             "=="
         |
-            { 
-                nextNode = new NotEqNode(); 
+            {
+                nextNode = new NotEqNode();
                 nextNode.setLeftNode(node);
             }
             "!="
         |
-            { 
-                nextNode = new LtNode(); 
+            {
+                nextNode = new LtNode();
                 nextNode.setLeftNode(node);
             }
             "<"
         |
-            { 
-                nextNode = new GtNode(); 
+            {
+                nextNode = new GtNode();
                 nextNode.setLeftNode(node);
             }
             ">"
         )
         (<S>)*
         current = Expression()
-        { 
-            nextNode.setRightNode(current); 
+        {
+            nextNode.setRightNode(current);
             node = nextNode;
         }
         (<S>)*
     )*
-    
+
     { return node; }
 }
 
@@ -756,27 +755,27 @@ INode Expression() :
     (
         LOOKAHEAD(2)
         (
-            { 
-                nextNode = new AdditionNode(); 
+            {
+                nextNode = new AdditionNode();
                 nextNode.setLeftNode(node);
             }
             "+"
         |
-            { 
-                nextNode = new SubtractionNode(); 
+            {
+                nextNode = new SubtractionNode();
                 nextNode.setLeftNode(node);
             }
             "-"
         )
         (<S>)*
         current = Term()
-        { 
-            nextNode.setRightNode(current); 
+        {
+            nextNode.setRightNode(current);
             node = nextNode;
         }
         (LOOKAHEAD(2) <S>)*
     )*
-    
+
     { return node; }
 }
 
@@ -791,27 +790,27 @@ INode Term() :
     (
         LOOKAHEAD(2)
         (
-            { 
-                nextNode = new MultiplicationNode(); 
+            {
+                nextNode = new MultiplicationNode();
                 nextNode.setLeftNode(node);
             }
             "*"
         |
-            { 
-                nextNode = new DivisionNode(); 
+            {
+                nextNode = new DivisionNode();
                 nextNode.setLeftNode(node);
             }
             "/"
         )
         (<S>)*
         current = Primary()
-        { 
-            nextNode.setRightNode(current); 
+        {
+            nextNode.setRightNode(current);
             node = nextNode;
         }
         (LOOKAHEAD(2) <S>)*
     )*
-    
+
     { return node; }
 }
 
@@ -832,8 +831,8 @@ INode Primary() :
         ")"
     )
 
-    { 
-        return node; 
+    {
+        return node;
     }
 }
 
@@ -848,9 +847,10 @@ IPropertyValue PropertyValue() :
     int commaListBeginColumn = -1;
 }
 {
-    { if (DEBUG) { System.out.println("---->popertyValue"); } }
+    { if (DEBUG) { System.out.println("---->propertyValue"); } }
+
     (
-            t = <IDENT> 
+            t = <IDENT>
             {
                 if ("true".equals(t.image)) {
                     p = new BooleanPropertyValue(true);
@@ -863,8 +863,8 @@ IPropertyValue PropertyValue() :
                     commaListBeginLine = t.beginLine;
                     commaListBeginColumn = t.beginColumn;
                 }
-
             }
+
             (LOOKAHEAD(2) <S>)*
             (  LOOKAHEAD(2)
                ","
@@ -874,30 +874,30 @@ IPropertyValue PropertyValue() :
                (LOOKAHEAD(2) <S>)*
             )*
             {
-              if (p == null) {
-                p = new DefaultPropertyValue(commaSeparatedIdents.toString());
-                p.setLocation(commaListBeginLine, commaListBeginColumn);
-              }
+                if (p == null) {
+                    p = new DefaultPropertyValue(commaSeparatedIdents.toString());
+                    p.setLocation(commaListBeginLine, commaListBeginColumn);
+                }
             }
 
         |
-            t = <NUMBER> 
-            { p = new NumberPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
+            t = <NUMBER>
+            { p = new NumberPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
-            t = <PERCENTAGE> 
-            { p = new PercentagePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
+            t = <PERCENTAGE>
+            { p = new PercentagePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
-            t = <DIMENSION> 
-            { p = new DimensionPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
+            t = <DIMENSION>
+            { p = new DimensionPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
-            t = <STRING> 
-            { p = new StringPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
+            t = <STRING>
+            { p = new StringPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
-            t = <URI> 
-            { p = new URIPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
+            t = <URI>
+            { p = new URIPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
-            t = <HEXCOLOR> 
-            { p = new ColorPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); } 
+            t = <HEXCOLOR>
+            { p = new ColorPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
         |
             t = <VARIABLE>
             { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
@@ -905,21 +905,20 @@ IPropertyValue PropertyValue() :
             { if (DEBUG) { System.out.println("---->function"); } }
             t = <FUNCTION>
             { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); }
-            p = ParameterValue()
-            { fp.addValue(p); }
+            tmp = Expression()
+            { fp.addValue(tmp); }
             (<S>)*
-            // I changed this from being a list of expressions - not sure if thats correct
             (
                 ","
                 (<S>)*
-                p = ParameterValue()
-                { fp.addValue(p); }
+                tmp = Expression()
+                { fp.addValue(tmp); }
                 (<S>)*
-            )* 
+            )*
             ")"
             { p = fp; p.setLocation(t.beginLine, t.beginColumn); }
     )
-    
+
     { return p; }
 }
 
@@ -949,28 +948,52 @@ IPropertyValue ParameterValue() :
             }
         |
             t = <NUMBER>
-            { p = new NumberPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+            {
+                p = new NumberPropertyValue(t.image);
+                p.setLocation(t.beginLine, t.beginColumn);
+            }
         |
             t = <PERCENTAGE>
-            { p = new PercentagePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+            {
+                p = new PercentagePropertyValue(t.image);
+                p.setLocation(t.beginLine, t.beginColumn);
+            }
         |
             t = <DIMENSION>
-            { p = new DimensionPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+            {
+                p = new DimensionPropertyValue(t.image);
+                p.setLocation(t.beginLine, t.beginColumn);
+            }
         |
             t = <STRING>
-            { p = new StringPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+            {
+                p = new StringPropertyValue(t.image);
+                p.setLocation(t.beginLine, t.beginColumn);
+            }
         |
             t = <URI>
-            { p = new URIPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+            {
+                p = new URIPropertyValue(t.image);
+                p.setLocation(t.beginLine, t.beginColumn);
+            }
         |
             t = <HEXCOLOR>
-            { p = new ColorPropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+            {
+                p = new ColorPropertyValue(t.image);
+                p.setLocation(t.beginLine, t.beginColumn);
+            }
         |
             t = <VARIABLE>
-            { p = new VariablePropertyValue(t.image); p.setLocation(t.beginLine, t.beginColumn); }
+            {
+                p = new VariablePropertyValue(t.image);
+                p.setLocation(t.beginLine, t.beginColumn);
+            }
         |
             t = <FUNCTION>
-            { fp = new FunctionPropertyValue(t.image.substring(0,t.image.length()-1)); }
+            {
+                fp = new FunctionPropertyValue(
+                    t.image.substring(0,t.image.length()-1));
+            }
             (<S>)*
             (
                 tmp = Expression()

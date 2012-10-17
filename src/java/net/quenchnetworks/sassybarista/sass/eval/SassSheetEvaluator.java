@@ -17,7 +17,7 @@ public class SassSheetEvaluator
     // implementation has to be swappable.
     public interface StringInterpolator
     {
-        public String applyVariables(String str, ExpressionEvaluator evaluator, 
+        public String applyVariables(String str, ExpressionEvaluator evaluator,
             Map<String, IPropertyValue> scope) throws EvaluationException;
     }
 
@@ -27,7 +27,7 @@ public class SassSheetEvaluator
         List<Selector> selectors;
         List<Rule> matches;
         int matchedBy = 0;
-        
+
         public Extension(Rule rule, List<Selector> selectors)
         {
             this.rule = rule;
@@ -38,7 +38,7 @@ public class SassSheetEvaluator
 
     private ExpressionEvaluator evaluator;
     private StringInterpolator interpolator;
-    
+
     private List<Rule> ruleList;
     private Map<String, IFunction> functions;
     private Map<String, IPropertyValue> variables = null;
@@ -49,46 +49,47 @@ public class SassSheetEvaluator
         this.functions = new HashMap<String, IFunction>();
         this.interpolator = interpolator;
     }
-    
+
     public void addFunction(String name, IFunction function)
     {
         functions.put(name, function);
     }
-    
+
     public void evaluate(SassSheet sheet)
     throws EvaluationException
     {
         evaluator = new ExpressionEvaluator(functions);
-    
+
         Map<String, INode> unprocessedVariables = sheet.getVariables();
         variables = new LinkedHashMap<String, IPropertyValue>();
         for (Map.Entry<String, INode> entry : unprocessedVariables.entrySet()) {
             variables.put(entry.getKey(), evaluator.evaluate(entry.getValue(), variables));
         }
-        
+
         this.mixins = sheet.getMixins();
 
         /*for (Rule rule : sheet.getRules()) {
             nestSelectors(rule);
         }*/
-        
+
         processExtends(sheet);
-        
+
         ruleList = new ArrayList<Rule>();
         for (Rule rule : sheet.getRules()) {
             processRule(rule);
         }
-        
+
         sheet.setVariables(new HashMap<String, INode>());
         sheet.setMixins(new HashMap<String, Mixin>());
         sheet.setRules(ruleList);
     }
 
-    private void interpolateSelectors(List<SelectorChain> chains, 
+    private void interpolateSelectors(List<SelectorChain> chains,
         Map<String, IPropertyValue> scope)
     throws EvaluationException
     {
         for (SelectorChain chain : chains) {
+            System.out.println(chain.toString());
             for (Selector selector : chain.getSelectors()) {
                 if (selector.getId() != null) {
                     selector.setId(interpolator.applyVariables(selector.getId(), evaluator, scope));
@@ -102,15 +103,18 @@ public class SassSheetEvaluator
                 }
                 selector.setClassNames(classes);
             }
+
+            System.out.println(chain.toString());
+            System.out.println();
         }
     }
-    
+
     private SelectorChain mergeSelectorChains(SelectorChain first, SelectorChain second)
     {
         SelectorChain newChain = new SelectorChain();
         if (first.hasParentRef()) {
             throw new RuntimeException("First chain cannot contain parent references.");
-        } 
+        }
 
         if (second.hasParentRef()) {
             for (Selector sel : second.getSelectors()) {
@@ -148,7 +152,7 @@ public class SassSheetEvaluator
 
         return newChain;
     }
-    
+
     private void processExtends(SassSheet sheet)
     {
         // recurse and find all extensions
@@ -162,23 +166,23 @@ public class SassSheetEvaluator
         for (Extension extension : extensions) {
             lookup.put(extension.rule, extension);
         }
-        
+
         // find and add matching rules to extension objects
         for (Extension extension : extensions) {
-        
+
             // only analyze top level rules
             for (Rule rule : sheet.getRules()) {
                 boolean match = false;
-                
+
                 // search for a matching selector
                 for (SelectorChain chain : rule.getSelectorChains()) {
                     List<Selector> selectors = chain.getSelectors();
-                    
+
                     // only simple rules can be extended
                     if (selectors.size() != 1) {
                         continue;
                     }
-                    
+
                     Selector selector = selectors.get(0);
                     for (Selector cmp : extension.selectors) {
                         if (cmp.equals(selector)) {
@@ -186,17 +190,17 @@ public class SassSheetEvaluator
                             break;
                         }
                     }
-                    
+
                     if (match) {
                         break;
                     }
                 }
-                
+
                 if (match) {
                     // add match to extension object so that we
                     // can come back later and append our selectors
                     extension.matches.add(rule);
-                    
+
                     // if this rule extends other rules we need
                     // to make all extensions referring to that rule
                     // first. we use a counter to make sure that this
@@ -208,7 +212,7 @@ public class SassSheetEvaluator
                 }
             }
         }
-        
+
         // print state
         /*for (Extension extension : extensions) {
             Rule rule = extension.rule;
@@ -229,57 +233,57 @@ public class SassSheetEvaluator
             System.out.println();
             System.out.println();
         }*/
-        
+
         // iterate until all selectors has been added
         while (extensions.size() > 0) {
-        
+
             // use an iterator so we can remove objects
             // while looping
             Iterator<Extension> it = extensions.iterator();
             while (it.hasNext()) {
                 Extension ext = it.next();
-                
+
                 // only process extensions that have been fully
                 // extended themselves
                 if (ext.matchedBy > 0) {
                     continue;
                 }
-                
+
                 Rule rule = ext.rule;
-                
+
                 // add selectors to all matching rules
                 for (Rule match : ext.matches) {
                     Extension matchExt = lookup.get(match);
                     if (matchExt != null) {
                         matchExt.matchedBy--;
                     }
-                    
+
                     for (SelectorChain chain : rule.getSelectorChains()) {
                         match.addSelectorChain(chain);
                     }
                 }
-                
+
                 it.remove();
             }
         }
     }
-    
+
     private List<Extension> findExtends(Rule rule)
     {
         List<Extension> matches = new ArrayList<Extension>();
-        
+
         for (Rule subRule : rule.getSubRules()) {
             matches.addAll(findExtends(subRule));
         }
-        
+
         if (rule.getExtends().size() > 0) {
             matches.add(new Extension(rule, rule.getExtends()));
             rule.setExtends(new ArrayList<Selector>());
         }
-        
+
         return matches;
     }
-    
+
     private void processRule(Rule rule)
     throws EvaluationException
     {
@@ -290,24 +294,24 @@ public class SassSheetEvaluator
             if (mixin == null) {
                 throw new EvaluationException("Mixin " + include.getMixinName() + " was not found.");
             }
-            
+
             // copy the mixin to prevent substitutions from affecting
             // later use
             mixin = mixin.copy();
-            
+
             Map<String, IPropertyValue> params = mixin.getParameterMap(include);
-            
+
             reduceMixin(mixin, params);
 
             rule.addSubRules(mixin.getSubRules());
             rule.addProperties(mixin.getProperties());
         }
-        
+
         // Evaluate control statements
         for (ControlStatement stmt : rule.getControlStatements()) {
             stmt.evaluate(rule, evaluator, variables);
         }
-        
+
         for (Property property : rule.getProperties()) {
             String key = interpolator.applyVariables(property.getKey(), evaluator, variables);
             property.setKey(key);
@@ -317,11 +321,11 @@ public class SassSheetEvaluator
             }
             property.setValues(newValues);
         }
-        
+
         rule.setIncludes(new ArrayList<IncludeDirective>());
 
         ruleList.add(rule);
-        
+
         // Handle interpolations in selector chains
         interpolateSelectors(rule.getSelectorChains(), variables);
 
@@ -332,34 +336,34 @@ public class SassSheetEvaluator
             List<SelectorChain> newChains = new ArrayList<SelectorChain>();
             for (SelectorChain selectorChain : selectorChains) {
                 for (SelectorChain subSelectorChain : subrule.getSelectorChains()) {
-                    newChains.add(mergeSelectorChains(selectorChain.copy(), 
+                    newChains.add(mergeSelectorChains(selectorChain.copy(),
                         subSelectorChain.copy()));
                 }
             }
-            
+
             // Replace all the current selectors of the sub rule with the new
             // permutations. This will be done again for each level, which will
             // generate all the needed permutations regardless of the number of
             // lvels
             subrule.setSelectorChains(newChains);
-            
+
             processRule(subrule);
         }
         rule.setSubRules(new ArrayList<Rule>());
     }
-    
+
     private void reduceMixin(Block block, Map<String, IPropertyValue> params)
     throws EvaluationException
     {
         for (Rule subrule : block.getSubRules()) {
             interpolateSelectors(subrule.getSelectorChains(), params);
         }
-            
+
         for (ControlStatement stmt : block.getControlStatements()) {
             stmt.evaluate(block, evaluator, params);
         }
         block.setControlStatements(new ArrayList<ControlStatement>());
-            
+
         for (Property property : block.getProperties()) {
             String key = interpolator.applyVariables(property.getKey(), evaluator, variables);
             property.setKey(key);

@@ -12,7 +12,7 @@ import net.quenchnetworks.sassybarista.sass.*;
 import net.quenchnetworks.sassybarista.sass.eval.*;
 import net.quenchnetworks.sassybarista.sass.models.*;
 
-public class SassTask extends Task 
+public class SassTask extends Task
 {
     public boolean concat = false;
     public boolean compact = false;
@@ -24,7 +24,7 @@ public class SassTask extends Task
     public SassTask()
     {
     }
-    
+
     @Override
     public void execute()
     throws BuildException
@@ -37,32 +37,32 @@ public class SassTask extends Task
             processAll();
         }
     }
-    
+
     private void processAll()
     throws BuildException
     {
         if (outputDir == null) {
             throw new BuildException("No output directory specified.");
         }
-        
+
         String[] outDirs = outputDir.list();
         if (outDirs.length != 1) {
             throw new BuildException("Only one output dir may be specified.");
         }
-        
+
         String outDir = outDirs[0];
-        
+
         if (inFiles == null) {
             throw new BuildException("No input files specified.");
         }
-    
+
         DirectoryScanner scanner = inFiles.getDirectoryScanner();
         String[] files = scanner.getIncludedFiles();
         for (String file : files) {
             try {
                 File inFile = new File(inFiles.getDir(), file);
                 System.out.println("Processing " + file);
-                
+
                 String newName = inFile.getName();
                 newName = newName.replace(".scss", ".css");
                 File outFile = new File(outDir, newName);
@@ -75,27 +75,27 @@ public class SassTask extends Task
             }
         }
     }
-    
+
     private void concatAll()
     {
         if (outputFile == null) {
             throw new BuildException("No output file specified.");
         }
-        
+
         String[] outputFiles = outputFile.list();
         if (outputFiles.length != 1) {
             throw new BuildException("Only one output file may be specified.");
         }
-        
+
         String outFile = outputFiles[0];
-        
+
         if (inFiles == null) {
             throw new BuildException("No input files specified.");
         }
 
         try {
             PrintStream stream = new PrintStream(new File(outFile));
-        
+
             DirectoryScanner scanner = inFiles.getDirectoryScanner();
             String[] files = scanner.getIncludedFiles();
             for (String file : files) {
@@ -107,52 +107,52 @@ public class SassTask extends Task
 
                     processFile(inFile, stream);
             }
-            
+
             stream.close();
         }
         catch (Exception e) {
             throw new BuildException(e);
         }
     }
-    
+
     private void processFile(File inFile, PrintStream stream)
     throws IOException, EvaluationException, ParseException
     {
         SassParser parser = new SassParser(new FileReader(inFile));
         SassSheet sheet = parser.parse();
-    
+
         SassSheetEvaluator evaluator = new SassSheetEvaluator(new JavaStringInterpolator());
         evaluator.evaluate(sheet);
-    
+
         SassSheetSerializer serializer = new SassSheetSerializer(stream);
         serializer.render(sheet);
     }
-    
+
     public void add(FileSet fileSet)
     {
         this.inFiles = fileSet;
     }
-    
+
     public void setConcat(boolean v)
     {
         this.concat = v;
     }
-    
+
     public void setCompact(boolean v)
     {
         this.compact = v;
     }
-    
+
     public void setOutputfilenames(boolean v)
     {
         this.outputfilenames = v;
     }
-    
+
     public void setOutputdir(Path path)
     {
         this.outputDir = path;
     }
-    
+
     public void setOutputfile(Path path)
     {
         this.outputFile = path;
