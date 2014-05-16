@@ -89,7 +89,6 @@ public class SassSheetEvaluator
     throws EvaluationException
     {
         for (SelectorChain chain : chains) {
-            System.out.println(chain.toString());
             for (Selector selector : chain.getSelectors()) {
                 if (selector.getId() != null) {
                     selector.setId(interpolator.applyVariables(selector.getId(), evaluator, scope));
@@ -103,9 +102,6 @@ public class SassSheetEvaluator
                 }
                 selector.setClassNames(classes);
             }
-
-            System.out.println(chain.toString());
-            System.out.println();
         }
     }
 

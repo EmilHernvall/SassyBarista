@@ -15,72 +15,72 @@ public class Block implements Serializable
         this.subrules = new ArrayList<Rule>();
         this.ctrlStmts = new ArrayList<ControlStatement>();
     }
-    
+
     public void addProperty(Property property)
     {
         properties.add(property);
     }
-    
+
     public  void addProperties(List<Property> newProperties)
     {
         properties.addAll(newProperties);
     }
-    
+
     public List<Property> getProperties()
     {
         return properties;
     }
-    
+
     public void setSubRules(List<Rule> v)
     {
         this.subrules = v;
     }
-    
+
     public void addSubRule(Rule rule)
     {
         subrules.add(rule);
     }
-    
+
     public void addSubRules(List<Rule> newRules)
     {
         subrules.addAll(newRules);
     }
-    
+
     public List<Rule> getSubRules()
     {
         return subrules;
     }
-    
+
     public void addControlStatement(ControlStatement stmt)
     {
         ctrlStmts.add(stmt);
     }
 
-    public void setControlStatements(List<ControlStatement> v) 
+    public void setControlStatements(List<ControlStatement> v)
     {
         ctrlStmts = v;
     }
-    
+
     public List<ControlStatement> getControlStatements()
     {
         return ctrlStmts;
     }
-    
+
     protected void copy(Block copyTo)
     {
         for (Property property : properties) {
             copyTo.addProperty(property.copy());
         }
-        
+
         for (Rule rule : subrules) {
             copyTo.addSubRule(rule.copy());
         }
-        
+
         for (ControlStatement stmt : ctrlStmts) {
             copyTo.addControlStatement(stmt.copy());
         }
     }
-    
+
     @Override
     public int hashCode()
     {
@@ -91,17 +91,17 @@ public class Block implements Serializable
         for (Rule rule : subrules) {
             code = 31 * code + rule.hashCode();
         }
-        
+
         return code;
     }
-    
+
     @Override
     public boolean equals(Object obj)
     {
         if (!(obj instanceof Block)) {
             return false;
         }
-        
+
         return hashCode() == obj.hashCode();
     }
 }

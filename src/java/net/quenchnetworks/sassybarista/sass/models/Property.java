@@ -10,7 +10,7 @@ public class Property implements Serializable
 {
     private String key;
     private List<INode> values;
-    
+
     public Property()
     {
         this.key = null;
@@ -22,12 +22,12 @@ public class Property implements Serializable
         this.key = key;
         this.values = new ArrayList<INode>();
     }
-    
+
     public void setValues(List<INode> values)
     {
         this.values = values;
     }
-    
+
     public void addValue(INode value)
     {
         values.add(value);
@@ -37,26 +37,26 @@ public class Property implements Serializable
     {
         this.key = v;
     }
-    
+
     public String getKey()
     {
         return key;
     }
-    
+
     public List<INode> getValues()
     {
         return values;
     }
-    
+
     public Property copy()
     {
         Property newProp = new Property();
         newProp.key = key;
-        
+
         for (INode value : values) {
             newProp.addValue(value.copy());
         }
-        
+
         return newProp;
     }
 }

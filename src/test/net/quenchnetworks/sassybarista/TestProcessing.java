@@ -28,7 +28,7 @@ public class TestProcessing
         try {
             // load reference text
             String cssFile = "testcases/" + testCase + ".css";
-           
+
             BufferedReader reader = new BufferedReader(new FileReader(cssFile));
             StringBuilder refTextBuffer = new StringBuilder();
             String line;
@@ -36,47 +36,47 @@ public class TestProcessing
                 refTextBuffer.append(line);
                 refTextBuffer.append("\n");
             }
-            
+
             reader.close();
-            
+
             String refText = refTextBuffer.toString();
             refText = refText.trim();
             refText = refText.replace("\r\n","\n");
             refText = refText.replace("\t","");
             refText = refText.replace("    ","");
-        
+
             // load and parse scss
             File scssFile = new File("testcases/" + testCase + ".scss");
-        
+
             SassParser parser = new SassParser(new FileReader(scssFile));
             SassSheet sheet = parser.parse(scssFile.getParentFile());
-        
+
             sheet = sheet.copy();
-        
+
             SassSheetEvaluator evaluator = new SassSheetEvaluator(new JavaStringInterpolator());
             evaluator.evaluate(sheet);
-        
+
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             SassSheetSerializer serializer = new SassSheetSerializer(new PrintStream(os));
-            
+
             serializer.render(sheet);
-            
+
             String processedText = os.toString("UTF-8");
             processedText = processedText.trim();
             processedText = processedText.replace("\r\n","\n");
             processedText = processedText.replace("\t","");
             processedText = processedText.replace("    ","");
-            
+
             if (!refText.equals(processedText)) {
                 System.out.println(testCase + " failed.");
                 System.out.println("reference text:");
                 System.out.print(refText);
                 System.out.println("\n");
-                
+
                 System.out.println("processed text:");
                 System.out.print(processedText);
                 System.out.println("\n");
-            
+
                 fail();
             } else {
                 assertTrue(true);
@@ -124,22 +124,20 @@ public class TestProcessing
         processTest("import_sass");
     }
 
-
-    
     @Test
     public void nesting()
     {
         processTest("nesting_basic");
         processTest("nesting_permutation");
     }
-    
+
     @Test
     public void mixins()
     {
         processTest("mixin");
         processTest("mixin_parameter");
     }
-    
+
     @Test
     public void variables()
     {
@@ -151,14 +149,14 @@ public class TestProcessing
     {
         processTest("selectors");
     }
-    
-    @Test 
+
+    @Test
     public void expressions()
     {
         processTest("expression_arithmetic");
     }
-    
-    @Test 
+
+    @Test
     public void inheritance()
     {
         processTest("extend_basic");
@@ -166,23 +164,29 @@ public class TestProcessing
         processTest("extend_chain");
         processTest("extend_complex");
     }
-    
-    @Test 
+
+    @Test
     public void controlstructures()
     {
         processTest("controlstructure_if");
     }
 
-    @Test 
+    @Test
     public void parentReferences()
     {
         processTest("parentref");
         processTest("multiple_parent_ref");
     }
 
-    @Test 
+    @Test
     public void interpolation()
     {
         processTest("interpolation");
+    }
+
+    @Test
+    public void mediaQuery()
+    {
+        processTest("mediaquery");
     }
 }

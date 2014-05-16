@@ -1,0 +1,28 @@
+h1 {
+    width: 320px;
+}
+
+@media monochrome {
+    h1 {
+        color: #ccc;
+    }
+}
+
+@media not monochrome and (max-width: 1500px) {
+    h1:after {
+        content: "that's one bigass screen";
+    }
+}
+
+@media (min-width: 768px) {
+    h1 {
+        width: 768px;
+    }
+}
+
+@media (min-width: 992px) {
+    h1 {
+        width: 992px;
+    }
+}
+

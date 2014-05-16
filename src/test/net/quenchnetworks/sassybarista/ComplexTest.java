@@ -31,18 +31,15 @@ public class ComplexTest {
 
     private final SassFileProcessor processor = new SassFileProcessor();
 
-
-    @Test
+    /*@Test
     @Ignore("WIP")
-    public void can_parse_some_sass() {
-
+    public void can_parse_some_sass()
+    {
         String resultingCss = processor.parseSomeSassFrom(new File("testcases/complex/application.scss"));
-
         System.out.println(resultingCss);
+    }*/
 
-    }
-
-    @Test
+    /*@Test
     public void can_pre_process_imports() {
         String source = "@import \"mixins\";\n" +
                 "@import \"fonts\";\n" +
@@ -51,19 +48,14 @@ public class ComplexTest {
                 "@import \"response\";";
 
         String resultingSource = processor.preProcessImports(new StringReader(source), new File("testcases/complex/application.scss"));
-
         System.out.println(resultingSource);
-
-    }
+    }*/
 
     @Test
-    public void can_work_out_the_filename_of_an_import() {
-
+    public void can_work_out_the_filename_of_an_import()
+    {
         assertThat(processor.importFileNameFrom("global"), is("_global.scss"));
         assertThat(processor.importFileNameFrom("compass/reset"), is("compass/_reset.scss"));
         assertThat(processor.importFileNameFrom("some/real/long/path/reset"), is("some/real/long/path/_reset.scss"));
-
     }
-
-
 }

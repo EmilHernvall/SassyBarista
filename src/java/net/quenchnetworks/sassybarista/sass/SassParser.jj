@@ -17,6 +17,7 @@ import net.quenchnetworks.sassybarista.sass.expression.*;
 public class SassParser {
     private static final boolean DEBUG = false;
     private List<Rule> rules ;
+    private List<MediaBlock> mediaBlocks ;
     private Map<String, INode> variables ;
     private Map<String, Mixin> mixins ;
 
@@ -81,29 +82,55 @@ TOKEN : { < #variable : "$" <name> > }
 TOKEN : { < #interpolation : "#" "{" <variable> "}" > }
 TOKEN : { < #hexcolor : "#" (["a"-"f","A"-"F","0"-"9"]){3,6} > }
 
-//TOKEN : { < IDENT : <ident> > }
+TOKEN : { < ONLY : "only" > }
+TOKEN : { < NOT : "not" > }
+TOKEN : { < AND : "and" > }
 TOKEN : { < IDENT : (<ident>|<interpolation>)+ > }
-//TOKEN : { < ATKEYWORD : "@" <ident> > }
 TOKEN : { < STRING : <string> > }
 TOKEN : { < NUMBER : <num> > }
 TOKEN : { < PERCENTAGE : <num> "%" > }
 TOKEN : { < DIMENSION : <num> <ident> > }
-TOKEN : { < URI : "url(" <w> (<string> | (<urlchar>)* ) <w> ")" > }
+TOKEN : { < URI : "url(" <w> (<string> | (<urlchar>)* ) <w> <RPAREN> > }
 TOKEN : { < S : (<wc>)+ > }
-TOKEN : { < FUNCTION : <ident> "(" > }
-TOKEN : { < INCLUDES : "~=" > }
-TOKEN : { < DASHMATCH : "|=" > }
-TOKEN : { < PREFIXMATCH : "^=" > }
-TOKEN : { < SUFFIXMATCH : "$=" > }
-TOKEN : { < SUBSTRINGMATCH : "*=" > }
-TOKEN : { < PARENTREF : "&" > }
+TOKEN : { < FUNCTION : <ident> <LPAREN> > }
 TOKEN : { < VARIABLE : <variable> > }
 TOKEN : { < HEXCOLOR : <hexcolor> > }
 TOKEN : { < IFSTMT : "@if" > }
 TOKEN : { < ELSEIFSTMT : "@else" (<wc>)+ "if" > }
 TOKEN : { < ELSESTMT : "@else" > }
 TOKEN : { < IMPORT : "@import" > }
-
+TOKEN : { < MIXIN : "@mixin" > }
+TOKEN : { < INCLUDE : "@include" > }
+TOKEN : { < EXTEND : "@extend" > }
+TOKEN : { < MEDIA : "@media" > }
+TOKEN : { < IMPORTANT : "!important" > }
+TOKEN : { < INCLUDES : "~=" > }
+TOKEN : { < DASHMATCH : "|=" > }
+TOKEN : { < PREFIXMATCH : "^=" > }
+TOKEN : { < SUFFIXMATCH : "$=" > }
+TOKEN : { < SUBSTRINGMATCH : "*=" > }
+TOKEN : { < EQ : "==" > }
+TOKEN : { < NEQ : "!=" > }
+TOKEN : { < PARENTREF : "&" > }
+TOKEN : { < COLON : ":" > }
+TOKEN : { < SEMICOLON : ";" > }
+TOKEN : { < LCURLY : "{" > }
+TOKEN : { < RCURLY : "}" > }
+TOKEN : { < COMMA : "," > }
+TOKEN : { < LPAREN : "(" > }
+TOKEN : { < RPAREN : ")" > }
+TOKEN : { < LBRACKET : "[" > }
+TOKEN : { < RBRACKET : "]" > }
+TOKEN : { < LTAG : "<" > }
+TOKEN : { < RTAG : ">" > }
+TOKEN : { < PLUS : "+" > }
+TOKEN : { < DASH : "-" > }
+TOKEN : { < TILDE : "~" > }
+TOKEN : { < HASH : "#" > }
+TOKEN : { < DOT : "." > }
+TOKEN : { < ASTERIX : "*" > }
+TOKEN : { < EQUALS : "=" > }
+TOKEN : { < SLASH : "/" > }
 
 //MORE : { < DELIMETER : <delim> > }
 
@@ -114,35 +141,46 @@ SassSheet parse(java.io.File... importPaths) :
     Mixin mixin ;
     String variableName ;
     INode variableValue ;
+    MediaBlock mediaBlock ;
 }
 {
     {
         rules = new ArrayList<Rule>();
+        mediaBlocks = new ArrayList<MediaBlock>();
         variables = new LinkedHashMap<String, INode>();
         mixins = new HashMap<String, Mixin>();
     }
-    (LOOKAHEAD(2) <S>)*
+
+    (LOOKAHEAD(1) <S>)*
+
     (
         (
             { if (DEBUG) { System.out.println("-->variableDeclaration"); } }
             t = <VARIABLE>
             { variableName = t.image; }
-            ":"
+            <COLON>
             (<S>)*
             (
               variableValue = ConditionalExpression()
             )
 
-            ";"
+            <SEMICOLON>
+
             (LOOKAHEAD(2) <S>)*
+
             { variables.put(variableName, variableValue); }
         )
         |
         (
-            "@mixin"
+            <MIXIN>
             (<S>)+
             mixin = Mixin()
             { mixins.put(mixin.getName(), mixin); }
+        )
+        |
+        (
+            mediaBlock = MediaBlock()
+            { mediaBlocks.add(mediaBlock); }
         )
         |
         (
@@ -164,8 +202,108 @@ SassSheet parse(java.io.File... importPaths) :
         )
     )+
     {
-        return new SassSheet(variables, mixins, rules);
+        return new SassSheet(variables, mixins, rules, mediaBlocks);
     }
+}
+
+MediaBlock MediaBlock() :
+{
+    Token t ;
+    MediaBlock block ;
+    MediaQuery qry ;
+    Rule rule ;
+}
+{
+    <MEDIA>
+    { if (DEBUG) { System.out.println("-->media"); } }
+
+    (<S>)+
+
+    { block = new MediaBlock(); }
+
+    qry = MediaQuery()
+    { block.addMediaQuery(qry); }
+
+    (
+        <COMMA>
+        (<S>)*
+        qry = MediaQuery()
+        { block.addMediaQuery(qry); }
+    )*
+
+    <LCURLY>
+    (LOOKAHEAD(2) <S>)*
+    (
+        rule = Rule()
+        { block.addRule(rule); }
+    )*
+    <RCURLY>
+    (LOOKAHEAD(2) <S>)*
+
+    { return block; }
+}
+
+MediaQuery MediaQuery() :
+{
+    Token t ;
+    MediaQuery qry ;
+    INode node ;
+}
+{
+    { qry = new MediaQuery(); }
+
+    (
+        LOOKAHEAD ( <ONLY> )
+        (
+            <ONLY>
+            (<S>)+
+            { qry.setOnlyFlag(true); }
+            t = <IDENT>
+            { qry.setMediaType(t.image); }
+        )
+        |
+        LOOKAHEAD ( <NOT> )
+        (
+            <NOT>
+            (<S>)+
+            { qry.setNotFlag(true); }
+            t = <IDENT>
+            { qry.setMediaType(t.image); }
+        )
+        |
+        LOOKAHEAD ( <LPAREN> <IDENT> )
+        (
+            <LPAREN>
+            t = <IDENT>
+            <COLON>
+            (<S>)+
+            node = Expression()
+            { qry.setFeature(t.image, node); }
+            <RPAREN>
+        )
+        |
+        (
+            t = <IDENT>
+            { qry.setMediaType(t.image); }
+        )
+    )
+
+    (<S>)*
+
+    (
+        <AND>
+        (<S>)+
+        <LPAREN>
+        t = <IDENT>
+        <COLON>
+        (<S>)+
+        node = Expression()
+        <RPAREN>
+        { qry.setFeature(t.image, node); }
+        (<S>)*
+    )*
+
+    { return qry; }
 }
 
 Rule Rule() :
@@ -217,7 +355,7 @@ Rule Import() :
       { media.append(t.image); }
       (<S>)*
       (
-          ","
+          <COMMA>
           (<S>)*
           t = <IDENT>
           {
@@ -228,8 +366,8 @@ Rule Import() :
       )*
     ]
 
-    ";"
-    (LOOKAHEAD(2) <S>)*
+    <SEMICOLON>
+    (LOOKAHEAD(1) <S>)*
     {
         rule = new Rule();
         rule.setImport(new ImportRule(importRef, media.toString()));
@@ -257,17 +395,17 @@ Mixin Mixin() :
             t = <FUNCTION>
             { mixin.setName(t.image.substring(0, t.image.length()-1)); }
             (<S>)*
+            t = <VARIABLE>
+            { mixin.addParameter(t.image); }
+            (<S>)*
+            (
+                <COMMA>
+                (<S>)*
                 t = <VARIABLE>
                 { mixin.addParameter(t.image); }
                 (<S>)*
-                (
-                    ","
-                    (<S>)*
-                    t = <VARIABLE>
-                    { mixin.addParameter(t.image); }
-                    (<S>)*
-                )*
-            ")"
+            )*
+            <RPAREN>
             (<S>)*
         )
     )
@@ -289,36 +427,24 @@ void RuleBlock(Rule block) :
     Mixin mixin ;
 }
 {
-    "{"
+    <LCURLY>
     { if (DEBUG) { System.out.println("-->ruleBlock"); } }
-    (LOOKAHEAD(2) <S>)*
+
+    (LOOKAHEAD(1) <S>)*
+
     (
-        LOOKAHEAD ( "@mixin" )
+        LOOKAHEAD ( <MIXIN> )
         (
-            "@mixin"
+            <MIXIN>
             (<S>)+
             mixin = Mixin()
             { mixins.put(mixin.getName(), mixin); }
         )
         |
-        LOOKAHEAD(3, VariableDeclaration())
+        LOOKAHEAD ( <VARIABLE> )
         (
             { if (DEBUG) { System.out.println("---->variableDeclaration"); } }
             VariableDeclaration()
-        )
-        |
-        LOOKAHEAD(6, Rule())
-        (
-            { if (DEBUG) { System.out.println("---->nestedRule"); } }
-            nestedRule = Rule()
-            { block.addSubRule(nestedRule); }
-        )
-        |
-        LOOKAHEAD(3, Property())
-        (
-            { if (DEBUG) { System.out.println("---->property"); } }
-            property = Property()
-            { block.addProperty(property); }
         )
         |
         LOOKAHEAD( <IFSTMT> )
@@ -328,9 +454,10 @@ void RuleBlock(Rule block) :
             { block.addControlStatement(stmt); }
         )
         |
+        LOOKAHEAD( <INCLUDE> )
         (
             { if (DEBUG) { System.out.println("---->@include"); } }
-            "@include"
+            <INCLUDE>
             (<S>)+
             (
                 (
@@ -345,35 +472,49 @@ void RuleBlock(Rule block) :
                     { i.addParameter(value); }
                     (<S>)*
                     (
-                        ","
+                        <COMMA>
                         (<S>)*
                         value = ParameterValue()
                         { i.addParameter(value); }
                         (<S>)*
                     )*
-                    ")"
+                    <RPAREN>
                 )
             )
-            ";"
+            <SEMICOLON>
             (LOOKAHEAD(2) <S>)*
 
             { block.addInclude(i); }
         )
         |
+        LOOKAHEAD( <EXTEND> )
         (
-            "@extend"
+            <EXTEND>
             { if (DEBUG) { System.out.println("---->@extend"); } }
             (<S>)+
             sel = Selector()
             (<S>)*
-            ";"
+            <SEMICOLON>
             (LOOKAHEAD(2) <S>)*
 
             { block.addExtend(sel); }
         )
+        |
+        LOOKAHEAD( <IDENT> <COLON> )
+        (
+            { if (DEBUG) { System.out.println("---->property"); } }
+            property = Property()
+            { block.addProperty(property); }
+        )
+        |
+        (
+            { if (DEBUG) { System.out.println("---->nestedRule"); } }
+            nestedRule = Rule()
+            { block.addSubRule(nestedRule); }
+        )
 
     )*
-    "}"
+    <RCURLY>
     (LOOKAHEAD(2) <S>)*
 }
 
@@ -386,12 +527,12 @@ void VariableDeclaration() :
 {
     t = <VARIABLE>
     { variableName = t.image; }
-    ":"
+    <COLON>
     (<S>)*
     (
       variableValue = ConditionalExpression()
     )
-    ";"
+    <SEMICOLON>
     (LOOKAHEAD(2) <S>)*
     { variables.put(variableName, variableValue); }
 }
@@ -404,7 +545,7 @@ void MixinBlock(Mixin block) :
     ControlStatement stmt ;
 }
 {
-    "{"
+    <LCURLY>
     (LOOKAHEAD(2) <S>)*
     (
         LOOKAHEAD(Rule())
@@ -419,13 +560,13 @@ void MixinBlock(Mixin block) :
             { block.addControlStatement(stmt); }
         )
         |
-        LOOKAHEAD( <IDENT> ":" )
+        LOOKAHEAD( <IDENT> <COLON> )
         (
             property = Property()
             { block.addProperty(property); }
         )
     )*
-    "}"
+    <RCURLY>
     (LOOKAHEAD(2) <S>)*
 }
 
@@ -443,13 +584,13 @@ ControlStatement IfBlock() :
     (<S>)*
     expr = ConditionalExpression()
     { stmt.setExpression(expr); }
-    "{"
+    <LCURLY>
     (<S>)*
     (
         property = Property()
         { stmt.addProperty(property); }
     )+
-    "}"
+    <RCURLY>
 
     (LOOKAHEAD(2) <S>)*
     (
@@ -459,7 +600,7 @@ ControlStatement IfBlock() :
         (<S>)*
         expr = ConditionalExpression()
         { stmt2.setExpression(expr); }
-        "{"
+        <LCURLY>
         (<S>)*
         (
             property = Property()
@@ -467,7 +608,7 @@ ControlStatement IfBlock() :
                 stmt2.addProperty(property);
             }
         )+
-        "}"
+        <RCURLY>
         { stmt.addElseIf(stmt2); }
     )*
 
@@ -477,7 +618,7 @@ ControlStatement IfBlock() :
         <ELSESTMT>
         { elseBlock = new Block(); }
         (<S>)*
-        "{"
+        <LCURLY>
         (<S>)*
         (
             property = Property()
@@ -485,7 +626,7 @@ ControlStatement IfBlock() :
                 elseBlock.addProperty(property);
             }
         )+
-        "}"
+        <RCURLY>
         { stmt.setElseBlock(elseBlock); }
     )?
     (LOOKAHEAD(2) <S>)*
@@ -506,7 +647,7 @@ SelectorChain SelectorChain() :
         s = Selector()
         { selectorChain.addSelector(s); }
     )+
-    (",")?
+    (<COMMA>)?
     (<S>)*
 
     { return selectorChain; }
@@ -524,13 +665,13 @@ Selector Selector() :
     // Combinator
     [
         (
-            ">"
+            <RTAG>
             { s.setCombinator(Selector.Combinator.CHILD_OF); }
             |
-            "+"
+            <PLUS>
             { s.setCombinator(Selector.Combinator.DIRECTLY_PRECEDED_BY); }
             |
-            "~"
+            <TILDE>
             { s.setCombinator(Selector.Combinator.PRECEDED_BY); }
         )
         (<S>)+
@@ -540,7 +681,7 @@ Selector Selector() :
         LOOKAHEAD(2)
         (
             // ID
-            "#"
+            <HASH>
             t = <IDENT>
             {
                 if (s.getClassNames().size() > 0) {
@@ -550,7 +691,7 @@ Selector Selector() :
             }
         |
             // Class
-            "."
+            <DOT>
             t = <IDENT>
             { s.addClassName(t.image); }
         |
@@ -558,7 +699,7 @@ Selector Selector() :
             t = <IDENT>
             { s.setElement(t.image); }
         |
-            "*"
+            <ASTERIX>
             { s.setElement("*"); }
         |
             // Parent ref
@@ -576,27 +717,27 @@ Selector Selector() :
 
     // Pseudo class
     [
-        ":"
-        [":"]
+        <COLON>
+        [<COLON>]
         t = <IDENT>
         { s.setPseudoClass(t.image); }
         (
-            "("
+            <LPAREN>
             t = <IDENT>
             { s.setPseudoClassParameter(t.image); }
-            ")"
+            <RPAREN>
         )*
     ]
 
     // Attribute selector
     [
         { attr = new Selector.AttributeSelector(); }
-        "["
+        <LBRACKET>
         t = <IDENT>
         { attr.setAttribute(t.image); }
         (
             (
-                "="
+                <EQUALS>
                 { attr.setType(Selector.AttributeSelectorType.EQUAL); }
                 |
                 <INCLUDES>
@@ -626,7 +767,7 @@ Selector Selector() :
                 )
             )
         )*
-        "]"
+        <RBRACKET>
         { s.setAttributeSelector(attr); }
     ]
 
@@ -645,21 +786,21 @@ Property Property() :
 {
     t = <IDENT>
     { property = new Property(t.image); }
-    ":"
+    <COLON>
     (<S>)*
     (
-        LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* "," )
+        LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* <COMMA> )
         (
             { buffer = new StringBuilder(); }
             (
-                LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* "," )
+                LOOKAHEAD( (<IDENT> | <STRING>) (<S>)* <COMMA> )
                 (
                     t = <IDENT>
                     |
                     t = <STRING>
                 )
                 (<S>)*
-                ","
+                <COMMA>
                 (<S>)*
                 {
                     buffer.append(t.image);
@@ -686,12 +827,12 @@ Property Property() :
         )
         |
         (
-            "!important"
+            <IMPORTANT>
             { property.addValue(new ImportantPropertyValue()); }
             (<S>)*
         )
     )+
-    ";"
+    <SEMICOLON>
     (LOOKAHEAD(2) <S>)*
 
     { return property; }
@@ -711,25 +852,25 @@ INode ConditionalExpression() :
                 nextNode = new EqNode();
                 nextNode.setLeftNode(node);
             }
-            "=="
+            <EQ>
         |
             {
                 nextNode = new NotEqNode();
                 nextNode.setLeftNode(node);
             }
-            "!="
+            <NEQ>
         |
             {
                 nextNode = new LtNode();
                 nextNode.setLeftNode(node);
             }
-            "<"
+            <LTAG>
         |
             {
                 nextNode = new GtNode();
                 nextNode.setLeftNode(node);
             }
-            ">"
+            <RTAG>
         )
         (<S>)*
         current = Expression()
@@ -759,13 +900,13 @@ INode Expression() :
                 nextNode = new AdditionNode();
                 nextNode.setLeftNode(node);
             }
-            "+"
+            <PLUS>
         |
             {
                 nextNode = new SubtractionNode();
                 nextNode.setLeftNode(node);
             }
-            "-"
+            <DASH>
         )
         (<S>)*
         current = Term()
@@ -794,13 +935,13 @@ INode Term() :
                 nextNode = new MultiplicationNode();
                 nextNode.setLeftNode(node);
             }
-            "*"
+            <ASTERIX>
         |
             {
                 nextNode = new DivisionNode();
                 nextNode.setLeftNode(node);
             }
-            "/"
+            <SLASH>
         )
         (<S>)*
         current = Primary()
@@ -822,13 +963,13 @@ INode Primary() :
     (
         node = PropertyValue()
     |
-        "-"
+        <DASH>
         node = Expression()
         { node = new NegationNode(node); }
     |
-        "("
+        <LPAREN>
         node = Expression()
-        ")"
+        <RPAREN>
     )
 
     {
@@ -867,7 +1008,7 @@ IPropertyValue PropertyValue() :
 
             (LOOKAHEAD(2) <S>)*
             (  LOOKAHEAD(2)
-               ","
+               <COMMA>
                (<S>)*
                (t = <IDENT>)
                { commaSeparatedIdents.append(", ").append(t.image); }
@@ -909,13 +1050,13 @@ IPropertyValue PropertyValue() :
             { fp.addValue(tmp); }
             (<S>)*
             (
-                ","
+                <COMMA>
                 (<S>)*
                 tmp = Expression()
                 { fp.addValue(tmp); }
                 (<S>)*
             )*
-            ")"
+            <RPAREN>
             { p = fp; p.setLocation(t.beginLine, t.beginColumn); }
     )
 
@@ -1000,7 +1141,7 @@ IPropertyValue ParameterValue() :
                 { fp.addValue(tmp); }
                 (<S>)*
             )*
-            ")"
+            <RPAREN>
             { p = fp; p.setLocation(t.beginLine, t.beginColumn); }
     )
 

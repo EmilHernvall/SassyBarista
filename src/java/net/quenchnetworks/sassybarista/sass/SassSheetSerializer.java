@@ -16,7 +16,7 @@ public class SassSheetSerializer
     {
         this.writer = writer;
     }
-    
+
     public void render(SassSheet sheet)
     throws ParseException
     {
@@ -27,31 +27,44 @@ public class SassSheetSerializer
             writer.print(entry.getValue());
             writer.println(";");
         }
-        
+
         for (Mixin mixin : sheet.getMixins().values()) {
             renderMixin(mixin);
         }
-        
+
         for (Rule rule : sheet.getRules()) {
             renderRule(rule, 0);
         }
+
+        for (MediaBlock block : sheet.getMediaBlocks()) {
+            renderMediaBlock(block);
+        }
     }
-    
+
     private String generateIndent(int indentLevel)
     {
         StringBuilder buf = new StringBuilder();
         for (int i = 0; i < indentLevel; i++) {
             buf.append("\t");
         }
-        
+
         return buf.toString();
     }
-    
+
+    private void renderMediaBlock(MediaBlock block)
+    {
+        writer.println("@media " + block.getMediaQueryString() + " {");
+        for (Rule rule : block.getRules()) {
+            renderRule(rule, 1);
+        }
+        writer.println("}");
+    }
+
     private void renderMixin(Mixin mixin)
     {
         writer.print("@mixin ");
         writer.print(mixin.getName());
-        
+
         List<String> params = mixin.getParameters();
         if (params.size() > 0) {
             writer.print("(");
@@ -64,12 +77,12 @@ public class SassSheetSerializer
             writer.print(") ");
         }
         writer.println("{");
-        
+
         renderProperties(mixin.getProperties(), 0);
-        
+
         writer.println("}");
     }
-    
+
     private void renderRule(Rule rule, int indentLevel)
     {
         String indent = generateIndent(indentLevel);
@@ -108,7 +121,7 @@ public class SassSheetSerializer
                 writer.println(",");
             }
         }
-        
+
         // Render extend directives
         for (Selector extend : rule.getExtends()) {
             writer.print(indent);
@@ -116,13 +129,13 @@ public class SassSheetSerializer
             writer.print(extend);
             writer.println(";");
         }
-        
+
         // Render include directives
         for (IncludeDirective include : rule.getIncludes()) {
             writer.print(indent);
             writer.print("\t@include ");
             writer.print(include.getMixinName());
-            
+
             List<IPropertyValue> params = include.getParameters();
             if (params.size() > 0) {
                 writer.print("(");
@@ -134,10 +147,10 @@ public class SassSheetSerializer
                 }
                 writer.print(")");
             }
-            
+
             writer.println(";");
         }
-        
+
         // Render all properties
         renderProperties(rule.getProperties(), indentLevel);
 
@@ -145,16 +158,16 @@ public class SassSheetSerializer
         for (Rule subrule : rule.getSubRules()) {
             renderRule(subrule, indentLevel + 1);
         }
-        
+
         writer.print(indent);
         writer.println("}");
         writer.println();
     }
-    
-    private void renderProperties(List<Property> properties, int indentLevel) 
+
+    private void renderProperties(List<Property> properties, int indentLevel)
     {
         String indent = generateIndent(indentLevel);
-    
+
         for (Property property : properties) {
             writer.print(indent);
             writer.print("\t" + property.getKey() + ": ");
@@ -167,7 +180,7 @@ public class SassSheetSerializer
                 }
                 i++;
             }
-            writer.println(";");                
+            writer.println(";");
         }
     }
 }
