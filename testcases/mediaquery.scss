@@ -1,10 +1,21 @@
+$tabletWidth: 768px;
+
 h1 {
     width: 320px;
 }
+body {
+    h1:after {
+        content: "that's one bigass screen";
+    }
+}
 
 @media monochrome {
-    h1 {
-        color: #ccc;
+    body {
+        background-color: #333;
+
+        h1 {
+            color: #ccc;
+        }
     }
 }
 
@@ -14,7 +25,7 @@ h1 {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: $tabletWidth + 1) {
     h1 {
         width: 768px;
     }

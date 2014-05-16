@@ -30,6 +30,11 @@ public class MediaQuery implements Serializable
         features.put(k, v);
     }
 
+    public Map<String, INode> getFeatures()
+    {
+        return features;
+    }
+
     public MediaQuery copy()
     {
         MediaQuery copyTo = new MediaQuery();

@@ -2,8 +2,19 @@ h1 {
 width: 320px;
 }
 
+body {
+}
+
+body h1:after {
+content: "that's one bigass screen";
+}
+
 @media monochrome {
-h1 {
+body {
+background-color: #333;
+}
+
+body h1 {
 color: #ccc;
 }
 
@@ -14,7 +25,7 @@ content: "that's one bigass screen";
 }
 
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
 h1 {
 width: 768px;
 }

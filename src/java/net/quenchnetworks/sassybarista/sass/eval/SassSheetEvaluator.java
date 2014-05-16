@@ -39,7 +39,7 @@ public class SassSheetEvaluator
     private ExpressionEvaluator evaluator;
     private StringInterpolator interpolator;
 
-    private List<Rule> ruleList;
+    private List<MediaBlock> mediaBlocks;
     private Map<String, IFunction> functions;
     private Map<String, IPropertyValue> variables = null;
     private Map<String, Mixin> mixins = null;
@@ -74,14 +74,21 @@ public class SassSheetEvaluator
 
         processExtends(sheet);
 
-        ruleList = new ArrayList<Rule>();
+        List<Rule> ruleList = new ArrayList<Rule>();
         for (Rule rule : sheet.getRules()) {
-            processRule(rule);
+            processRule(rule, ruleList);
+        }
+
+        mediaBlocks = new ArrayList<MediaBlock>();
+        for (MediaBlock mediaBlock : sheet.getMediaBlocks()) {
+            processMediaBlock(mediaBlock);
+            mediaBlocks.add(mediaBlock);
         }
 
         sheet.setVariables(new HashMap<String, INode>());
         sheet.setMixins(new HashMap<String, Mixin>());
         sheet.setRules(ruleList);
+        sheet.setMediaBlocks(mediaBlocks);
     }
 
     private void interpolateSelectors(List<SelectorChain> chains,
@@ -280,7 +287,7 @@ public class SassSheetEvaluator
         return matches;
     }
 
-    private void processRule(Rule rule)
+    private void processRule(Rule rule, List<Rule> ruleList)
     throws EvaluationException
     {
         // Fetch all includes and just copy all the subrules
@@ -343,7 +350,7 @@ public class SassSheetEvaluator
             // lvels
             subrule.setSelectorChains(newChains);
 
-            processRule(subrule);
+            processRule(subrule, ruleList);
         }
         rule.setSubRules(new ArrayList<Rule>());
     }
@@ -373,5 +380,23 @@ public class SassSheetEvaluator
         for (Rule subrule : block.getSubRules()) {
             reduceMixin(subrule, params);
         }
+    }
+
+    private void processMediaBlock(MediaBlock block)
+    throws EvaluationException
+    {
+        for (MediaQuery qry : block.getMediaQueries()) {
+            Map<String, INode> features = qry.getFeatures();
+            for (Map.Entry<String, INode> entry : features.entrySet()) {
+                INode result = evaluator.evaluate(entry.getValue(), variables);
+                features.put(entry.getKey(), result);
+            }
+        }
+
+        List<Rule> ruleList = new ArrayList<Rule>();
+        for (Rule rule : block.getRules()) {
+            processRule(rule, ruleList);
+        }
+        block.setRules(ruleList);
     }
 }

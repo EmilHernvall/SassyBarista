@@ -433,7 +433,6 @@ void RuleBlock(Rule block) :
     (LOOKAHEAD(1) <S>)*
 
     (
-        LOOKAHEAD ( <MIXIN> )
         (
             <MIXIN>
             (<S>)+
@@ -454,7 +453,6 @@ void RuleBlock(Rule block) :
             { block.addControlStatement(stmt); }
         )
         |
-        LOOKAHEAD( <INCLUDE> )
         (
             { if (DEBUG) { System.out.println("---->@include"); } }
             <INCLUDE>
@@ -487,7 +485,6 @@ void RuleBlock(Rule block) :
             { block.addInclude(i); }
         )
         |
-        LOOKAHEAD( <EXTEND> )
         (
             <EXTEND>
             { if (DEBUG) { System.out.println("---->@extend"); } }
@@ -500,7 +497,7 @@ void RuleBlock(Rule block) :
             { block.addExtend(sel); }
         )
         |
-        LOOKAHEAD( <IDENT> <COLON> )
+        LOOKAHEAD( Property() )
         (
             { if (DEBUG) { System.out.println("---->property"); } }
             property = Property()

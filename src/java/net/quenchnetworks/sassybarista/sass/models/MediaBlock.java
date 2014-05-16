@@ -39,6 +39,11 @@ public class MediaBlock implements Serializable
         mediaQueries.add(qry);
     }
 
+    public List<MediaQuery> getMediaQueries()
+    {
+        return mediaQueries;
+    }
+
     public String getMediaQueryString()
     {
         StringBuilder buf = new StringBuilder();
