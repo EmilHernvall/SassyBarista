@@ -1,6 +1,6 @@
 a {
 height: 10px;
 font: bold;
-color: darken(#f023 10%);
-border-bottom: 1px solid darken(#f023 10%);
+color: darken(#f023, 10%);
+border-bottom: 1px solid darken(#f023, 10%);
 }

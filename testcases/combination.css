@@ -3,6 +3,6 @@ a {
 
 a:hover,
 a:focus {
-color: darken(#345 10%);
-border-bottom: 1px solid darken(#345 10%);
+color: darken(#345, 10%);
+border-bottom: 1px solid darken(#345, 10%);
 }
