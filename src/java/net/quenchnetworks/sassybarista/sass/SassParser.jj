@@ -716,14 +716,16 @@ Selector Selector() :
     [
         <COLON>
         [<COLON>]
-        t = <IDENT>
-        { s.setPseudoClass(t.image); }
         (
-            <LPAREN>
-            t = <IDENT>
-            { s.setPseudoClassParameter(t.image); }
-            <RPAREN>
-        )*
+                t = <IDENT>
+                { s.setPseudoClass(t.image); }
+            |
+                t = <FUNCTION>
+                { s.setPseudoClass(t.image.substring(0, t.image.length()-1)); }
+                t = <IDENT>
+                { s.setPseudoClassParameter(t.image); }
+                <RPAREN>
+        )
     ]
 
     // Attribute selector
